@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block head %}
+{% endblock %}
+
+{% block body %}
+<div class="center-content">
+    <div class="join">
+        <h2 class="form-title">Join the Queue</h2>
+        <form class="form">
+
+            <div>
+                {{ form.name.label(class="form-label") }}
+                {{ form.name(class="form-input") }}
+            </div>
+
+            <div>
+                {{ form.email.label(class="form-label") }}
+                {{ form.email(class="form-input") }}
+            </div>
+
+            <div>
+                {{ form.eid.label(class="form-label") }}
+                {{ form.eid(class="form-input") }}
+            </div>
+
+            <div>
+                {{ form.submit(class="form-submit") }}
+            </div>
+        </form> 
+    </div>
+</div>
+{% endblock %}

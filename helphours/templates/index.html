@@ -1,8 +1,48 @@
-<html>
-    <head>
-        <link rel="stylesheet" href="{{ url_for('static', filename='styles/styles.css') }}">
-    </head>
-    <body>
-        <h1>Hello, Help Hours!</h1>
-    </body>
-</html>
+{% extends "base.html" %}
+
+{% block head %}
+{% endblock %}
+
+{% block body %}
+<h1> Welcome to Help Hours for CLASS_NAME_HERE! </h1>
+<p>Here are some instructions on how to use this website.</p>
+<br />
+
+<h2>Joining the Line</h2>
+<ol>
+    <li>Click the Join tab.</li>
+    <li>Check if the queue is open. You won't be able to submit your information if it's closed.</li>
+    <li>Enter in your information if it's open.</li>
+    <li>Click Join the Queue!</li>
+</ol>
+<p>You will be redirected to View, where your name should appear at the bottom of the page.</p>
+<p><strong>Please note:</strong> You don't have to enter your actual UT EID if you don't want to, but you
+    should enter unique text, because you will be able to use this entry to remove yourself from the queue. We don't
+    want others accidentally removing you from the queue.</p>
+<p>If you try to add yourself to the queue when you're already in there, you'll lose your previous spot in
+    line
+    and will be moved to the end. You can add yourself again after you've been helped! </p>
+<p> Please join the Zoom meeting once you start approaching the front of
+    the line. <strong>Check Canvas for the link to the Zoom meeting.</strong> The instructors will have a
+    breakout room to help students in, so feel free to wait in the main room.</p>
+<p>Also, expect an email in your inbox telling you your place in line and what you entered in the EID
+    field.</p>
+
+<br />
+<h2>Viewing the Line</h2>
+<p >This one is pretty easy, just click the View tab.</p>
+<p >If you're on a tight schedule, we recommend checking this tab out before joining the line.</p>
+
+<br />
+<h2>Removing Yourself From the Line</h2>
+<ol>
+    <li>Click the Remove Self tab.</li>
+    <li>Enter in your UT EID, or whatever you entered in that field. If you don't remember what you entered, check your
+        email.</li>
+    <li>Click submit.</li>
+</ol>
+
+<br />
+<p>If you are having any issues with the website, please email 314labhours@gmail.com or make a Piazza post.
+</p>
+{% endblock %}
