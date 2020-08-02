@@ -15,6 +15,10 @@ import secrets
 
 queue_is_open = False
 
+@app.context_processor
+def course_info():
+    return dict(COURSE_NAME=app.config['COURSE_NAME'], COURSE_DESCRIPTION=app.config['COURSE_DESCRIPTION'])
+
 @app.route("/", methods=['GET'])
 @app.route("/index", methods=['GET'])
 def index():
@@ -48,7 +52,6 @@ def join():
         else:
             if len(form.errors) > 0:
                 message = next(iter(form.errors.values()))[0]
-
     # render the template for submitting otherwise
     return render_template('join.html', form=form, queue_is_open=queue_is_open, message=message)
 
@@ -59,4 +62,6 @@ def zoom_redirect():
 
 @app.route("/schedule", methods=['GET'])
 def schedule_redirect():
-    return redirect("https://www.cs.utexas.edu/~scottm")
+    return redirect(app.config['SCHEDULE_LINK'])
+
+from helphours import error_routes
