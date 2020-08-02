@@ -1,2 +1,3 @@
 # HelpHours
-Web app for managing online help hours
+
+A web app for managing online help hours for CS courses at UT Austin.
