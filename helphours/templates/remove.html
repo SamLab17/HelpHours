@@ -6,31 +6,20 @@
 {% block body %}
 <div class="center-content">
     <div class="form-container">
-        <h2 class="form-title">Join the Queue</h2>
+        <h2 class="form-title">Remove Self</h2>
         <form class="form">
-            <div>
-                {{ form.name.label(class="form-label") }}
-                {{ form.name(class="form-input") }}
-            </div>
-
-            <div>
-                {{ form.email.label(class="form-label") }}
-                {{ form.email(class="form-input") }}
-            </div>
-
             <div>
                 {{ form.eid.label(class="form-label") }}
                 {{ form.eid(class="form-input") }}
             </div>
-
             {% if message|length > 0 %}
                 <p class="error-message">{{ message }}</p>
             {% endif %}
-
             <div>
-                {{ form.submit(class="form-submit") }}
+                {{ form.submit(class="form-submit") }}    
             </div>
-        </form> 
+        </form>
     </div>
+
 </div>
 {% endblock %}

@@ -10,3 +10,7 @@ class JoinQueueForm(FlaskForm):
     eid = StringField('EID',
         validators=[DataRequired()])
     submit = SubmitField('Join the Queue!')
+
+class RemoveSelfForm(FlaskForm):
+    eid = StringField('EID', validators=[DataRequired()])
+    submit = SubmitField('Remove self')

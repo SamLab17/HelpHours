@@ -1,7 +1,7 @@
 from helphours import app
 from flask import render_template, flash, url_for, redirect, request, g
 # from helphours.forms import EnterLineForm, LoginForm, RequestResetForm, ResetPasswordForm, InstructorForm
-from helphours.forms import JoinQueueForm
+from helphours.forms import JoinQueueForm, RemoveSelfForm
 # from helphours.student import Student
 from flask_login import current_user, login_user, logout_user, login_required
 # from helphours.models.instructor import Instructor
@@ -57,6 +57,21 @@ def join():
     # render the template for submitting otherwise
     return render_template('join.html', form=form, queue_is_open=queue_is_open, message=message)
 
+@app.route("/view", methods=['GET', 'POST'])
+def view():
+    return render_template('view.html')
+
+@app.route("/remove", methods=['GET', 'POST'])
+def remove():
+    form = RemoveSelfForm()
+    message = ""
+    if request.method == 'POST':
+        if form.validate_on_submit():
+            # remove em
+            pass
+        else:
+            message = "EID is required"
+    return render_template('remove.html', form=form, message=message)
 
 @app.route("/zoom", methods=['GET'])
 def zoom_redirect():
