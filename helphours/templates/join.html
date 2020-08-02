@@ -8,7 +8,6 @@
     <div class="join">
         <h2 class="form-title">Join the Queue</h2>
         <form class="form">
-
             <div>
                 {{ form.name.label(class="form-label") }}
                 {{ form.name(class="form-input") }}
@@ -23,6 +22,10 @@
                 {{ form.eid.label(class="form-label") }}
                 {{ form.eid(class="form-input") }}
             </div>
+
+            {% if message|length > 0 %}
+                <p class="error-message">{{ message }}</p>
+            {% endif %}
 
             <div>
                 {{ form.submit(class="form-submit") }}
