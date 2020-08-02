@@ -13,6 +13,8 @@ import validators
 import json
 import secrets
 
+# Would likely need to be stored in a databse if we want multiple instances of this
+# running
 queue_is_open = False
 
 @app.context_processor
