@@ -41,30 +41,34 @@ class Notifier:
           through content_type
     """
     def send_message(self, to_addr, subject, body, body_type):
-        msg = MIMEMultipart('alternative')
-        msg['Subject'] = subject
-        msg['From'] = self.from_addr
-        msg['To'] = to_addr
-        if body_type.lower() == 'html':
-            msg.attach(MIMEText(body, 'html'))
-        else:
-            msg.attach(MIMEText(body, 'plain'))
+        try:
+            msg = MIMEMultipart('alternative')
+            msg['Subject'] = subject
+            msg['From'] = self.from_addr
+            msg['To'] = to_addr
+            if body_type.lower() == 'html':
+                msg.attach(MIMEText(body, 'html'))
+            else:
+                msg.attach(MIMEText(body, 'plain'))
 
-        """
-            Actual logging in to the SMTP server happens right before
-            we send the email. Originally, this was done only once
-            in the constructor, but we seemed to get server disconnection
-            errors occasionally, potentially due to timeouts, so instead
-            we login before every email is sent.
-            If the application is taking too long to process requests, another
-            possibility would be to wrap sending an email in a try/except block
-            and only try to re-connect if we get an exception.
-        """
-        smtp_client = smtplib.SMTP(self.server, self.port)
-        smtp_client.starttls()
-        smtp_client.login(self.user, self.password)
-        smtp_client.send_message(msg)
-        smtp_client.quit()
+            """
+                Actual logging in to the SMTP server happens right before
+                we send the email. Originally, this was done only once
+                in the constructor, but we seemed to get server disconnection
+                errors occasionally, potentially due to timeouts, so instead
+                we login before every email is sent.
+                If the application is taking too long to process requests, another
+                possibility would be to wrap sending an email in a try/except block
+                and only try to re-connect if we get an exception.
+            """
+            smtp_client = smtplib.SMTP(self.server, self.port)
+            smtp_client.starttls()
+            smtp_client.login(self.user, self.password)
+            smtp_client.send_message(msg)
+            smtp_client.quit()
+        except Exception as e:
+            # Log email error
+            print(e)
 
     """
         Destructor for Notifier object, simply

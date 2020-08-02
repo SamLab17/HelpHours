@@ -11,7 +11,7 @@ body {
 body h1,
 body h2 {
     font-weight: 600;
-    margin: 0;
+    margin-top: 0;
 }
 
 body h3 {
@@ -96,7 +96,7 @@ body h3 {
 .form-title {
     display: block;
     width: 100%;
-    padding-bottom: 10px;
+    /* padding-bottom: 10px; */
 }
 
 .form-label {
@@ -112,7 +112,8 @@ body h3 {
 }
 
 .form {
-    margin-top: 20px;
+    /* margin-top: 20px; */
+    margin-bottom: 0;
 }
 
 .form > div {
@@ -124,3 +125,52 @@ body h3 {
     color: red;
 }
 
+.queue-container {
+    width: 60%;
+    height: 100%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.queue-entry {
+    width: 100%;
+    display: flex;
+    padding: 20px 20px;
+    box-shadow: 5px 5px 10px #ccc;
+    border-radius: 5px;
+    background-color: #eee;
+    margin-bottom: 20px;
+}
+
+.queue-entry-left {
+    float: left;
+    align-self: center;
+}
+
+.queue-entry-right {
+    margin-left: auto;
+    align-self: center;
+}
+
+.queue-entry-buttons {
+    margin-bottom: 0;
+}
+
+.queue-entry-position {
+    display: inline-block;
+    font-weight: bold;
+    font-size: 120%;
+    color: #777;
+}
+
+.queue-entry-name {
+    display: inline-block;
+    margin-left: 20px;
+}
+
+.queue-controls {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    padding: 20px 0px;
+}

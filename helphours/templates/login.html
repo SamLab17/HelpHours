@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block head %}
+{% endblock %}
+
+{% block body %}
+<div class="center-content">
+    <div class="form-container">
+        <h2 class="form-title">Instructor Login</h2>
+
+        <form class="form">
+            {{form.csrf_token}}
+            <div>
+                {{ form.email.label(class="form-label")}}
+                {{ form.email(class="form-input") }}
+            </div>
+            <div>
+                {{ form.password.label(class="form-label") }}
+                {{ form.password(class="form-input") }}
+            </div>
+
+            {% if message|length > 0 %}
+                <p class="error-message">{{ message }}</p>
+            {% endif %}
+
+            <div>
+                {{ form.submit(class="form-submit") }}
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

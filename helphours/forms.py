@@ -14,3 +14,30 @@ class JoinQueueForm(FlaskForm):
 class RemoveSelfForm(FlaskForm):
     eid = StringField('EID', validators=[DataRequired()])
     submit = SubmitField('Remove self')
+
+class LoginForm(FlaskForm):
+    email = StringField('Email',
+        validators=[DataRequired(), Email()])
+    password = PasswordField('Password',
+        validators=[DataRequired()])
+    submit = SubmitField('Sign In')
+
+class RequestResetForm(FlaskForm):
+    email = StringField('Email', validators=[DataRequired(), Email()])
+    submit = SubmitField('Send Reset Instructions')
+
+class ResetPasswordForm(FlaskForm):
+    password = PasswordField('New password', validators=[
+        DataRequired(),
+        EqualTo('confirm', message='The two passwords must match')
+    ])
+    confirm = PasswordField('Confirm new password')
+    submit = SubmitField('Reset Password')
+
+class InstructorForm(FlaskForm):
+    first_name = StringField('First Name', validators=[DataRequired()])
+    last_name = StringField('Last Name', validators=[DataRequired()])
+    email = StringField('Email', validators=[DataRequired(), Email()])
+    is_active = BooleanField('Active')
+    is_admin = BooleanField('Admin')
+    submit = SubmitField('Update')

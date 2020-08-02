@@ -9,4 +9,9 @@ app.config.from_pyfile('config.cfg')
 
 app.jinja_env.auto_reload = True
 
+db = SQLAlchemy(app)
+login = LoginManager(app)
+
+notifier = Notifier(app.config['EMAIL_ACCOUNT'], app.config['EMAIL_PASSWORD'], app.config['EMAIL_SERVER'], app.config['EMAIL_SERVER_PORT'])
+
 from helphours import routes

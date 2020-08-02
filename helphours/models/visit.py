@@ -1,4 +1,4 @@
-from flaskapp import db
+from helphours import db
 
 """
     Database model to represent a "Visit" in the "visits"
