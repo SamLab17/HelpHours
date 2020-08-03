@@ -1,9 +1,8 @@
-import uuid
-"""
-    Class to represent a Student entry in the
-    Lab Hours Queue.
-"""
 class Student:
+    """
+        Class to represent a Student entry in the
+        Lab Hours Queue.
+    """
     def __init__(self, name, email, eid, uid):
         self.name = name
         self.email = email

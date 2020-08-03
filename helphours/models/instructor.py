@@ -1,16 +1,15 @@
 from helphours import db, login
-from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin
 from werkzeug.security import check_password_hash
 
 
-"""
-    Database model to represent an Instructor
-    in the "instructors" table. This class is
-    also used as the "User" class for flask_login
-    authentication
-"""
 class Instructor(UserMixin, db.Model):
+    """
+        Database model to represent an Instructor
+        in the "instructors" table. This class is
+        also used as the "User" class for flask_login
+        authentication
+    """
     __tablename__ = "instructors"
     id = db.Column(db.Integer, primary_key=True)
     first_name = db.Column(db.String(32))
@@ -24,14 +23,15 @@ class Instructor(UserMixin, db.Model):
     def check_password(self, password):
         return check_password_hash(self.password_hash, password)
 
-"""
-    Allows the login manager to load the
-    correct user from the database based
-    on their ID
-"""
+
 @login.user_loader
 def load_user(id):
+    """ Allows the login manager to load the
+        correct user from the database based
+        on their ID
+    """
     return Instructor.query.get(int(id))
+
 
 # I don't like the idea of being able to completely delete an Instructor
 # from the table because the visits store an instructor id and removing

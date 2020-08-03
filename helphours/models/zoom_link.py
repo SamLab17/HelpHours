@@ -1,5 +1,6 @@
 from helphours import db
 
+
 class ZoomLink(db.Model):
     __tablename__ = "zoomlinks"
     id = db.Column(db.Integer, primary_key=True)

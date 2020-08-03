@@ -1,23 +1,15 @@
-from flask import render_template
 import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
-from email.message import EmailMessage
 
 """
     Mail server settings to use for sending
     notification emails. Currently using
     a Gmail account.
 """
-#MAIL_SERVER = "smtp.gmail.com"
-#SMTP_PORT = 587
+# MAIL_SERVER = "smtp.gmail.com"
+# SMTP_PORT = 587
 
-"""
-    Credentials File Format:
-    1st line: Outbound email address
-    2nd line: Server username
-    3rd line: Server user password
-"""
 
 class Notifier:
     """
@@ -69,10 +61,3 @@ class Notifier:
         except Exception as e:
             # Log email error
             print(e)
-
-    """
-        Destructor for Notifier object, simply
-        ends the current SMTP session
-    """
-    #def __del__(self):
-    #    self.smtp_client.quit()

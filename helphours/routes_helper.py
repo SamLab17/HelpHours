@@ -1,18 +1,15 @@
-from helphours import app, notifier, db, queue_handler, routes_helper
-from flask import render_template, flash, url_for, redirect, request, g
-from helphours.forms import JoinQueueForm, LoginForm
-from helphours.student import Student
-from flask_login import current_user, login_user, logout_user
-from helphours.models.instructor import Instructor
+from helphours import notifier, db, queue_handler
+from flask import render_template, g
 from helphours.models.visit import Visit
 from datetime import datetime
-import validators
 
 """
     Handle post requests in the view line page.
     Will return a boolean indicating whether the line should be
     open (True) or closed (False).
 """
+
+
 def handle_line_form(request, curr_open_state):
     # Handle removing student, the line's "open state" should
     # be unchanged.
@@ -26,6 +23,7 @@ def handle_line_form(request, curr_open_state):
     elif 'open' in request.form:
         return True
 
+
 """
     Handles removing a student from the view queue
     page. This can be done either using the "Finish"
@@ -33,6 +31,8 @@ def handle_line_form(request, curr_open_state):
     if a student is removed from the queue without being
     helped. Will notify new runner-up in the queue.
 """
+
+
 def handle_remove(request):
     if 'finished' in request.form:
         uid = request.form['finished']
@@ -56,17 +56,20 @@ def handle_remove(request):
     s = queue_handler.peek_runner_up()
     if s is not None and not s.notified:
         try:
-            notifier.send_message(s.email, "Notification from 314 Lab Hours Queue", 
-            render_template("up_next_email.html", student_name=s.name, remove_code=s.eid), 'html')
+            notifier.send_message(s.email, "Notification from {{COURSE_NAME}} Help Hours Queue",
+                                  render_template("up_next_email.html", student_name=s.name, remove_code=s.eid), 'html')
             s.notified = True
-        except:
-            print(f"Failed to send email to {s.email}")
+        except Exception as e:
+            print(f"Failed to send email to {s.email}. {e}")
+
 
 """
     Formats a place in the queue with the appropriate suffix.
     i.e. 1 => "1st", 2 -> "2nd", etc
     Used in the email when someone joins the queue
 """
+
+
 def get_place_str(place):
     place_str = str(place)
     if len(place_str) == 2 and place_str[0] == '1':
