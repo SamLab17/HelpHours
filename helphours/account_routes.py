@@ -50,7 +50,7 @@ def request_reset():
             else:
                 # This is a valid user/email address
                 password_reset.create_reset_request(user)
-                return render_template('reset_message.html', title="Reset Request Made", 
+                return render_template('reset_message.html', title="Reset Request Made",
                                        body=f"Instructions for resetting your password have been sent to {form_email}")
         else:
             message = "Enter a valid email"
@@ -75,5 +75,5 @@ def reset_password():
                 message = 'Both passwords must match'
         return render_template('reset_password.html', token=request.args['token'], form=form, message=message)
     else:
-        return render_template('reset_message.html', title="Reset error", 
+        return render_template('reset_message.html', title="Reset error",
                                body="Malformed reset link. Token not present")

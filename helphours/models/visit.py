@@ -31,5 +31,4 @@ class Visit(db.Model):
     time_left = db.Column(db.DateTime)
     was_helped = db.Column(db.Integer)
     instructor_id = db.Column(db.Integer, db.ForeignKey('instructors.id'))
-    
     # Would we like to include other data points for analysis?
