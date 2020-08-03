@@ -1,7 +1,7 @@
 version: 2.1
 
 jobs:
-    lint:
+    build:
         docker:
             - image: 889883130442.dkr.ecr.us-west-2.amazonaws.com/fair-images:python-3.7.1
         steps:
@@ -12,7 +12,15 @@ jobs:
             - run:
                 name: install requirements
                 command: pip install -r requirements.txt
+    lint:
+        steps:
+            
             - run:
                 name: run flake8 linter
                 command: flake8 --max-line-length=120 --extend-ignore=E402
-        
+
+workflows: 
+    lint:
+        jobs:
+            - build
+            - lint
