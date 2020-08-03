@@ -19,7 +19,6 @@ jobs:
         docker:
             - image: circleci/python:3.8.2
         steps:
-            - build
             - run:
                   name: run flake8 linter
                   command: flake8 --max-line-length=120 --extend-ignore=E402
@@ -27,4 +26,7 @@ jobs:
 workflows:
     build_and_lint:
         jobs:
-            - build-lint
+            - build
+            - lint:
+                requires:
+                    - build
