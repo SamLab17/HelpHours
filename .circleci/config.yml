@@ -1,0 +1,30 @@
+version: 2.1
+
+jobs:
+    build:
+        docker:
+            - image: circleci/python:3.8.2
+        steps:
+            - checkout
+            - run:
+                name: create venv 
+                command: python3 -m venv venv
+            - run:
+                  name: activate venv
+                  command: source venv/bin/activate
+            - run:
+                  name: install requirements
+                  command: pip install -r requirements.txt
+    lint:
+        docker:
+            - image: circleci:/python:3.8.2
+        steps:
+            - run:
+                  name: run flake8 linter
+                  command: flake8 --max-line-length=120 --extend-ignore=E402
+
+workflows:
+    lint:
+        jobs:
+            - build
+            - lint
