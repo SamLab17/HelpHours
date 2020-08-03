@@ -20,7 +20,7 @@ jobs:
                   command: pwd && ls
             - run:
                   name: run flake8 linter
-                  command: venv/bin/flake8 --max-line-length=120 --extend-ignore=E402 helphours
+                  command: python3 -m flake8 helphours --max-line-length=120 --extend-ignore=E402
 
 workflows:
     build_and_lint:
