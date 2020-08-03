@@ -7,6 +7,9 @@ jobs:
         steps:
             - checkout
             - run:
+                name: create venv 
+                command: python3 -m venv venv
+            - run:
                   name: activate venv
                   command: source venv/bin/activate
             - run:
