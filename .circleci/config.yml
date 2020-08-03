@@ -1,7 +1,7 @@
 version: 2.1
 
 jobs:
-    build:
+    lint:
         docker:
             - image: circleci/python:3.8.2
         steps:
@@ -16,24 +16,10 @@ jobs:
                   name: install requirements
                   command: pip install -r requirements.txt
             - run:
-                  name: debug
-                  command: pwd; ls
-    lint:
-        docker:
-            - image: circleci/python:3.8.2
-        steps:
-            - checkout
-            - run:
-                  name: debug
-                  command: pwd; ls
-            - run:
                   name: run flake8 linter
                   command: venv/bin/flake8 --max-line-length=120 --extend-ignore=E402 helphours
 
 workflows:
     build_and_lint:
         jobs:
-            - build
-            - lint:
-                  requires:
-                      - build
+            - lint
