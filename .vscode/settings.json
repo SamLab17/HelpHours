@@ -1,0 +1,12 @@
+{
+    "python.pythonPath": "venv/bin/python",
+    "python.linting.pylintEnabled": false,
+    "python.linting.enabled": true,
+    "python.linting.flake8Enabled": true,
+    "python.linting.flake8Args": [
+        "--max-line-length=120",
+        // Ignore rules:
+            // E402: Imports must be at top of file
+        "--extend-ignore=E402"
+    ]
+}
