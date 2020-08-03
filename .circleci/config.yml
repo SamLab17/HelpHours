@@ -21,7 +21,7 @@ jobs:
         steps:
             - run:
                   name: run flake8 linter
-                  command: flake8 --max-line-length=120 --extend-ignore=E402
+                  command: venv/bin/flake8 --max-line-length=120 --extend-ignore=E402 helphours
 
 workflows:
     build_and_lint:
