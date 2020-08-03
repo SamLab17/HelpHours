@@ -3,7 +3,7 @@ version: 2.1
 jobs:
     build:
         docker:
-            - image: 889883130442.dkr.ecr.us-west-2.amazonaws.com/fair-images:python-3.7.1
+            - image: circleci/python:3.8.2
         steps:
             - checkout
             - run:
@@ -14,7 +14,7 @@ jobs:
                   command: pip install -r requirements.txt
     lint:
         docker:
-            - image: 889883130442.dkr.ecr.us-west-2.amazonaws.com/fair-images:python-3.7.1
+            - image: circleci:/python:3.8.2
         steps:
             - run:
                   name: run flake8 linter
