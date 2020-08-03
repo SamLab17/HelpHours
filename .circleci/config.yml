@@ -4,22 +4,20 @@ jobs:
     lint:
         docker:
             - image: circleci/python:3.8.2
+        resource_class: small
         steps:
             - checkout
             - run:
-                  name: create venv
+                  name: Create Virtual Environment
                   command: python3 -m venv venv
             - run:
-                  name: activate venv
+                  name: Activate Virtual Environment
                   command: source venv/bin/activate
             - run:
-                  name: install requirements
+                  name: pip Install requirements
                   command: pip install -r requirements.txt
             - run:
-                  name: debug
-                  command: pwd && ls
-            - run:
-                  name: run flake8 linter
+                  name: Run the Linter
                   command: python3 -m flake8 helphours --max-line-length=120 --extend-ignore=E402
 
 workflows:
