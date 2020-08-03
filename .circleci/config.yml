@@ -16,6 +16,9 @@ jobs:
                   name: install requirements
                   command: pip install -r requirements.txt
             - run:
+                  name: debug
+                  command: pwd && ls
+            - run:
                   name: run flake8 linter
                   command: venv/bin/flake8 --max-line-length=120 --extend-ignore=E402 helphours
 
