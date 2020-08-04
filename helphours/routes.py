@@ -1,5 +1,4 @@
 import secrets
-# import validators
 from helphours import app, db, notifier, queue_handler, routes_helper, password_reset, stats
 from flask import render_template, url_for, redirect, request, g
 from helphours.forms import JoinQueueForm, RemoveSelfForm, InstructorForm
@@ -41,8 +40,8 @@ def join():
         # go to the page that shows the people in the queue if you've submitted
         # a valid form
         if form.validate_on_submit():
-            visit = Visit(eid=form.eid.data, time_entered=datetime.utcnow(
-            ), time_left=None, was_helped=0, instructor_id=None)
+            visit = Visit(eid=form.eid.data, time_entered=datetime.utcnow(), time_left=None,
+                          was_helped=0, instructor_id=None)
             db.session.add(visit)
             db.session.commit()
             s = Student(form.name.data, form.email.data,

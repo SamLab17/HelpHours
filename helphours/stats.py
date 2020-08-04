@@ -4,9 +4,9 @@ import mpld3
 from datetime import datetime, timedelta
 import math
 from pytz import timezone
-from flaskapp import app
-from flaskapp.models.visit import Visit
-from flaskapp.models.instructor import Instructor
+from helphours import app
+from helphours.models.visit import Visit
+from helphours.models.instructor import Instructor
 from flask import render_template
 import csv
 import os
