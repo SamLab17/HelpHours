@@ -188,3 +188,53 @@ body h3 {
     font-weight: 400;
 }
 
+.stats-container {
+
+}
+
+.stats-nav-container {
+    width: 100%;
+    justify-content: center;
+}
+
+.stats-nav {
+    list-style-type: none;
+    display: flex;
+    width: 20%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.stats-nav li {
+    padding: 10px 20px;
+    background-color: #eee;
+    border-radius: 5px;
+}
+
+.stats-nav li:hover {
+    background-color: #ccc;
+}
+
+.num-stats {
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+}
+
+.num-stat {
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.num-stat .number {
+    font-size: 300%;
+    margin-bottom: 5px;
+}
+
+.graphs-container {
+    display: flex;
+    justify-content: space-around;
+}
