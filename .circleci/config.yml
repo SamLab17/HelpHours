@@ -19,11 +19,17 @@ jobs:
                   paths:
                       - "venv"
             - run:
-                  name: Running unit tests
+                  name: Running student tests
                   command: |
                       . venv/bin/activate
                       cd tests/
-                      python3 tests.py
+                      python3 student_tests.py
+            - run:
+                  name: Running route tests
+                  command: |
+                      . venv/bin/activate
+                      cd tests/
+                      python3 route_tests.py
 
     lint:
         docker:
