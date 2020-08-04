@@ -174,3 +174,17 @@ body h3 {
     justify-content: center;
     padding: 20px 0px;
 }
+
+.table-container {
+    border: 1px solid #222;
+    border-radius: 5px;
+}
+
+.table-head-row {
+    border-bottom: 1px solid #222;
+}
+
+.table-head-row th {
+    font-weight: 400;
+}
+
