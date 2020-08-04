@@ -1,6 +1,30 @@
 version: 2.1
 
 jobs:
+    run_test:
+        docker:
+            - image: circleci/python:3.8.2
+        resource_class: small
+        steps:
+            - checkout
+            - restore_cache:
+                  key: packages-{{ checksum "requirements.txt" }}
+            - run:
+                  command: |
+                      python3 -m venv venv
+                      . venv/bin/activate
+                      pip install -r requirements.txt
+            - save_cache:
+                  key: packages-{{ checksum "requirements.txt" }}
+                  paths:
+                      - "venv"
+            - run:
+                  name: Running unit tests
+                  command: |
+                      . venv/bin/activate
+                      cd tests/
+                      python3 tests.py
+
     lint:
         docker:
             - image: circleci/python:3.8.2
@@ -25,6 +49,10 @@ jobs:
                       python3 -m flake8 helphours --max-line-length=120 --extend-ignore=E402
 
 workflows:
-    build_and_lint:
+    lint:
         jobs:
             - lint
+
+    unit_tests:
+        jobs:
+            - run_test
