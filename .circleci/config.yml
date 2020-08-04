@@ -20,7 +20,9 @@ jobs:
                       - "venv"
             - run:
                   name: Run the Linter
-                  command: python3 -m flake8 helphours --max-line-length=120 --extend-ignore=E402
+                  command: |
+                      . venv/bin/activate
+                      python3 -m flake8 helphours --max-line-length=120 --extend-ignore=E402
 
 workflows:
     build_and_lint:
