@@ -9,7 +9,7 @@
     <div class="form-container">
         <h2 class="form-title">Instructor Login</h2>
 
-        <form class="form">
+        <form class="form" method="POST">
             {{form.csrf_token}}
             <div>
                 {{ form.email.label(class="form-label")}}

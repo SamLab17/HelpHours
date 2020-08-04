@@ -17,7 +17,14 @@
                 <li><a class="link" href="{{ url_for('schedule_redirect') }}" target="_blank">Schedule</a></li>
             </ul>
             <ul class="right-links">
+                {% if g.user.is_authenticated %}
+                <li><a class="link" href="{{ url_for('stats_page') }}">Stats</a></li>
+                <li><a class="link" href="{{ url_for('admin_panel') }}">Admin</a></li>
+                <li><a class="link" href="{{ url_for('logout') }}">Logout</a></li>
+                {% else %}
                 <li><a class="link" href="{{ url_for('login') }}">Instructor Login</a></li>
+                {% endif %}
+
             </ul>
         </div>
         <div class="content">

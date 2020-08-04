@@ -14,6 +14,7 @@ login = LoginManager(app)
 notifier = Notifier(app.config['EMAIL_ACCOUNT'],
                     app.config['EMAIL_PASSWORD'],
                     app.config['EMAIL_SERVER'],
-                    app.config['EMAIL_SERVER_PORT'])
+                    app.config['EMAIL_SERVER_PORT'],
+                    app.config['SEND_EMAILS'])
 
 from helphours import routes    # noqa: F401

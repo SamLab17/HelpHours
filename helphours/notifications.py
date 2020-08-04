@@ -17,13 +17,14 @@ class Notifier:
         Requires a credentials file for logging into the
         SMTP server. (See comment above for format)
     """
-    def __init__(self, address, password, email_server, email_port):
+    def __init__(self, address, password, email_server, email_port, send_notifications):
         # Cuts off the newline character at end of string
         self.from_addr = address
         self.user = address
         self.password = password
         self.server = email_server
         self.port = email_port
+        self.send_notifications = send_notifications
 
     """
         Send an email message to the desired "to_addr".
@@ -33,6 +34,8 @@ class Notifier:
           through content_type
     """
     def send_message(self, to_addr, subject, body, body_type):
+        if not self.send_notifications:
+            return
         try:
             msg = MIMEMultipart('alternative')
             msg['Subject'] = subject
