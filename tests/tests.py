@@ -10,8 +10,6 @@ class TestStudent(unittest.TestCase):
     def test_name(self):
         x = Student("John Doe", "john@gmail.com", "jd123", "")
         self.assertEqual("John Doe", x.name)
-        self.assertEqual("john@gmail.com", x.email)
-        self.assertEqual("jd123", x.eid)
 
     def test_email(self):
         x = Student("John Doe", "john@gmail.com", "jd123", "")
