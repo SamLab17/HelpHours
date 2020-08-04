@@ -16,7 +16,7 @@ def create_reset_request(user):
         token = secrets.token_urlsafe(20)
     reset_link = app.config["FULL_URL"] + url_for('reset_password', token=token)
     notifier.send_message(user.email, "Lab Hours Password Reset",
-                          render_template('reset_password_email.html', reset_link=reset_link),
+                          render_template('emaill/reset_password_email.html', reset_link=reset_link),
                           'html')
     expire_time = dt.datetime.utcnow() + dt.timedelta(hours=NUM_HOURS_EXPIRE)
     reset_requests[token] = (expire_time, user.id)
@@ -28,7 +28,7 @@ def new_user(user):
         token = secrets.token_urlsafe(20)
     reset_link = app.config["FULL_URL"] + url_for('reset_password', token=token)
     notifier.send_message(user.email, "New Lab Hours Instructor Account",
-                          render_template('new_user_email.html', reset_link=reset_link),
+                          render_template('email/new_user_email.html', reset_link=reset_link),
                           'html')
     expire_time = dt.datetime.utcnow() + dt.timedelta(hours=NUM_HOURS_EXPIRE)
     reset_requests[token] = (expire_time, user.id)

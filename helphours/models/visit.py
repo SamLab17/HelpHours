@@ -25,7 +25,7 @@ class Visit(db.Model):
     # Originally, we didn't have the name stored here, but if we want to store the queue in
     # the db rather than in memory, we'll need to store the name, maybe we could null it out
     # after they leave?
-    name = db.Column(db.String(64))
+    # name = db.Column(db.String(64))
     eid = db.Column(db.String(10))
     time_entered = db.Column(db.DateTime, index=True, nullable=False)
     time_left = db.Column(db.DateTime)

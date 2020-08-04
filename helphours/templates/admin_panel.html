@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% block head %}
+<title>Admin Panel</title>
+{% endblock %}
+
+{% block body %}
+
+<div class="center-content">
+    <div class="">
+        <h2>Instructors</h2>
+
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr class="table-head-row">
+                        <th>Name</th>
+                        <th>E-mail</th>
+                        <th>Status</th>
+                        <th>Privileges</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for instructor in instructors %}
+                    <tr>
+                        <td>
+                            {{instructor.first_name}} {{instructor.last_name}}
+                        </td>
+                        <td>
+                            {{instructor.email}}
+                        </td>
+                        <td>
+                            {% if instructor.is_active %}
+                            Active
+                            {% else %}
+                            Inactive
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if instructor.is_admin %}
+                            Admin
+                            {% else %}
+                            -
+                            {% endif %}
+                        </td>
+                        <td>
+                            <a href="{{url_for('edit_instructor', id=instructor.id)}}">Edit</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+<a class="" href="{{url_for('add_instructor')}}">
+    Create Instructor
+</a>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+
+{% block head %}
+<title>Stats</title>
+{% endblock %}
+
+{% block body %}
+
+<div class="">
+        <h2>Lab Hours Stats</h2> 
+        <div class="stats-nav-container">
+            <ul class="stats-nav">
+                <li>
+                    {% if range == 'all' %}
+                    <a class="" href="{{ url_for('stats_page', range='all')}}">
+                        {% else %}
+                        <a class="" href="{{ url_for('stats_page', range='all')}}">
+                            {% endif %}
+                            All Time
+                        </a>
+                </li>
+                <li>
+                    {% if range == 'month' %}
+                    <a class="" href="{{ url_for('stats_page', range='month')}}">
+                        {% else %}
+                        <a class="" href="{{ url_for('stats_page', range='month')}}">
+                            {% endif %}
+                            Last Month
+                        </a>
+                </li>
+                <li>
+                    {% if range == 'week' %}
+                    <a class="" href="{{ url_for('stats_page', range='week')}}">
+                        {% else %}
+                        <a class="" href="{{ url_for('stats_page', range='week')}}">
+                            {% endif %}
+                            Last Week
+                        </a>
+                </li>
+            </ul>
+        </div>
+        <div class="num-stats">
+            <div class="num-stat">
+                <p class="number">{{num_helped}}</p>
+                <p>Students Helped</p>
+            </div>
+
+            <div class="num-stat">
+                <p class="number">{{num_removed}}</p>
+                <p>Students Removed</p>
+            </div>
+
+            <div class="num-stat">
+                <p class="number">{{avg_wait}}</p>
+                <p>Average Wait (HH:MM)</p>
+            </div>
+
+        </div>
+
+        <div class="graphs-container">
+            {% for graph in graphs %}
+            <div class="graph">
+                {{graph|safe}}
+            </div>
+            {% endfor %}
+        </div>
+        <p>Time generated: {{time_generated}}</p>
+    </div>
+</div>
+{% endblock %}

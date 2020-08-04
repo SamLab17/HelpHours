@@ -111,7 +111,7 @@ def admin_panel():
     if current_user.is_admin:
         return render_template('admin_panel.html', instructors=Instructor.query.all())
     else:
-        return render_template('reset_message.html', title="Admin Panel", body="Not authenticated, must be admin")
+        return render_template('message_error.html', title="Admin Panel", body="Not authenticated, must be admin")
 
 
 @app.route('/edit_instructor', methods=['GET', 'POST'])
@@ -119,11 +119,11 @@ def admin_panel():
 def edit_instructor():
     if current_user.is_admin:
         if 'id' not in request.args:
-            return render_template('reset_message.html', title="Error", body="Missing instructor id")
+            return render_template('message_error.html', title="Error", body="Missing instructor id")
         instr = Instructor.query.filter_by(id=request.args['id']).first()
         if request.method == 'GET':
             if instr is None:
-                return render_template('reset_message.html', title="Error", body="Invalid instructor id")
+                return render_template('message_error.html', title="Error", body="Invalid instructor id")
             form = InstructorForm(first_name=instr.first_name, last_name=instr.last_name, email=instr.email, is_active=(
                 instr.is_active != 0), is_admin=(instr.is_admin != 0))
             return render_template('edit_instructor.html',

@@ -71,7 +71,7 @@ def get_graphs(range):
         (time_generated, list, avg_wait, num_helped,
          num_removed) = graph_dict[range]
 
-    return render_template('stats_page.html', graphs=graphs, range=range,
+    return render_template('stats.html', graphs=graphs, range=range,
                            avg_wait=avg_wait, num_helped=num_helped, num_removed=num_removed,
                            time_generated=time_generated)
 
