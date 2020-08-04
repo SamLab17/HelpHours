@@ -21,7 +21,7 @@ jobs:
             - save_cache:
                   key: packages-{{ checksum "requirements.txt" }}
                   paths:
-                    - '~/project/venv'
+                      - "~/project/venv"
             - run:
                   name: Run the Linter
                   command: python3 -m flake8 helphours --max-line-length=120 --extend-ignore=E402
