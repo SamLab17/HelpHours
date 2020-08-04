@@ -7,6 +7,8 @@ jobs:
         resource_class: small
         steps:
             - checkout
+            - restore_cache:
+                  key: packages-{{ checksum "requirements.txt" }}
             - run:
                   name: Create Virtual Environment
                   command: python3 -m venv venv
@@ -16,6 +18,10 @@ jobs:
             - run:
                   name: pip Install requirements
                   command: pip install -r requirements.txt
+            - save_cache:
+                  key: packages-{{ checksum "requirements.txt" }}
+                  paths:
+                    - '~/project/venv'
             - run:
                   name: Run the Linter
                   command: python3 -m flake8 helphours --max-line-length=120 --extend-ignore=E402
