@@ -3,8 +3,8 @@ import sys
 sys.path.append('../helphours')
 sys.path.append('..')
 from student import Student
-from helphours import app
-#import labhoursapp.p
+
+
 class TestStudent(unittest.TestCase):
 
     def test_name(self):
@@ -24,6 +24,7 @@ class TestStudent(unittest.TestCase):
         self.assertEqual("Jane Doe", x.name)
         self.assertEqual("jane@gmail.com", x.email)
         self.assertEqual("jd1234", x.eid)
+
 
 if __name__ == '__main__':
     unittest.main()
