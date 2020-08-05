@@ -2,8 +2,8 @@ import unittest
 import sys
 sys.path.append('../helphours')
 sys.path.append('..')
-from student import Student
 from helphours import app
+
 
 class TestRoute(unittest.TestCase):
     def setUp(self):
@@ -31,6 +31,7 @@ class TestRoute(unittest.TestCase):
     def test_login_page(self):
         response = self.app.get('/login', follow_redirects=True)
         self.assertEqual(response.status_code, 200)
+
 
 if __name__ == '__main__':
     unittest.main()
