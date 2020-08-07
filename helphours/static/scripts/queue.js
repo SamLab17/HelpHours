@@ -5,13 +5,16 @@ setInterval(updateQueue, UPDATE_INTERVAL_SECONDS * 1000);
 
 
 function updateQueue(){
-    fetch('/queue').then(response => response.json()).then(renderQueue)
+    fetch('/queue').then(response => renderQueue(response.json()))
+        .catch(() => {displayQueue(
+            '<p style="text-align: center;"> Couldn\'t connect to the server to retrieve the queue. </p>'
+        )})
 }
 
 function renderQueue(data) {
     var output = '';
     var queue = data.queue
-    if(queue.length === 0){
+    if(!queue || queue.length === 0){
         output = '<p style="text-align: center;"> The Queue is empty. </p>';
     }
     else {
@@ -23,5 +26,9 @@ function renderQueue(data) {
             output += '</div></div></div>'
         }
     }
-    document.getElementById('queue').innerHTML = output;
+    displayQueue(output);
+}
+
+function displayQueue(content) {
+    document.getElementById('queue').innerHTML = content;
 }
