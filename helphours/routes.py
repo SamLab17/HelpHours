@@ -1,8 +1,9 @@
 import secrets
+import json
 from helphours import app, db, notifier, queue_handler, routes_helper, password_reset, stats
-from flask import render_template, url_for, redirect, request, g
+from flask import render_template, url_for, redirect, request, g, jsonify
 from helphours.forms import JoinQueueForm, RemoveSelfForm, InstructorForm
-from helphours.student import Student
+from helphours.student import Student, StudentJSON
 from flask_login import current_user, login_required
 from helphours.models.instructor import Instructor
 from helphours.models.visit import Visit
@@ -68,6 +69,15 @@ def view():
         queue_is_open = routes_helper.handle_line_form(request, queue_is_open)
     queue = queue_handler.get_students()
     return render_template('view.html', queue=queue, queue_is_open=queue_is_open)
+
+
+@app.route("/queue", methods=['GET'])
+def queue():
+    """ Returns a JSON representation of the queue """
+    students = queue_handler.get_students()
+    student_json_list = [StudentJSON(students[i], i) for i in range(len(students))]
+    serialized_list = [s.serialize() for s in student_json_list]
+    return jsonify({'queue': serialized_list})
 
 
 @app.route("/remove", methods=['GET', 'POST'])

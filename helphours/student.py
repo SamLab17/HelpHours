@@ -1,3 +1,4 @@
+
 class Student:
     """
         Class to represent a Student entry in the
@@ -14,3 +15,17 @@ class Student:
         # which was created when this student joined
         # the queue.
         self.id = str(uid)
+
+
+class StudentJSON:
+    def __init__(self, student_obj, queue_position):
+        self.name = student_obj.name
+        self.position = queue_position
+        self.uid = student_obj.id
+
+    def serialize(self):
+        return {
+            'name': self.name,
+            'position': self.position,
+            'uid': self.uid
+        }
