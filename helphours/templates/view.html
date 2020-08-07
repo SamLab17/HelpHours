@@ -2,12 +2,10 @@
 
 {% block head %}
 
-{% if g.user.is_authenticated %}
-    <meta http-equiv="refresh" content="30">
-{% else %}
-    <meta http-equiv="refresh" content="300">
-{% endif %}
 <title>View Queue</title>
+
+<script src="{{ url_for('static', filename='scripts/queue.js') }}"></script>
+
 {% endblock %}
 
 {% block body %}
@@ -28,22 +26,9 @@
     {% if g.user.is_authenticated %}
     {% endif %}
 
-    {% for i in range(queue | length) %}
-        <div class="queue-entry">
-            <div class="queue-entry-left">
-                <div class="queue-entry-position">{{ i }}</div>
-                <div class="queue-entry-name">{{ queue[i].name }}</div>
-            </div>
-        {% if g.user.is_authenticated %}
-            <div class="queue-entry-right">
-                <form method="POST" class="queue-entry-buttons">
-                    <button name="finished" value={{queue[i].id}}>Helped</button>
-                    <button name="removed" value={{queue[i].id}}>Remove</button>
-                </form>
-            </div>
-        {% endif %}
-        </div>
-    {% endfor %}
+   <div id="queue">
+
+   </div> 
 </div>
 
 {% endblock %}

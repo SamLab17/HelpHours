@@ -1,5 +1,4 @@
 import secrets
-import json
 from helphours import app, db, notifier, queue_handler, routes_helper, password_reset, stats
 from flask import render_template, url_for, redirect, request, g, jsonify
 from helphours.forms import JoinQueueForm, RemoveSelfForm, InstructorForm
