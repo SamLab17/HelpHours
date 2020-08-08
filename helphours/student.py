@@ -16,16 +16,16 @@ class Student:
         # the queue.
         self.id = str(uid)
 
-
-class StudentJSON:
-    def __init__(self, student_obj, queue_position):
-        self.name = student_obj.name
-        self.position = queue_position
-        self.uid = student_obj.id
-
-    def serialize(self):
+    def serialize_student_view(self, position):
         return {
             'name': self.name,
-            'position': self.position,
-            'uid': self.uid
+            'position': position,
+            # 'id': self.id
+        }
+
+    def serialize_instructor_view(self, position):
+        return {
+            'name': self.name,
+            'position': position,
+            'id': self.id
         }

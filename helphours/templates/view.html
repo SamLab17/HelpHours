@@ -16,10 +16,12 @@
 <div class="queue-container">
         <div class="queue-controls">
             <form method="POST">
-                {% if queue_is_open %}
-                    <button name="close" class="queue-close-button">Close Queue</button>
-                {% else %}
-                    <button name="open" class="queue-open-button">Open Queue</button>
+                {% if g.user.is_authenticated %}
+                    {% if queue_is_open %}
+                        <button name="close" class="queue-close-button">Close Queue</button>
+                    {% else %}
+                        <button name="open" class="queue-open-button">Open Queue</button>
+                    {% endif %}
                 {% endif %}
             </form>
         </div>

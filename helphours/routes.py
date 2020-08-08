@@ -2,7 +2,7 @@ import secrets
 from helphours import app, db, notifier, queue_handler, routes_helper, password_reset, stats
 from flask import render_template, url_for, redirect, request, g, jsonify
 from helphours.forms import JoinQueueForm, RemoveSelfForm, InstructorForm
-from helphours.student import Student, StudentJSON
+from helphours.student import Student
 from flask_login import current_user, login_required
 from helphours.models.instructor import Instructor
 from helphours.models.visit import Visit
@@ -15,7 +15,7 @@ queue_is_open = False
 
 
 @app.before_request
-def load_user():
+def inject_user():
     g.user = current_user
 
 
@@ -74,8 +74,12 @@ def view():
 def queue():
     """ Returns a JSON representation of the queue """
     students = queue_handler.get_students()
-    student_json_list = [StudentJSON(students[i], i) for i in range(len(students))]
-    serialized_list = [s.serialize() for s in student_json_list]
+
+    if current_user.is_authenticated:
+        serialized_list = [students[i].serialize_instructor_view(i) for i in range(len(students))]
+    else:
+        serialized_list = [students[i].serialize_student_view(i) for i in range(len(students))]
+
     return jsonify({'queue': serialized_list})
 
 
