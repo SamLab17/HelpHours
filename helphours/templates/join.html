@@ -2,6 +2,7 @@
 
 {% block head %}
 <title>Join Queue</title>
+<script src="{{ url_for('static', filename='scripts/join.js') }}"></script>
 {% endblock %}
 
 {% block body %}
@@ -30,7 +31,7 @@
             {% endif %}
 
             <div>
-                {{ form.submit(class="form-submit") }}
+                    {{ form.submit(class="form-submit", id="submit-button") }}
             </div>
         </form> 
     </div>

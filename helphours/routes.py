@@ -1,6 +1,6 @@
 import secrets
 from helphours import app, db, notifier, queue_handler, routes_helper, password_reset, stats
-from flask import render_template, url_for, redirect, request, g, jsonify
+from flask import render_template, url_for, redirect, request, g
 from helphours.forms import JoinQueueForm, RemoveSelfForm, InstructorForm
 from helphours.student import Student
 from flask_login import current_user, login_required
@@ -15,8 +15,9 @@ queue_is_open = False
 
 
 @app.before_request
-def inject_user():
+def inject_variables():
     g.user = current_user
+    g.queue_is_open = queue_is_open
 
 
 @app.context_processor
@@ -68,19 +69,6 @@ def view():
         queue_is_open = routes_helper.handle_line_form(request, queue_is_open)
     queue = queue_handler.get_students()
     return render_template('view.html', queue=queue, queue_is_open=queue_is_open)
-
-
-@app.route("/queue", methods=['GET'])
-def queue():
-    """ Returns a JSON representation of the queue """
-    students = queue_handler.get_students()
-
-    if current_user.is_authenticated:
-        serialized_list = [students[i].serialize_instructor_view(i) for i in range(len(students))]
-    else:
-        serialized_list = [students[i].serialize_student_view(i) for i in range(len(students))]
-
-    return jsonify({'queue': serialized_list})
 
 
 @app.route("/remove", methods=['GET', 'POST'])
@@ -208,3 +196,4 @@ def stats_page():
 from helphours import automated_routes  # noqa: F401
 from helphours import error_routes  # noqa: F401
 from helphours import account_routes    # noqa: F401
+from helphours import json_routes   # noqa: F401
