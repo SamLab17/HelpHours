@@ -1,5 +1,5 @@
 // How often we check if the queue is open
-var UPDATE_INTERVAL_SECONDS = 15;
+var UPDATE_INTERVAL_SECONDS = 5;
 
 checkQueueIsOpen();
 setInterval(checkQueueIsOpen, UPDATE_INTERVAL_SECONDS * 1000);
