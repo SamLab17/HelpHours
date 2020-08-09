@@ -1,4 +1,4 @@
-var UPDATE_INTERVAL_SECONDS = 5;
+const UPDATE_INTERVAL_SECONDS = 5;
 
 updateQueue();
 setInterval(updateQueue, UPDATE_INTERVAL_SECONDS * 1000);
