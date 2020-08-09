@@ -4,8 +4,6 @@
 
 <title>View Queue</title>
 
-<script src="{{ url_for('static', filename='scripts/queue.js') }}"></script>
-
 {% endblock %}
 
 {% block body %}
@@ -29,6 +27,28 @@
    <div id="queue">
    </div> 
 
+    <script src="{{ url_for('static', filename='scripts/queue.js') }}"></script>
 </div>
+
+<template id="queue-entry-template">
+    <div class="queue-entry">
+        <div class="queue-entry-left">
+            <div class="queue-entry-position"></div>
+            <div class="queue-entry-name"></div>
+        </div>
+        <div class="queue-entry-right">
+            <form method="POST" class="queue-entry-buttons">
+                <button name="finished">Helped</button>
+                <button name="removed">Remove</button>
+            </form>
+        </div>
+    </div>
+</template>
+
+<template id="queue-message">
+    <div style="text-align: center;">
+        <p class="queue-message"></p>
+    </div>
+</template>
 
 {% endblock %}

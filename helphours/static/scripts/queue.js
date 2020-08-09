@@ -5,40 +5,46 @@ setInterval(updateQueue, UPDATE_INTERVAL_SECONDS * 1000);
 
 
 function updateQueue() {
+    clearQueue();
     fetch('/queue').then(response => response.json())
         .then(renderQueue)
         .catch(() => {
-            displayQueue(
-                '<p style="text-align: center;"> Couldn\'t connect to the server to retrieve the queue. </p>'
-            )
+            displayMessage('Couldn\'t connect to the server to retrieve the queue.')
         });
 }
 
 function renderQueue(data) {
-    var output = '';
-    var queue = data.queue;
+    let queue = data.queue;
     if (!queue || queue.length === 0) {
-        output = '<p style="text-align: center;"> The queue is empty. </p>';
+        displayMessage('The queue is empty.');
     }
     else {
+        let queueContainer = document.getElementById("queue");
+        let template = document.getElementById("queue-entry-template");
         for (var i = 0; i < queue.length; i++) {
-            output += '<div class="queue-entry">';
-            output += '<div class="queue-entry-left">';
-            output += '<div class="queue-entry-position">' + queue[i].position + '</div>';
-            output += '<div class="queue-entry-name">' + queue[i].name + '</div>';
-            output += '</div>';
+            let newEntry = template.content.cloneNode(true);
+            newEntry.querySelector('.queue-entry-position').textContent = queue[i].position;
+            newEntry.querySelector('.queue-entry-name').textContent = queue[i].name;
+
             if("id" in queue[i]){
-                output += '<div class="queue-entry-right"><form method="POST" class="queue-entry-buttons">';
-                output += '<button name="finished" value=' + queue[i].id + '>Helped</button>';
-                output += '<button name="removed" value=' + queue[i].id + '>Remove</button>';
-                output += '</form></div>';
+                newEntry.querySelectorAll('button').forEach(button => 
+                    button.value=queue[i].id
+                );
             }
-            output += '</div>';
+            queueContainer.appendChild(newEntry);
         }
     }
-    displayQueue(output);
 }
 
-function displayQueue(content) {
-    document.getElementById('queue').innerHTML = content;
+function clearQueue() {
+   let queue = document.getElementById("queue");
+   if(queue)
+        while(queue.firstChild)
+            queue.removeChild(queue.firstChild)
+}
+
+function displayMessage(content) {
+    let message = document.getElementById('queue-message').content.cloneNode(true);
+    message.querySelector('.queue-message').textContent = content;
+    document.getElementById('queue').appendChild(message);
 }
