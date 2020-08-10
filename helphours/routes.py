@@ -15,8 +15,9 @@ queue_is_open = False
 
 
 @app.before_request
-def load_user():
+def inject_variables():
     g.user = current_user
+    g.queue_is_open = queue_is_open
 
 
 @app.context_processor
@@ -195,3 +196,4 @@ def stats_page():
 from helphours import automated_routes  # noqa: F401
 from helphours import error_routes  # noqa: F401
 from helphours import account_routes    # noqa: F401
+from helphours import json_routes   # noqa: F401

@@ -2,12 +2,8 @@
 
 {% block head %}
 
-{% if g.user.is_authenticated %}
-    <meta http-equiv="refresh" content="30">
-{% else %}
-    <meta http-equiv="refresh" content="300">
-{% endif %}
 <title>View Queue</title>
+
 {% endblock %}
 
 {% block body %}
@@ -18,32 +14,41 @@
 <div class="queue-container">
         <div class="queue-controls">
             <form method="POST">
-                {% if queue_is_open %}
-                    <button name="close" class="queue-close-button">Close Queue</button>
-                {% else %}
-                    <button name="open" class="queue-open-button">Open Queue</button>
+                {% if g.user.is_authenticated %}
+                    {% if queue_is_open %}
+                        <button name="close" class="queue-close-button">Close Queue</button>
+                    {% else %}
+                        <button name="open" class="queue-open-button">Open Queue</button>
+                    {% endif %}
                 {% endif %}
             </form>
         </div>
-    {% if g.user.is_authenticated %}
-    {% endif %}
 
-    {% for i in range(queue | length) %}
-        <div class="queue-entry">
-            <div class="queue-entry-left">
-                <div class="queue-entry-position">{{ i }}</div>
-                <div class="queue-entry-name">{{ queue[i].name }}</div>
-            </div>
-        {% if g.user.is_authenticated %}
-            <div class="queue-entry-right">
-                <form method="POST" class="queue-entry-buttons">
-                    <button name="finished" value={{queue[i].id}}>Helped</button>
-                    <button name="removed" value={{queue[i].id}}>Remove</button>
-                </form>
-            </div>
-        {% endif %}
-        </div>
-    {% endfor %}
+   <div id="queue">
+   </div> 
+
+    <script src="{{ url_for('static', filename='scripts/queue.js') }}"></script>
 </div>
+
+<template id="queue-entry-template">
+    <div class="queue-entry">
+        <div class="queue-entry-left">
+            <div class="queue-entry-position"></div>
+            <div class="queue-entry-name"></div>
+        </div>
+        <div class="queue-entry-right">
+            <form method="POST" class="queue-entry-buttons">
+                <button name="finished">Helped</button>
+                <button name="removed">Remove</button>
+            </form>
+        </div>
+    </div>
+</template>
+
+<template id="queue-message">
+    <div style="text-align: center;">
+        <p class="queue-message"></p>
+    </div>
+</template>
 
 {% endblock %}

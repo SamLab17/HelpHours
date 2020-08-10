@@ -1,3 +1,4 @@
+
 class Student:
     """
         Class to represent a Student entry in the
@@ -14,3 +15,17 @@ class Student:
         # which was created when this student joined
         # the queue.
         self.id = str(uid)
+
+    def serialize_student_view(self, position):
+        return {
+            'name': self.name,
+            'position': position,
+            # 'id': self.id
+        }
+
+    def serialize_instructor_view(self, position):
+        return {
+            'name': self.name,
+            'position': position,
+            'id': self.id
+        }
