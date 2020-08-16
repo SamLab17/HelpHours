@@ -1,5 +1,5 @@
 import json
-from helphours import app, queue_handler
+from helphours import app, queue_handler, log
 from flask import request
 
 
@@ -11,6 +11,7 @@ def clear():
     if request.form['token'] != expected_token:
         return json.dumps({'success': False}), 401, {'ContentType': 'application/json'}
     queue_handler.clear()
+    log.info('Queue was cleared through /clear route')
     return json.dumps({'success': True}), 200, {'ContentType': 'application/json'}
 
 
@@ -23,6 +24,7 @@ def open():
     if request.form['token'] != expected_token:
         return json.dumps({'success': False}), 401, {'ContentType': 'application/json'}
     queue_is_open = True
+    log.info('Queue was opened through /open route')
     return json.dumps({'success': True}), 200, {'ContentType': 'application/json'}
 
 
@@ -35,4 +37,5 @@ def close():
     if request.form['token'] != expected_token:
         return json.dumps({'success': False}), 401, {'ContentType': 'application/json'}
     queue_is_open = False
+    log.info('Queue was closed through /close route')
     return json.dumps({'success': True}), 200, {'ContentType': 'application/json'}
