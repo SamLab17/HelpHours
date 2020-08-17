@@ -20,7 +20,7 @@ def create_reset_request(user):
                           'html')
     expire_time = dt.datetime.utcnow() + dt.timedelta(hours=NUM_HOURS_EXPIRE)
     reset_requests[token] = (expire_time, user.id)
-    log.info(f'{user.first_name} {user.last_name} requested to rest their password.')
+    log.info(f'{user.first_name} {user.last_name} requested to reset their password.')
 
 
 def new_user(user):
