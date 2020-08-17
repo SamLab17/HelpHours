@@ -19,7 +19,7 @@ def login():
                 message = "Incorrect email or password"
             elif not user.is_active:
                 message = "This account is inactive"
-                log.info(f'{user.first_name} attempted to log in, but account was deactivated.')
+                log.info(f'{user.first_name} {user.last_name} attempted to log in, but account was deactivated.')
             else:
                 login_user(user, remember=False)
                 log.info(f'{user.first_name} {user.last_name} logged in.')
