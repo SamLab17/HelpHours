@@ -1,5 +1,5 @@
 import secrets
-from helphours import app, db, notifier, queue_handler, routes_helper, password_reset, stats
+from helphours import app, db, notifier, queue_handler, routes_helper, password_reset, stats, log
 from flask import render_template, url_for, redirect, request, g
 from helphours.forms import JoinQueueForm, RemoveSelfForm, InstructorForm
 from helphours.student import Student
@@ -78,17 +78,19 @@ def remove():
     if request.method == 'POST':
         if form.validate_on_submit():
             # remove em
-            s = queue_handler.remove_eid(request.form['eid'])
-            if s is None:
+            s = queue_handler.remove_eid(form.eid.data)
+            if s is not None:
                 v = Visit.query.filter_by(id=s.id).first()
                 if v is not None:
                     v.time_left = datetime.utcnow()
                     v.was_helped = 0
                     db.session.commit()
+                    return redirect(url_for('view'))
                 else:
-                    # Log Error, Assertion failed
-                    pass
-                return redirect(url_for('view'))
+                    # Serious issue, there are inconsistencies in the database.
+                    log.error('Student in queue does not have a corresponding entry in visits table.', notify=True)
+                    return render_template('message_error.html', title="Error Removing from queue",
+                                           body="Sorry, something went wrong when trying to remove you from the queue.")
             else:
                 message = "EID not found in queue"
         else:
@@ -112,7 +114,7 @@ def admin_panel():
     if current_user.is_admin:
         return render_template('admin_panel.html', instructors=Instructor.query.all())
     else:
-        return render_template('message_error.html', title="Admin Panel", body="Not authenticated, must be admin")
+        return render_template('message_error.html', title="Admin Panel", body="Not authenticated, must be admin.")
 
 
 @app.route('/edit_instructor', methods=['GET', 'POST'])
@@ -139,6 +141,7 @@ def edit_instructor():
                 instr.is_active = 1 if form.is_active.data else 0
                 instr.is_admin = 1 if form.is_admin.data else 0
                 db.session.commit()
+                log.info(f'The account for {instr.first_name} {instr.last_name} was updated.')
                 return redirect('admin_panel')
             else:
                 message = 'Enter a valid email address'
@@ -174,6 +177,7 @@ def add_instructor():
                 db.session.add(instr)
                 db.session.commit()
                 password_reset.new_user(instr)
+                log.info(f'New account created for {instr.first_name} {instr.last_name}.')
                 return redirect('admin_panel')
             else:
                 message = 'Enter a valid email address'

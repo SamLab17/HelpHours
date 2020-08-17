@@ -15,4 +15,5 @@ build/
 
 **/.DS_Store
 helphours/helphours.db
+**/*.log
 

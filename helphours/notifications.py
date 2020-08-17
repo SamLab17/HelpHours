@@ -25,6 +25,12 @@ class Notifier:
         self.server = email_server
         self.port = email_port
         self.send_notifications = send_notifications
+        self.log = None
+
+    # Notifier is created before the Logger object, so the Logger object
+    # is added afterwards
+    def set_log(self, log):
+        self.log = log
 
     """
         Send an email message to the desired "to_addr".
@@ -62,5 +68,9 @@ class Notifier:
             smtp_client.send_message(msg)
             smtp_client.quit()
         except Exception as e:
-            # Log email error
-            print(e)
+            if self.log is not None:
+                # Log email error
+                self.log.warning(f"Could not send email to {to_addr}. Subject: {subject}.")
+                self.log.debug(f"Exception message: {str(e)}")
+            else:
+                print(f'Could not send email to {to_addr}')

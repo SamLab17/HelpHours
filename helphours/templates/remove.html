@@ -9,6 +9,7 @@
     <div class="form-container">
         <h2 class="form-title">Remove Self</h2>
         <form class="form" method="POST">
+            {{form.csrf_token}}
             <div>
                 {{ form.eid.label(class="form-label") }}
                 {{ form.eid(class="form-input") }}

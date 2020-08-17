@@ -1,4 +1,4 @@
-from helphours import app, password_reset
+from helphours import app, password_reset, log
 from helphours.forms import LoginForm, RequestResetForm, ResetPasswordForm
 from flask import render_template, url_for, request, redirect
 from flask_login import current_user, login_user, logout_user
@@ -19,8 +19,10 @@ def login():
                 message = "Incorrect email or password"
             elif not user.is_active:
                 message = "This account is inactive"
+                log.info(f'{user.first_name} {user.last_name} attempted to log in, but account was deactivated.')
             else:
                 login_user(user, remember=False)
+                log.info(f'{user.first_name} {user.last_name} logged in.')
                 next_page = request.args.get('next')
                 if not next_page or url_parse(next_page).netloc != '':
                     next_page = url_for('view')
