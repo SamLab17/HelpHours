@@ -10,6 +10,13 @@ app.config.from_pyfile('config.cfg')
 app.jinja_env.auto_reload = True
 
 db = SQLAlchemy(app)
+
+# Use this to add the ZoomLinks tabs to the databse
+
+# from helphours.models.zoom_link import ZoomLink
+# db.create_all()
+# db.session.commit()
+
 login = LoginManager(app)
 
 notifier = Notifier(app.config['EMAIL_ACCOUNT'],

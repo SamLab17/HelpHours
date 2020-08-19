@@ -1,18 +1,20 @@
 import secrets
-from helphours import app, db, notifier, queue_handler, routes_helper, password_reset, stats, log
+import validators
+from helphours import app, log, db, notifier, queue_handler, routes_helper, password_reset, stats, zoom_helper
 from flask import render_template, url_for, redirect, request, g
 from helphours.forms import JoinQueueForm, RemoveSelfForm, InstructorForm
 from helphours.student import Student
 from flask_login import current_user, login_required
 from helphours.models.instructor import Instructor
 from helphours.models.visit import Visit
+from helphours.models.zoom_link import ZoomLink
 from datetime import datetime
 from werkzeug.security import generate_password_hash
 
 # Would likely need to be stored in a databse if we want multiple instances of this
 # running
 queue_is_open = False
-
+current_zoom_link = ''
 
 @app.before_request
 def inject_variables():
@@ -100,7 +102,67 @@ def remove():
 
 @app.route("/zoom", methods=['GET'])
 def zoom_redirect():
+    if current_zoom_link != '':
+        return redirect(current_zoom_link)
     return redirect(app.config['DEFAULT_ZOOM_LINK'])
+
+
+@app.route("/change_zoom", methods=['GET', 'POST'])
+@login_required
+def change_zoom():
+    global current_zoom_link
+    preset_links = ZoomLink.query.all()
+    # preset_links = []
+    message = ""
+
+    if request.method == 'POST':
+        if 'preset' in request.form:
+            index = int(request.form['preset-links'])
+            if index == 0:
+                message = "Invalid choice"
+            else:
+                # 0th index is placeholder, 1st option is index 0 in preset_links
+                link_obj = preset_links[index - 1]
+                current_zoom_link = link_obj.url
+
+                # Log the change
+                desc = link_obj.description
+                log.info(f'{current_user.first_name} {current_user.last_name} changed the zoom link to {desc}.')
+
+                message = "The link has been changed"
+        elif 'new' in request.form:
+            temp = request.form['other-link']
+            if validators.url(temp):
+                current_zoom_link = temp
+                message = "The link has been changed"
+                log.info(f'{current_user.first_name} {current_user.last_name} channged the zoom link to a custom link.')
+            else:
+                message = "Invalid URL"
+    return render_template('change_zoom.html', message=message, preset_links=preset_links)
+
+
+@app.route('/edit_preset_links', methods=['GET', 'POST'])
+@login_required
+def edit_preset_links():
+    message = ""
+    preset_links = ZoomLink.query.all()
+
+    if request.method == 'POST':
+        if 'cancel' in request.form:
+            return redirect(url_for('change_zoom'))
+
+        new_presets = request.form['preset-links']
+        try:
+            new_zoom_links = zoom_helper.parse_links(new_presets)
+            ZoomLink.query.delete()
+            for new_link in new_zoom_links:
+                db.session.add(new_link)
+            db.session.commit()
+            log.info(f'{current_user.first_name} {current_user.last_name} updated the Zoom links.')
+            return redirect(url_for('change_zoom'))
+        except Exception as e:
+            message = str(e)
+    return render_template('edit_preset_links.html', message=message, preset_links=preset_links)
 
 
 @app.route("/schedule", methods=['GET'])
