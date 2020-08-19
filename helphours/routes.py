@@ -16,6 +16,7 @@ from werkzeug.security import generate_password_hash
 queue_is_open = False
 current_zoom_link = ''
 
+
 @app.before_request
 def inject_variables():
     g.user = current_user
@@ -112,7 +113,6 @@ def zoom_redirect():
 def change_zoom():
     global current_zoom_link
     preset_links = ZoomLink.query.all()
-    # preset_links = []
     message = ""
 
     if request.method == 'POST':
