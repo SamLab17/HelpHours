@@ -133,6 +133,9 @@ def edit_instructor():
                                    title="Edit Instructor",
                                    form=form, message='', id=instr.id)
         else:
+            if 'cancel' in request.form:
+                return redirect('admin_panel')
+
             form = InstructorForm()
             if form.validate_on_submit():
                 instr.first_name = form.first_name.data
