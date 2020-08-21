@@ -135,7 +135,7 @@ def change_zoom():
             if validators.url(temp):
                 current_zoom_link = temp
                 message = "The link has been changed"
-                log.info(f'{current_user.first_name} {current_user.last_name} channged the zoom link to a custom link.')
+                log.info(f'{current_user.first_name} {current_user.last_name} changed the zoom link to a custom link.')
             else:
                 message = "Invalid URL"
     return render_template('change_zoom.html', message=message, preset_links=preset_links)
