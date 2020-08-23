@@ -11,13 +11,14 @@ app.jinja_env.auto_reload = True
 
 db = SQLAlchemy(app)
 
-# Use this to add the ZoomLinks tabs to the databse
+login = LoginManager(app)
 
+# Creates an empty database
+# from helphours.models.instructor import Instructor
+# from helphours.models.visit import Visit
 # from helphours.models.zoom_link import ZoomLink
 # db.create_all()
 # db.session.commit()
-
-login = LoginManager(app)
 
 notifier = Notifier(app.config['EMAIL_ACCOUNT'],
                     app.config['EMAIL_PASSWORD'],
