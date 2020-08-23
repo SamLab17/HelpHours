@@ -121,8 +121,28 @@ body h3 {
     padding: 10px 0;
 }
 
+textarea {
+ margin: 10px 0px;   
+ width: 100%;
+}
+
 .error-message {
     color: red;
+}
+
+.form-group {
+    margin: 20px 0;
+}
+
+.select-menu {
+    /* margin: 10px; */
+    margin: 10px 0;
+    width: 100%;
+}
+
+.url-input {
+    margin: 10px 0;
+    width: 100%;
 }
 
 .queue-container {

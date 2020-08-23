@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block head %}
+<title>Change Zoom Link</title>
+{% endblock %}
+
+{% block body %}
+
+<div class="center-content">
+    <div class="form-container">
+        <h2 class="form-title">Change Zoom Link</h2>
+        <form class="form" method="POST">
+            
+            {% if message|length > 0 %}
+                <p class="error-message">{{ message }}</p>
+            {% endif %}
+
+            <div class="form-group">
+            <h3> Choose a Preset Link </h3>
+                <select name="preset-links" class="select-menu">
+                    <option value=0>Choose Link</option>
+                    {% for i in range(preset_links | length) %}
+                        <option value={{ i+1 }}>{{ preset_links[i].description }}</option>
+                    {% endfor %}
+                </select>
+                <div class="form-buttons">
+                    <button type="submit" class="form-submit" name="preset">Submit Present Link</button>
+                    <a href="{{ url_for('edit_preset_links') }}">Edit Preset Links</a>
+                </div>
+            </div>
+
+            <div class="center-content">
+                - OR -
+            </div>
+
+            <div class="form-group">
+                <h3> Submit a Different Link </h3>
+                <input class="url-input" name="other-link">
+                <button type="submit" class="form-submit" name="new">Submit New Link</button>
+            </div>
+        </form>
+
+        <br />
+        <br />
+
+    </div>
+</div>
+
+{% endblock %}
