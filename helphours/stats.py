@@ -123,9 +123,8 @@ def generate_graphs(range):
     filtered.insert(4, "min_in_line", min_in_line)
 
     # obtain relevant data for only last week, last month
-    today = datetime.today().date()
-    week_prior = today - timedelta(days=7)
-    month_prior = today - timedelta(days=30)
+    week_prior = pd.Timestamp('now').floor('D') + pd.offsets.Day(-7)
+    month_prior = pd.Timestamp('now').floor('D') + pd.offsets.Day(-30)
     filtered_last_week = filtered[filtered['date'] >= week_prior]
     filtered_last_month = filtered[filtered['date'] >= month_prior]
 
@@ -177,7 +176,7 @@ def generate_graphs(range):
         num_removed = len(removed_last_week)
         avg_wait = helped_last_week['min_in_line'].mean()
 
-    if math.isnan(avg_wait):
+    if pd.isnull(avg_wait) or math.isnan(avg_wait):
         avg_hr = '--'
         avg_min = '--'
     else:
