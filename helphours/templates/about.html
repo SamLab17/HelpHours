@@ -1,5 +1,43 @@
 {% extends "base.html" %}
 
 {% block head %}
-<title>Hello world</title>
+<title>About the Site</title>
+<style>
+    .image {
+        width: auto;
+        height: 250px;
+    }
+    .align {
+        margin-left: 20%;
+        display: flex;
+        align-items: center;
+    }
+    span {
+        padding: 4%;
+    }
+</style>
+{% endblock %}
+
+{% block body %}
+<!-- <p>This site started as our HackTX 2019 project, and then the pandemic hit and we were able to put it to good use.</p> -->
+<div class="align">
+  <img class="image" src="{{ url_for('static', filename='images/samduck.png') }}" alt="Sam Duck">
+  <span>Did like almost everything</span>
+  </br>
+</div>
+<div class="align">
+  <img class="image" src="{{ url_for('static', filename='images/ninaduck.png') }}" alt="Nina Duck">
+  <span>We don't know bc her commit messages suck</span>
+  </br>
+</div>
+<div class="align">
+  <img class="image" src="{{ url_for('static', filename='images/tonyduck.png') }}" alt="Tony Duck">
+  <span>Made pretty graphs only instructors can see</span>
+  </br>
+</div>
+<div class="align">
+  <img class="image" src="{{ url_for('static', filename='images/debbieduck.png') }}" alt="Debbie Duck">
+  <span>Drew ducks</span>
+  </br>
+</div>
 {% endblock %}
