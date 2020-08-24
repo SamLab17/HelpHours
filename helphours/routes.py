@@ -195,6 +195,10 @@ def stats_page():
         range = request.args['range']
     return stats.get_graphs(range)
 
+@app.route('/about', methods=['GET'])
+def about_page():
+    return render_template('about.html', title="About Our Creators")
+
 
 # noqa: F401 == Ignore rule about unused imports
 from helphours import automated_routes  # noqa: F401
