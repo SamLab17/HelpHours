@@ -195,6 +195,7 @@ def stats_page():
         range = request.args['range']
     return stats.get_graphs(range)
 
+
 @app.route('/about', methods=['GET'])
 def about_page():
     return render_template('about.html', title="About Our Creators")
