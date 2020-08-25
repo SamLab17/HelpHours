@@ -7,20 +7,22 @@
 {% block body %}
 <div class="center-content">
     <div class="form-container">
-        <h2 class="form-title">Reset Password</h2>
-        <form class="form" method="POST">
+        <form class="form">
             {{ form.csrf_token }}
-            <div>
-                {{ form.email.label(class="form-label") }}
-                {{ form.email(class="form-input") }}
-            </div>
-
+            <h2 class="form-title">Reset Password</h2>
             {% if message|length > 0 %}
-                {{ message }}
+                <p class="error-message">{{ message }}</p>
             {% endif %}
-
             <div>
-                {{ form.submit(class="form-submit") }}
+                {{ form.password.label(class="form-label") }}
+                {{ form.password(class="form-input") }}
+            </div>
+            <div>
+                {{ form.confirm.label(class="form-label") }}
+                {{ form.confirm(class="form-input") }}
+            </div>
+            <div>
+                {{ form.submit(class='form-submit')}}
             </div>
         </form>
     </div>

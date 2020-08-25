@@ -57,7 +57,7 @@ def request_reset():
         else:
             message = "Enter a valid email"
 
-    return render_template('reset.html', form=form, message=message)
+    return render_template('request_reset.html', form=form, message=message)
 
 
 @app.route('/reset_password', methods=['GET', 'POST'])

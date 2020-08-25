@@ -15,7 +15,7 @@ def create_reset_request(user):
     while token in reset_requests.keys():
         token = secrets.token_urlsafe(20)
     reset_link = app.config["WEBSITE_LINK"] + url_for('reset_password', token=token)
-    notifier.send_message(user.email, app.config['COURSE_NAME'] + "Help Hours Password Reset",
+    notifier.send_message(user.email, app.config['COURSE_NAME'] + " Help Hours Password Reset",
                           render_template('email/reset_password_email.html', reset_link=reset_link),
                           'html')
     expire_time = dt.datetime.utcnow() + dt.timedelta(hours=NUM_HOURS_EXPIRE)
@@ -28,7 +28,7 @@ def new_user(user):
     while token in reset_requests.keys():
         token = secrets.token_urlsafe(20)
     reset_link = app.config["WESBITE_LINK"] + url_for('reset_password', token=token)
-    notifier.send_message(user.email, app.config['COURSE_NAME'] + "New Help Hours Instructor Account",
+    notifier.send_message(user.email, "New " + app.config['COURSE_NAME'] + " Help Hours Instructor Account",
                           render_template('email/new_user_email.html', reset_link=reset_link),
                           'html')
     expire_time = dt.datetime.utcnow() + dt.timedelta(hours=NUM_HOURS_EXPIRE)
