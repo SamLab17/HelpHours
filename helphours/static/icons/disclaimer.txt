@@ -1,0 +1,3 @@
+The image files in this folder are not GPL.
+
+Reuse is not permitted without explicit permission.
