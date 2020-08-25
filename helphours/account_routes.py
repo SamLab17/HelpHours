@@ -75,7 +75,7 @@ def reset_password():
                                            body="The reset link is no longer valid.")
             else:
                 message = 'Both passwords must match'
-        return render_template('reset_password.html', token=request.args['token'], form=form, message=message)
+        return render_template('reset.html', token=request.args['token'], form=form, message=message)
     else:
         return render_template('message_error.html', title="Reset error",
                                body="Malformed reset link. Token not present")
