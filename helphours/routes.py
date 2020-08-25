@@ -54,6 +54,7 @@ def join():
             notifier.send_message(form.email.data,
                                   f"Notification from {app.config['COURSE_NAME']} Lab Hours Queue",
                                   render_template("email/added_to_queue_email.html",
+                                                  view_link=app.config['WEBSITE_LINK'] + url_for('view'),
                                                   place_str=routes_helper.get_place_str(place),
                                                   student_name=form.name.data, remove_code=form.eid.data),
                                   'html')
