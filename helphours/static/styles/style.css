@@ -81,7 +81,7 @@ body h3 {
 
 .form-container {
     background-color: #eee;
-    min-width: 30%;
+    min-width: 20%;
     box-shadow: 5px 5px 10px #ccc;
     align-self: center;
     padding: 20px;
@@ -258,6 +258,10 @@ textarea {
 }
 
 /* Tables */
+
+.table-container {
+    margin: 10px 0;
+}
 
 .table-container th {
     font-weight: 600;
