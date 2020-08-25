@@ -7,7 +7,7 @@
 {% block body %}
 <div class="center-content">
     <div class="form-container">
-        <form class="form">
+        <form class="form" method="POST">
             {{ form.csrf_token }}
             <input type="hidden" name="token" value="{{ token }}"></input>
             <h2 class="form-title">Reset Password</h2>
