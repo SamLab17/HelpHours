@@ -27,7 +27,7 @@ def new_user(user):
     token = secrets.token_urlsafe(20)
     while token in reset_requests.keys():
         token = secrets.token_urlsafe(20)
-    reset_link = app.config["WESBITE_LINK"] + url_for('reset_password', token=token)
+    reset_link = app.config["WEBSITE_LINK"] + url_for('reset_password', token=token)
     notifier.send_message(user.email, "New " + app.config['COURSE_NAME'] + " Help Hours Instructor Account",
                           render_template('email/new_user_email.html', reset_link=reset_link),
                           'html')
