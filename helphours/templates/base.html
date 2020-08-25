@@ -9,8 +9,10 @@
 
         <nav class="navbar">
             <ul aria-label="Navigation menu" class="left-links">
-                <li {% if request.path == url_for('index') %} class="active" {% endif %}>
-                    <a class="link" href="{{ url_for('index') }}">Home</a>
+                <li>
+                    <a href="{{ url_for('index') }}">
+                        <img src="{{ url_for('static', filename='images/duck.png') }}" style="height: 65px; width: auto; margin-top: -20px; margin-left: -5px;">
+                    </a>
                 </li>
                 <li {% if request.path == url_for('join') %} class="active" {% endif %}>
                     <a class="link" href="{{ url_for('join') }}">Join</a>
