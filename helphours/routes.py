@@ -75,6 +75,11 @@ def view():
     return render_template('view.html', queue=queue, queue_is_open=queue_is_open)
 
 
+@app.route("/line", methods=['GET', 'POST'])
+def line():
+    return redirect(url_for('view'))
+
+
 @app.route("/remove", methods=['GET', 'POST'])
 def remove():
     form = RemoveSelfForm()
