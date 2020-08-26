@@ -16,7 +16,7 @@
             <ul aria-label="Navigation menu" class="left-links">
                 <li>
                     <a href="{{ url_for('index') }}">
-                        <img src="{{ url_for('static', filename='images/duck.png') }}" style="height: 65px; width: auto; margin-top: -20px; margin-left: -5px;">
+                        <img src="{{ url_for('static', filename='images/duck.png') }}" style="height: 65px;">
                     </a>
                 </li>
                 <li {% if request.path == url_for('join') %} class="active" {% endif %}>
