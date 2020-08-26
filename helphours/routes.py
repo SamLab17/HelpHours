@@ -305,9 +305,11 @@ def close():
     log.info('Queue was closed through /close route')
     return json.dumps({'success': True}), 200, {'ContentType': 'application/json'}
 
+
 @app.route('/robots.txt')
 def robots_txt():
     return send_from_directory(app.static_folder, request.path[1:])
+
 
 # noqa: F401 == Ignore rule about unused imports
 from helphours import error_routes  # noqa: F401
