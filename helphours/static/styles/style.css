@@ -3,6 +3,7 @@
 
 :root {
     --primary-color: #0080ff; 
+    --ligh-primary-color: #a1d0ff;
     /* Light blue -> Light Green */
     --navbar-gradient: linear-gradient(80deg, #7ee8fd 0%, #80ff72 110%);
 
@@ -183,6 +184,11 @@ body h3 {
     cursor: pointer;
 }
 
+.form-submit:disabled, .form-submit[disabled] {
+    background-color: var(--ligh-primary-color);
+    cursor: not-allowed;
+}
+
 .form-input {
     border-radius: 10px;
     border: 1px solid rgba(0, 0, 0, 0.1);
@@ -230,6 +236,11 @@ textarea {
     cursor: pointer;
 }
 
+.remove-button:disabled, .remove-button[disabled],
+.queue-close-button:disabled, .queue-close-button[disabled] {
+    background-color: #e9959c;
+    cursor: not-allowed;
+}
 
 .form-buttons {
     display: flex;
