@@ -272,7 +272,7 @@ def stats_page():
 def about_page():
     return render_template('about.html', title="About Our Creators")
 
-    
+
 @app.route('/clear', methods=['POST'])
 def clear():
     if 'token' not in request.form:
