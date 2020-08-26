@@ -24,9 +24,9 @@
                 <p class="error-message">{{ message }}</p>
             {% endif %}
 
-            <div>
+            <div class="form-buttons">
                 {{ form.submit(class="form-submit") }}
-                <a href="{{url_for('request_reset')}}">Reset Password</a>
+                <a class="reset-link" href="{{url_for('request_reset')}}">Reset Password</a>
             </div>
         </form>
     </div>

@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block head %}
+<title>Reset Password</title>
+{% endblock %}
+
+{% block body %}
+<div class="center-content">
+    <div class="form-container">
+        <h2 class="form-title">Reset Password</h2>
+        <form class="form" method="POST">
+            {{ form.csrf_token }}
+            <div>
+                {{ form.email.label(class="form-label") }}
+                {{ form.email(class="form-input") }}
+            </div>
+
+            {% if message|length > 0 %}
+                {{ message }}
+            {% endif %}
+
+            <div>
+                {{ form.submit(class="form-submit") }}
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
