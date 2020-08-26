@@ -2,7 +2,12 @@
 @import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300;400;600&display=swap');
 
 :root {
-    --primary-color: rgb(20, 75, 170);
+    --primary-color: #0080ff; 
+    /* Light blue -> Light Green */
+    --navbar-gradient: linear-gradient(80deg, #7ee8fd 0%, #80ff72 110%);
+
+    /* Dark blue -> light blue */
+    /* --navbar-gradient: linear-gradient(80deg, #63a4ff 0%, #83eaf1 74%); */
 }
 
 body {
@@ -23,7 +28,10 @@ body h3 {
 }
 
 .navbar {
-    background-color: #eee;
+    /* background-color: var(--navbar-color); */
+    /* background-image: linear-gradient(315deg, #fba8a4 0%, #dad2f3 74%); */
+    background-image: var(--navbar-gradient);
+    box-shadow: -2px 0 2px 2px rgba(0, 0, 0, 0.1);
     max-height: 10vh;
     display: flex;
     padding: 0 10px;
@@ -63,6 +71,7 @@ body h3 {
     font-size: 110%;
     color: #000;
     transition: all 0.2s ease;
+
 }
 
 .navbar a:hover, .navbar a:focus {
@@ -94,10 +103,38 @@ body h3 {
     color: #222;
 }
 
+.welcome {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.narrow-content {
+    font-size: 110%;
+}
+
+.duck-left {
+    transform: scaleX(-1);
+}
+
+.vertical-center {
+    display: flex;
+    align-items: center;
+}
+
+.vertical-center h1 {
+    margin: 0 20px;
+}
+
 .content {
     height: 100%;
     max-height: 90vh;
     padding: 10px 10px;
+
+    width: 80%;
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .center-content {
