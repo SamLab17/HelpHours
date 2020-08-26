@@ -1,6 +1,10 @@
 /* Not permanent, replace by downloading font */
 @import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300;400;600&display=swap');
 
+:root {
+    --primary-color: rgb(20, 75, 170);
+}
+
 body {
     font-family: 'Source Sans Pro', sans-serif;
     font-weight: 400;
@@ -51,10 +55,26 @@ body h3 {
     padding-right: 0;
 }
 
-.link {
+.navbar a {
     text-decoration: none;
     font-size: 110%;
     color: #000;
+}
+
+.navbar a:after {
+    display: block;
+    content: '';
+    transform: scaleX(0);
+    border-bottom: 2px solid var(--primary-color);
+    transition: transform 0.1s ease-out;
+}
+
+.navbar a:hover:after {
+    transform: scaleX(1);
+}
+
+.navbar .active a:after {
+    transform: scaleX(1);
 }
 
 .link:active {
@@ -81,7 +101,8 @@ body h3 {
 
 .form-container {
     background-color: #eee;
-    width: 20%;
+    min-width: 30%;
+    /* width: 20%; */
     box-shadow: 5px 5px 10px #ccc;
     align-self: center;
     padding: 20px;
@@ -101,13 +122,26 @@ body h3 {
 
 .form-label {
     display: block;
-    text-transform: uppercase;
+    /* text-transform: uppercase; */
     color: #222;
-    font-size: 80%;
+    /* font-size: 85%; */
     width: 100%;
 }
 
+.form-submit {
+    padding: 15px;
+    background-color: var(--primary-color);
+    color: #fff;
+    border-radius: 5px;
+    border: none;
+}
+
 .form-input {
+    border-radius: 10px;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    padding: 10px;
+    box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.1);
+    margin: 5px 0px;
     width: 100%;
 }
 
@@ -130,6 +164,17 @@ textarea {
     color: red;
 }
 
+
+.form-buttons {
+    display: flex;
+    justify-content: space-between;
+    align-content: center;
+}
+
+.reset-link {
+    align-self: center;
+}
+
 .form-group {
     margin: 20px 0;
 }
@@ -144,6 +189,7 @@ textarea {
     margin: 10px 0;
     width: 100%;
 }
+
 
 .queue-container {
     width: 60%;
