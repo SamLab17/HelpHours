@@ -30,6 +30,11 @@
             </ul>
             <ul class="right-links">
                 {% if g.user.is_authenticated %}
+
+                    <li {% if request.path == url_for('change_zoom') %} class="active" {% endif %}>
+                        <a class="link" href="{{ url_for('change_zoom') }}">Change Zoom Link</a>
+                    </li>
+              
                     <li {% if request.path == url_for('stats_page') %} class="active" {% endif %}>
                         <a class="link" href="{{ url_for('stats_page') }}">Stats</a>
                     </li>

@@ -1,17 +1,21 @@
+import json
 import secrets
-from helphours import app, db, notifier, queue_handler, routes_helper, password_reset, stats
+import validators
+from helphours import app, log, db, notifier, queue_handler, routes_helper, password_reset, stats, zoom_helper
 from flask import render_template, url_for, redirect, request, g
 from helphours.forms import JoinQueueForm, RemoveSelfForm, InstructorForm
 from helphours.student import Student
 from flask_login import current_user, login_required
 from helphours.models.instructor import Instructor
 from helphours.models.visit import Visit
+from helphours.models.zoom_link import ZoomLink
 from datetime import datetime
 from werkzeug.security import generate_password_hash
 
 # Would likely need to be stored in a databse if we want multiple instances of this
 # running
 queue_is_open = False
+current_zoom_link = ''
 
 
 @app.before_request
@@ -51,6 +55,7 @@ def join():
             notifier.send_message(form.email.data,
                                   f"Notification from {app.config['COURSE_NAME']} Lab Hours Queue",
                                   render_template("email/added_to_queue_email.html",
+                                                  view_link=app.config['WEBSITE_LINK'] + url_for('view'),
                                                   place_str=routes_helper.get_place_str(place),
                                                   student_name=form.name.data, remove_code=form.eid.data),
                                   'html')
@@ -71,6 +76,11 @@ def view():
     return render_template('view.html', queue=queue, queue_is_open=queue_is_open)
 
 
+@app.route("/line", methods=['GET', 'POST'])
+def line():
+    return redirect(url_for('view'))
+
+
 @app.route("/remove", methods=['GET', 'POST'])
 def remove():
     form = RemoveSelfForm()
@@ -78,17 +88,19 @@ def remove():
     if request.method == 'POST':
         if form.validate_on_submit():
             # remove em
-            s = queue_handler.remove_eid(request.form['eid'])
-            if s is None:
+            s = queue_handler.remove_eid(form.eid.data)
+            if s is not None:
                 v = Visit.query.filter_by(id=s.id).first()
                 if v is not None:
                     v.time_left = datetime.utcnow()
                     v.was_helped = 0
                     db.session.commit()
+                    return redirect(url_for('view'))
                 else:
-                    # Log Error, Assertion failed
-                    pass
-                return redirect(url_for('view'))
+                    # Serious issue, there are inconsistencies in the database.
+                    log.error('Student in queue does not have a corresponding entry in visits table.', notify=True)
+                    return render_template('message_error.html', title="Error Removing from queue",
+                                           body="Sorry, something went wrong when trying to remove you from the queue.")
             else:
                 message = "EID not found in queue"
         else:
@@ -98,7 +110,66 @@ def remove():
 
 @app.route("/zoom", methods=['GET'])
 def zoom_redirect():
+    if current_zoom_link != '':
+        return redirect(current_zoom_link)
     return redirect(app.config['DEFAULT_ZOOM_LINK'])
+
+
+@app.route("/change_zoom", methods=['GET', 'POST'])
+@login_required
+def change_zoom():
+    global current_zoom_link
+    preset_links = ZoomLink.query.all()
+    message = ""
+
+    if request.method == 'POST':
+        if 'preset' in request.form:
+            index = int(request.form['preset-links'])
+            if index == 0:
+                message = "Invalid choice"
+            else:
+                # 0th index is placeholder, 1st option is index 0 in preset_links
+                link_obj = preset_links[index - 1]
+                current_zoom_link = link_obj.url
+
+                # Log the change
+                desc = link_obj.description
+                log.info(f'{current_user.first_name} {current_user.last_name} changed the zoom link to {desc}.')
+
+                message = "The link has been changed"
+        elif 'new' in request.form:
+            temp = request.form['other-link']
+            if validators.url(temp):
+                current_zoom_link = temp
+                message = "The link has been changed"
+                log.info(f'{current_user.first_name} {current_user.last_name} changed the zoom link to a custom link.')
+            else:
+                message = "Invalid URL"
+    return render_template('change_zoom.html', message=message, preset_links=preset_links)
+
+
+@app.route('/edit_preset_links', methods=['GET', 'POST'])
+@login_required
+def edit_preset_links():
+    message = ""
+    preset_links = ZoomLink.query.all()
+
+    if request.method == 'POST':
+        if 'cancel' in request.form:
+            return redirect(url_for('change_zoom'))
+
+        new_presets = request.form['preset-links']
+        try:
+            new_zoom_links = zoom_helper.parse_links(new_presets)
+            ZoomLink.query.delete()
+            for new_link in new_zoom_links:
+                db.session.add(new_link)
+            db.session.commit()
+            log.info(f'{current_user.first_name} {current_user.last_name} updated the Zoom links.')
+            return redirect(url_for('change_zoom'))
+        except Exception as e:
+            message = str(e)
+    return render_template('edit_preset_links.html', message=message, preset_links=preset_links)
 
 
 @app.route("/schedule", methods=['GET'])
@@ -112,7 +183,7 @@ def admin_panel():
     if current_user.is_admin:
         return render_template('admin_panel.html', instructors=Instructor.query.all())
     else:
-        return render_template('message_error.html', title="Admin Panel", body="Not authenticated, must be admin")
+        return render_template('message_error.html', title="Admin Panel", body="Not authenticated, must be admin.")
 
 
 @app.route('/edit_instructor', methods=['GET', 'POST'])
@@ -131,6 +202,9 @@ def edit_instructor():
                                    title="Edit Instructor",
                                    form=form, message='', id=instr.id)
         else:
+            if 'cancel' in request.form:
+                return redirect('admin_panel')
+
             form = InstructorForm()
             if form.validate_on_submit():
                 instr.first_name = form.first_name.data
@@ -139,6 +213,7 @@ def edit_instructor():
                 instr.is_active = 1 if form.is_active.data else 0
                 instr.is_admin = 1 if form.is_admin.data else 0
                 db.session.commit()
+                log.info(f'The account for {instr.first_name} {instr.last_name} was updated.')
                 return redirect('admin_panel')
             else:
                 message = 'Enter a valid email address'
@@ -174,6 +249,7 @@ def add_instructor():
                 db.session.add(instr)
                 db.session.commit()
                 password_reset.new_user(instr)
+                log.info(f'New account created for {instr.first_name} {instr.last_name}.')
                 return redirect('admin_panel')
             else:
                 message = 'Enter a valid email address'
@@ -192,8 +268,45 @@ def stats_page():
     return stats.get_graphs(range)
 
 
+@app.route('/clear', methods=['POST'])
+def clear():
+    if 'token' not in request.form:
+        return json.dumps({'success': False}), 401, {'ContentType': 'application/json'}
+    expected_token = app.config['CLEAR_TOKEN']
+    if request.form['token'] != expected_token:
+        return json.dumps({'success': False}), 401, {'ContentType': 'application/json'}
+    queue_handler.clear()
+    log.info('Queue was cleared through /clear route')
+    return json.dumps({'success': True}), 200, {'ContentType': 'application/json'}
+
+
+@app.route('/open', methods=['POST'])
+def open():
+    global queue_is_open
+    if 'token' not in request.form:
+        return json.dumps({'success': False}), 401, {'ContentType': 'application/json'}
+    expected_token = app.config['OPEN_TOKEN']
+    if request.form['token'] != expected_token:
+        return json.dumps({'success': False}), 401, {'ContentType': 'application/json'}
+    queue_is_open = True
+    log.info('Queue was opened through /open route')
+    return json.dumps({'success': True}), 200, {'ContentType': 'application/json'}
+
+
+@app.route('/close', methods=['POST'])
+def close():
+    global queue_is_open
+    if 'token' not in request.form:
+        return json.dumps({'success': False}), 401, {'ContentType': 'application/json'}
+    expected_token = app.config['CLOSE_TOKEN']
+    if request.form['token'] != expected_token:
+        return json.dumps({'success': False}), 401, {'ContentType': 'application/json'}
+    queue_is_open = False
+    log.info('Queue was closed through /close route')
+    return json.dumps({'success': True}), 200, {'ContentType': 'application/json'}
+
+
 # noqa: F401 == Ignore rule about unused imports
-from helphours import automated_routes  # noqa: F401
 from helphours import error_routes  # noqa: F401
 from helphours import account_routes    # noqa: F401
 from helphours import json_routes   # noqa: F401

@@ -1,5 +1,5 @@
-from helphours import notifier, db, queue_handler
-from flask import render_template, g
+from helphours import notifier, db, queue_handler, app
+from flask import render_template, g, url_for
 from helphours.models.visit import Visit
 from datetime import datetime
 
@@ -57,7 +57,8 @@ def handle_remove(request):
     if s is not None and not s.notified:
         try:
             notifier.send_message(s.email, "Notification from {{COURSE_NAME}} Help Hours Queue",
-                                  render_template("up_next_email.html", student_name=s.name, remove_code=s.eid), 'html')
+                                  render_template("up_next_email.html", student_name=s.name, remove_code=s.eid,
+                                                  view_link=app.config['WEBSITE_LINK'] + url_for('view')), 'html')
             s.notified = True
         except Exception as e:
             print(f"Failed to send email to {s.email}. {e}")

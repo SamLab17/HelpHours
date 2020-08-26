@@ -1,4 +1,4 @@
-from helphours import app, password_reset
+from helphours import app, password_reset, log
 from helphours.forms import LoginForm, RequestResetForm, ResetPasswordForm
 from flask import render_template, url_for, request, redirect
 from flask_login import current_user, login_user, logout_user
@@ -19,8 +19,10 @@ def login():
                 message = "Incorrect email or password"
             elif not user.is_active:
                 message = "This account is inactive"
+                log.info(f'{user.first_name} {user.last_name} attempted to log in, but account was deactivated.')
             else:
                 login_user(user, remember=False)
+                log.info(f'{user.first_name} {user.last_name} logged in.')
                 next_page = request.args.get('next')
                 if not next_page or url_parse(next_page).netloc != '':
                     next_page = url_for('view')
@@ -55,7 +57,7 @@ def request_reset():
         else:
             message = "Enter a valid email"
 
-    return render_template('reset.html', form=form, message=message)
+    return render_template('request_reset.html', form=form, message=message)
 
 
 @app.route('/reset_password', methods=['GET', 'POST'])
@@ -73,7 +75,7 @@ def reset_password():
                                            body="The reset link is no longer valid.")
             else:
                 message = 'Both passwords must match'
-        return render_template('reset_password.html', token=request.args['token'], form=form, message=message)
+        return render_template('reset.html', token=request.args['token'], form=form, message=message)
     else:
         return render_template('message_error.html', title="Reset error",
                                body="Malformed reset link. Token not present")
