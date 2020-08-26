@@ -10,7 +10,15 @@ app.config.from_pyfile('config.cfg')
 app.jinja_env.auto_reload = True
 
 db = SQLAlchemy(app)
+
 login = LoginManager(app)
+
+# Creates an empty database
+# from helphours.models.instructor import Instructor
+# from helphours.models.visit import Visit
+# from helphours.models.zoom_link import ZoomLink
+# db.create_all()
+# db.session.commit()
 
 notifier = Notifier(app.config['EMAIL_ACCOUNT'],
                     app.config['EMAIL_PASSWORD'],

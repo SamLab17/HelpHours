@@ -1,11 +1,29 @@
 {% extends "base.html" %}
 
 {% block head %}
-<title>Homepage</title>
+<title>{{ COURSE_NAME }} Help Hours</title>
 {% endblock %}
 
 {% block body %}
-<h1> Welcome to Help Hours for {{ COURSE_NAME }}! </h1>
+
+<script>
+    function playSqueak(){
+        console.log('squeak')
+        var audio = document.getElementById("audio");
+        audio.play();
+    }
+</script>
+
+<div class="welcome">
+    <div class="vertical-center">
+        <audio id="audio" src="{{ url_for('static', filename='sound/squeak.mp3') }}"></audio>
+        <img src="{{ url_for('static', filename='images/duck.png') }}" alt-text="Rubber Duck" style="height: 100px;" class="duck-left" onclick="playSqueak()">
+        <h1> Welcome to Help Hours for {{ COURSE_NAME }}! </h1>
+        <img src="{{ url_for('static', filename='images/duck.png') }}" alt-text="Rubber Duck" style="height: 100px;" class="duck-right" onclick="playSqueak()">
+    </div>
+
+</div>
+<div class="narrow-content">
 <p>Here are some instructions on how to use this website.</p>
 <br />
 
@@ -44,6 +62,6 @@
 </ol>
 
 <br />
-<p>If you are having any issues with the website, please email 314labhours@gmail.com or make a Piazza post.
-</p>
+<p><em>If you are having any issues with the website, please email 314labhours@gmail.com or make a Piazza post.</em></p>
+</div>
 {% endblock %}
