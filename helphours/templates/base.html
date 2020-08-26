@@ -1,6 +1,11 @@
 <html>
     <head>
         <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/style.css') }}">
+
+        <link rel="apple-touch-icon" sizes="180x180" href="{{ url_for('static', filename='icons/apple-touch-icon.png') }}">
+        <link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('static', filename='icons/favicon-32x32.png') }}">
+        <link rel="icon" type="image/png" sizes="16x16" href="{{ url_for('static', filename='icons/favicon-16x16.png') }}">
+        
         {% block head %}
         {% endblock %}
     </head>
@@ -9,8 +14,10 @@
 
         <nav class="navbar">
             <ul aria-label="Navigation menu" class="left-links">
-                <li {% if request.path == url_for('index') %} class="active" {% endif %}>
-                    <a class="link" href="{{ url_for('index') }}">Home</a>
+                <li>
+                    <a href="{{ url_for('index') }}">
+                        <img src="{{ url_for('static', filename='images/duck.png') }}" style="height: 65px;">
+                    </a>
                 </li>
                 <li {% if request.path == url_for('join') %} class="active" {% endif %}>
                     <a class="link" href="{{ url_for('join') }}">Join</a>
