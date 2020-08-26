@@ -180,6 +180,7 @@ body h3 {
     color: #fff;
     border-radius: 5px;
     border: none;
+    cursor: pointer;
 }
 
 .form-input {
@@ -211,20 +212,22 @@ textarea {
     color: red;
 }
 
-.helped-button {
+.helped-button, .queue-open-button {
     padding: 15px;
     background-color: #4c8;
     color: #fff;
     border-radius: 5px;
     border: none;
+    cursor: pointer;
 }
 
-.remove-button {
+.remove-button, .queue-close-button {
     padding: 15px;
     background-color: #ed2939;
     color: #fff;
     border-radius: 5px;
     border: none;
+    cursor: pointer;
 }
 
 
