@@ -152,6 +152,30 @@ body h3 {
     justify-content: center;
 }
 
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    min-width: 210%;
+}
+
+.dropdown-content a {
+    display: block;
+    background-image: var(--navbar-gradient);
+    padding-top: 5px;
+    padding-left: 10px;
+    padding-bottom: 5px;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+    right: 0;
+}
+
 .form-container {
     background-color: #eee;
     min-width: 30%;
