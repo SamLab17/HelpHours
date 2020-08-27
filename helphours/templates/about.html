@@ -8,36 +8,38 @@
         height: 250px;
     }
     .align {
-        margin-left: 20%;
-        display: flex;
-        align-items: center;
-    }
-    span {
-        padding: 4%;
+      display: flex;
+flex-direction: column;
+justify-content: center;
+align-items: center;
     }
 </style>
 {% endblock %}
 
 {% block body %}
-<!-- <p>This site started as our HackTX 2019 project, and then the pandemic hit and we were able to put it to good use.</p> -->
 <div class="align">
+  <h1>About the Website</h1>
+  <span>This site started as our HackTX 2019 project, and then the pandemic hit and we were able to put it to good use.</span>
+  <span style="padding-top: 5px; padding-bottom: 45px;">You could check out the code on GitHub <a href="https://github.com/SamLab17/HelpHours">here</a>.</span>
+</div>
+<div class="align narrow-content"> 
+  <h2 style="margin-bottom: 0px;"><strong>Our Creators</strong></h2>
   <img class="image" src="{{ url_for('static', filename='images/samduck.png') }}" alt="Sam Duck">
-  <span>Did like almost everything</span>
   </br>
-</div>
-<div class="align">
+  <span><strong>Samuel Laberge</strong></span>
+  <span>Full-Stack Developer</span>
   <img class="image" src="{{ url_for('static', filename='images/ninaduck.png') }}" alt="Nina Duck">
-  <span>We don't know bc her commit messages suck</span>
   </br>
-</div>
-<div class="align">
+  <span><strong>Nina Ahmed</strong></span>
+  <span>Full-Stack Developer</span>
   <img class="image" src="{{ url_for('static', filename='images/tonyduck.png') }}" alt="Tony Duck">
-  <span>Made pretty graphs only instructors can see</span>
   </br>
-</div>
-<div class="align">
+  <span><strong>Tony Chang</strong></span>
+  <span>Backend Developer</span>
   <img class="image" src="{{ url_for('static', filename='images/debbieduck.png') }}" alt="Debbie Duck">
-  <span>Drew ducks</span>
   </br>
+  <span><strong>Debbie Wong</strong></span>
+  <span>Duck Artist</span>
+  <p></p>
 </div>
 {% endblock %}
