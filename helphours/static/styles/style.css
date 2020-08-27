@@ -146,6 +146,12 @@ body h3 {
     height: 100%;
 }
 
+.center-horizontal {
+    display: flex;
+    align-content: center;
+    justify-content: center;
+}
+
 .form-container {
     background-color: #eee;
     min-width: 30%;
