@@ -2,7 +2,7 @@ import json
 import secrets
 import validators
 from helphours import app, log, db, notifier, queue_handler, routes_helper, password_reset, stats, zoom_helper
-from flask import render_template, url_for, redirect, request, g
+from flask import render_template, url_for, redirect, request, g, send_from_directory
 from helphours.forms import JoinQueueForm, RemoveSelfForm, InstructorForm
 from helphours.student import Student
 from flask_login import current_user, login_required
@@ -304,6 +304,11 @@ def close():
     queue_is_open = False
     log.info('Queue was closed through /close route')
     return json.dumps({'success': True}), 200, {'ContentType': 'application/json'}
+
+
+@app.route('/robots.txt')
+def robots_txt():
+    return send_from_directory(app.static_folder, request.path[1:])
 
 
 # noqa: F401 == Ignore rule about unused imports
