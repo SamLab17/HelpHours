@@ -22,8 +22,8 @@ jobs:
                   name: Running unit tests
                   command: |
                       . venv/bin/activate
-                      mv deployment/config.cfg helphours/config.cfg
-                      mv deployment/empty.db helphours/helphours.db
+                      mv development/config.cfg helphours/config.cfg
+                      mv development/empty.db helphours/helphours.db
                       echo "FLASK_APP=helphours" > .flaskenv
                       cd tests/
                       chmod 777 run_tests.sh
