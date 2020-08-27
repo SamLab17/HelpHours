@@ -30,6 +30,11 @@ function renderQueue(data) {
                 newEntry.querySelectorAll('button').forEach(button => 
                     button.value=queue[i].id
                 );
+            } else {
+                // Hide "Help" and "Remove" buttons
+                newEntry.querySelectorAll('button').forEach(button =>
+                    button.style.display = 'none'
+                );
             }
             queueContainer.appendChild(newEntry);
         }
