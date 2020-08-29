@@ -1,20 +1,34 @@
 const UPDATE_INTERVAL_SECONDS = 5;
 
+// Hold previous fetch result, if it's the same, don't bother re-rendering
+var lastPullResponse;
+
 updateQueue();
 setInterval(updateQueue, UPDATE_INTERVAL_SECONDS * 1000);
 
 
 function updateQueue() {
-    clearQueue();
     fetch('/queue').then(response => response.json())
         .then(renderQueue)
         .catch(() => {
+            clearQueue();
             displayMessage('Couldn\'t connect to the server to retrieve the queue.')
         });
 }
 
 function renderQueue(data) {
+    let dataJSON = JSON.stringify(data);
+    if(lastPullResponse === dataJSON){
+        return;
+    } else {
+        clearQueue();
+        lastPullResponse = dataJSON;
+    }
+
+
     let queue = data.queue;
+
+
     if (!queue || queue.length === 0) {
         displayMessage('The queue is empty.');
     }
