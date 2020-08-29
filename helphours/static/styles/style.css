@@ -78,19 +78,14 @@ body h3 {
     -webkit-transition: all 0.2s ease;
     -o-transition: all 0.2s ease;
     transition: all 0.2s ease;
-
 }
 
-.navbar a:hover, .navbar a:focus {
+.navbar a:hover:not(.no-grow), .navbar a:focus:not(.no-grow) {
     font-size: 120%;
 }
 
 .link:active {
     color: #000;
-}
-
-.link:hover {
-    color: #222;
 }
 
 .welcome {
