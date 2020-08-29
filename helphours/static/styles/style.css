@@ -1,9 +1,9 @@
-/* Not permanent, replace by downloading font */
 @import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300;400;600&display=swap');
 
 :root {
     --primary-color: #0080ff; 
     --ligh-primary-color: #a1d0ff;
+
     /* Light blue -> Light Green */
     --navbar-gradient: linear-gradient(80deg, #7ee8fd 0%, #80ff72 110%);
 
@@ -29,10 +29,9 @@ body h3 {
 }
 
 .navbar {
-    /* background-color: var(--navbar-color); */
-    /* background-image: linear-gradient(315deg, #fba8a4 0%, #dad2f3 74%); */
     background-image: var(--navbar-gradient);
-    box-shadow: -2px 0 2px 2px rgba(0, 0, 0, 0.1);
+    -webkit-box-shadow: -2px 0 2px 2px rgba(0, 0, 0, 0.1);
+            box-shadow: -2px 0 2px 2px rgba(0, 0, 0, 0.1);
     max-height: 10vh;
     display: -webkit-box;
     display: -ms-flexbox;
@@ -53,7 +52,6 @@ body h3 {
 .left-links {
     margin: 0;
     margin-right: auto;
-    /* padding: 0 5px; */
 }
 
 .right-links {
@@ -78,30 +76,14 @@ body h3 {
     font-size: 110%;
     color: #000;
     -webkit-transition: all 0.2s ease;
+    -o-transition: all 0.2s ease;
     transition: all 0.2s ease;
 
 }
 
 .navbar a:hover, .navbar a:focus {
-    /* color: var(--primary-color); */
     font-size: 120%;
 }
-
-/* .navbar a:after {
-    display: block;
-    content: '';
-    transform: scaleX(0);
-    border-bottom: 2px solid var(--primary-color);
-    transition: transform 0.1s ease-out;
-}
-
-/* .navbar a:hover:after {
-    transform: scaleX(1);
-} */
-
-/* .navbar .active a:after {
-    transform: scaleX(1);
-} */
 
 .link:active {
     color: #000;
@@ -129,7 +111,8 @@ body h3 {
 
 .duck-left {
     -webkit-transform: scaleX(-1);
-            transform: scaleX(-1);
+            -ms-transform: scaleX(-1);
+        transform: scaleX(-1);
 }
 
 .vertical-center {
@@ -183,8 +166,8 @@ body h3 {
 .form-container {
     background-color: #eee;
     min-width: 30%;
-    /* width: 20%; */
-    box-shadow: 5px 5px 10px #ccc;
+    -webkit-box-shadow: 5px 5px 10px #ccc;
+            box-shadow: 5px 5px 10px #ccc;
     -ms-flex-item-align: center;
         align-self: center;
     padding: 20px;
@@ -209,14 +192,11 @@ body h3 {
 .form-title {
     display: block;
     width: 100%;
-    /* padding-bottom: 10px; */
 }
 
 .form-label {
     display: block;
-    /* text-transform: uppercase; */
     color: #222;
-    /* font-size: 85%; */
     width: 100%;
 }
 
@@ -238,13 +218,13 @@ body h3 {
     border-radius: 10px;
     border: 1px solid rgba(0, 0, 0, 0.1);
     padding: 10px;
-    box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.1);
+    -webkit-box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.1);
+            box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.1);
     margin: 5px 0px;
     width: 100%;
 }
 
 .form {
-    /* margin-top: 20px; */
     margin-bottom: 0;
     min-width: 50%;
 }
@@ -310,7 +290,6 @@ textarea {
 }
 
 .select-menu {
-    /* margin: 10px; */
     margin: 10px 0;
     width: 100%;
 }
@@ -334,7 +313,8 @@ textarea {
     display: -ms-flexbox;
     display: flex;
     padding: 20px 20px;
-    box-shadow: 5px 5px 10px #ccc;
+    -webkit-box-shadow: 5px 5px 10px #ccc;
+            box-shadow: 5px 5px 10px #ccc;
     border-radius: 5px;
     background-color: #eee;
     margin-bottom: 20px;
@@ -411,7 +391,6 @@ textarea {
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
-    /* width: 20%; */
     margin-left: auto;
     margin-right: auto;
 }
@@ -420,7 +399,6 @@ textarea {
     padding: 10px 20px;
     background-color: #eee;
     border-radius: 5px;
-    /* border: 1px solid black; */
     margin: 0px 2px;
 }
 
