@@ -37,30 +37,28 @@
                 </li>
             </ul>
             <ul class="right-links">
+                <li {% if request.path == url_for('about_page') %} class="active" {% endif %}>
+                    <a class="link" href="{{ url_for('about_page') }}">About</a>
+                </li>
                 {% if g.user.is_authenticated %}
-
-                    <li {% if request.path == url_for('change_zoom') %} class="active" {% endif %}>
-                        <a class="link" href="{{ url_for('change_zoom') }}">Change Zoom Link</a>
+                    <li>
+                        <div class="dropdown">
+                        <a class="link">Instructors</a>
+                        <div class="dropdown-content">
+                            <a class="link" href="{{ url_for('change_zoom') }}">Change Zoom Link</a>
+                            <a class="link" href="{{ url_for('stats_page') }}">Stats</a>
+                            {% if g.user.is_admin %}
+                                <a class="link" href="{{ url_for('admin_panel') }}">Admin</a>
+                            {% endif %}
+                            <a class="link" href="{{ url_for('logout') }}">Logout</a>
+                        </div>
+                        </div>
                     </li>
-              
-                    <li {% if request.path == url_for('stats_page') %} class="active" {% endif %}>
-                        <a class="link" href="{{ url_for('stats_page') }}">Stats</a>
-                    </li>
-                    {% if g.user.is_admin %}
-                        <li {% if request.path == url_for('admin_panel') %} class="active" {% endif %}>
-                            <a class="link" href="{{ url_for('admin_panel') }}">Admin</a>
-                        </li>
-                    {% endif %}
-
-                <li {% if request.path == url_for('logout') %} class="active" {% endif %}>
-                    <a class="link" href="{{ url_for('logout') }}">Logout</a>
-                </li>
                 {% else %}
-                <li {% if request.path == url_for('login') %} class="active" {% endif %}>
-                    <a class="link" href="{{ url_for('login') }}">Instructor Login</a>
-                </li>
+                    <li {% if request.path == url_for('login') %} class="active" {% endif %}>
+                        <a class="link" href="{{ url_for('login') }}">Instructor Login</a>
+                    </li>
                 {% endif %}
-
             </ul>
         </nav>
         <div class="content">

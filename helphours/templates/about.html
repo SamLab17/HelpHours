@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+
+{% block head %}
+<title>About the Site</title>
+<style>
+    .image {
+      width: auto;
+      height: 250px;
+    }
+    .align {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+    .row {
+      display: flex;
+    }
+    .column {
+      display: block;
+      width: 300px;
+    }
+</style>
+{% endblock %}
+
+{% block body %}
+<div class="align">
+  <h1>About the Website</h1>
+  <span>This site started as our HackTX 2019 project, and then the pandemic hit and we were able to put it to good use.</span>
+  <span style="padding-top: 5px; padding-bottom: 45px;">You could check out the code on GitHub <a href="https://github.com/SamLab17/HelpHours">here</a>.</span>
+</div>
+<div class="align narrow-content"> 
+  <h2 style="margin-bottom: 0px;"><strong>Our Creators</strong></h2>
+  <div class="row">
+    <div class="column narrow-content">
+      <img class="image" src="{{ url_for('static', filename='images/samduck.png') }}" alt="Sam Duck">
+      <span class="align"><strong>Samuel Laberge</strong><br></span>
+      <span class="align">Full-Stack Developer</span>
+    </div>
+    <div class="column narrow-content">
+      <img class="image" src="{{ url_for('static', filename='images/ninaduck.png') }}" alt="Nina Duck">
+      <span class="align"><strong>Nina Ahmed</strong><br></span>
+      <span class="align">Full-Stack Developer</span>
+    </div>
+  </div>
+  <div class="row">
+    <div class="column narrow-content">
+      <img class="image" src="{{ url_for('static', filename='images/tonyduck.png') }}" alt="Tony Duck">
+      <span class="align"><strong>Tony Chang</strong><br></span>
+      <span class="align">Backend Developer</span>
+    </div>
+    <div class="column narrow-content">
+      <img class="image" src="{{ url_for('static', filename='images/debbieduck.png') }}" alt="Debbie Duck">
+      <span class="align"><strong>Debbie Wong</strong><br></span>
+      <span class="align">Duck Artist</span>
+    </div>
+  </div>
+  <p style="padding-bottom: 20px;"></p>
+  <h2><strong>Why all the Ducks?</strong></h2>
+  <span style="text-align: center;">The rubber duck theme is inspired by "Rubber Duck Debugging," a technique for debugging code where you take the time
+    to explain what your code does, line by line, to a rubber duck. Eventually, by explaining it out load, you'll notice a
+    discrepency between what you expect the code does and what it is actually doing. 
+  </span>
+  <span>Read more about it <a href="https://en.wikipedia.org/wiki/Rubber_duck_debugging">here!</a></span>
+  <p></p>
+</div>
+{% endblock %}
