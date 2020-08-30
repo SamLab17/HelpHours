@@ -27,7 +27,7 @@
                     <a class="link" href="{{ url_for('view') }}">View</a>
                 </li>
                 <li {% if request.path == url_for('remove') %} class="active" {% endif %}>
-                    <a class="link" href="{{ url_for('remove') }}">Remove self</a>
+                    <a class="link" href="{{ url_for('remove') }}">Remove Self</a>
                 </li>
                 <li {% if request.path == url_for('zoom_redirect') %} class="active" {% endif %}>
                     <a class="link" href="{{ url_for('zoom_redirect') }}" target="_blank">Zoom Meeting</a>
