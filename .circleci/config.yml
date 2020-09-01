@@ -21,6 +21,7 @@ jobs:
             - run:
                   name: Running unit tests
                   command: |
+                      set -e
                       . venv/bin/activate
                       mv tests/testing.cfg helphours/config.cfg
                       mv tests/testing.db helphours/helphours.db
