@@ -210,6 +210,12 @@ body h3 {
             flex-direction: column; 
 }
 
+.dark .form-container{
+    background-color: inherit;
+    box-shadow: none;
+    border: 1px solid white
+}
+
 .form-title {
     display: block;
     width: 100%;
