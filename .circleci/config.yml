@@ -21,13 +21,16 @@ jobs:
             - run:
                   name: Running unit tests
                   command: |
+                      set -e
                       . venv/bin/activate
                       mv tests/testing.cfg helphours/config.cfg
                       mv tests/testing.db helphours/helphours.db
                       echo "FLASK_APP=helphours" > .flaskenv
                       cd tests/
-                      chmod 777 run_tests.sh
-                      ./run_tests.sh
+                      echo "running student tests"
+                      python3 student_tests.py
+                      echo "running route tests"
+                      python3 route_tests.py
 
     lint:
         docker:
