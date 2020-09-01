@@ -32,7 +32,7 @@ class TestRoute(unittest.TestCase):
     def test_remove_page(self):
         response = self.app.get('/remove', follow_redirects=True)
         self.assertEqual(response.status_code, 200)
-
+    """
     def test_zoom_redirect(self):
         response = self.app.get('/zoom', follow_redirects=True)
         self.assertEqual(response.status_code, 200)
@@ -40,7 +40,7 @@ class TestRoute(unittest.TestCase):
     def test_schedule_redirect(self):
         response = self.app.get('/schedule', follow_redirects=True)
         self.assertEqual(response.status_code, 200)
-
+    """
     def test_about_page(self):
         response = self.app.get('/about', follow_redirects=True)
         self.assertEqual(response.status_code, 200)
