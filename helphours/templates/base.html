@@ -6,23 +6,13 @@
         <link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('static', filename='icons/favicon-32x32.png') }}">
         <link rel="icon" type="image/png" sizes="16x16" href="{{ url_for('static', filename='icons/favicon-16x16.png') }}">
        
-         <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300;400;600;700&display=swap" rel="stylesheet"> 
+
         {% block head %}
         {% endblock %}
-
-        
     </head>
 
     <body id="body">
-        <script>
-            let store = window.localStorage;
-            if(store.getItem('darkMode') === 'true'){
-                let bodyEl = document.getElementById('body');
-                bodyEl.className = 'dark';
-                bodyEl.style.backgroundColor = '#222';
-                bodyEl.style.color = '#fff';
-            }
-        </script>
+        <script src="{{ url_for('static', filename='scripts/darkmode.js') }}"></script>
         <nav class="navbar">
             <ul aria-label="Navigation menu" class="left-links">
                 <li>
@@ -47,11 +37,9 @@
                 </li>
             </ul>
             <ul class="right-links">
-
                 <li>
                     <a style="cursor:pointer" class="link" onclick="toggleDarkMode()">Dark Mode</a>
                 </li>
-
                 <li {% if request.path == url_for('about_page') %} class="active" {% endif %}>
                     <a class="link" href="{{ url_for('about_page') }}">About</a>
                 </li>
@@ -82,26 +70,5 @@
         </div>
 
     </body>
-
-    <script>
-        function toggleDarkMode() {
-            let bodyEl = document.getElementById('body');
-            let store = window.localStorage;
-            if(bodyEl.className === 'dark'){
-                // Make light mode
-                bodyEl.style.backgroundColor = 'inherit';
-                bodyEl.style.color = 'inherit';
-                bodyEl.className = '';
-                store.setItem('darkMode', false)
-                console.log('set to false')
-            } else {
-                bodyEl.style.backgroundColor = '#222';
-                bodyEl.style.color = '#fff';
-                bodyEl.className = 'dark';
-                store.setItem('darkMode', true)
-                console.log('set to true')
-            }
-        }
-    </script>
 
 </html>
