@@ -49,14 +49,14 @@
                             {% endif %}
                         </td>
                         <td>
-                            <a href="{{url_for('edit_instructor', id=instructor.id)}}">Edit</a>
+                            <a class="reset-link" href="{{url_for('edit_instructor', id=instructor.id)}}">Edit</a>
                         </td>
                     </tr>
                     {% endfor %}
                 </tbody>
             </table>
         </div>
-        <a class="" href="{{url_for('add_instructor')}}"> Create Instructor </a>
+        <a class="reset-link" href="{{url_for('add_instructor')}}"> Create Instructor </a>
     </div>
 </div>
 {% endblock %}

@@ -2,13 +2,32 @@
 
 :root {
     --primary-color: #0080ff; 
-    --ligh-primary-color: #a1d0ff;
+    --light-primary-color: #a1d0ff;
 
     /* Light blue -> Light Green */
     --navbar-gradient: linear-gradient(80deg, #7ee8fd 0%, #80ff72 110%);
+    --navbar-background: #80ff72;
 
     /* Dark blue -> light blue */
     /* --navbar-gradient: linear-gradient(80deg, #63a4ff 0%, #83eaf1 74%); */
+    /* --navbar-background: #63a4ff; */
+}
+
+.dark {
+    --primary-color: #0054a8;
+    --light-primary-color: #4d749b;
+    --navbar-gradient: linear-gradient(80deg, #222 0%, #222 80%);
+    color: #fff;
+    background-color: #333;
+}
+
+.dark a {
+    color: inherit;
+}
+
+
+.dark .reset-link {
+    color: cyan;
 }
 
 body {
@@ -37,6 +56,11 @@ body h3 {
     display: -ms-flexbox;
     display: flex;
     padding: 0 10px;
+    margin-bottom: 10px;
+}
+
+.dark .navbar {
+    box-shadow: -2px 0 16px 2px var(--navbar-background);
 }
 
 .navbar ul {
@@ -74,18 +98,22 @@ body h3 {
 .navbar a {
     text-decoration: none;
     font-size: 110%;
-    color: #000;
+    /* color: #000; */
     -webkit-transition: all 0.2s ease;
     -o-transition: all 0.2s ease;
-    transition: all 0.2s ease;
+    transition: font-size 0.2s ease;
 }
 
 .navbar a:hover:not(.no-grow), .navbar a:focus:not(.no-grow) {
     font-size: 120%;
 }
 
-.link:active {
+.link:visited, .link:active, .link:hover {
     color: #000;
+}
+
+.dark .link:visited, .dark .link:active, .dark .link:hover {
+    color: #fff;
 }
 
 .welcome {
@@ -227,6 +255,10 @@ body h3 {
     width: 100%;
 }
 
+.dark .form-label {
+    color: #eee;
+}
+
 .form-submit {
     padding: 15px;
     background-color: var(--primary-color);
@@ -237,7 +269,7 @@ body h3 {
 }
 
 .form-submit:disabled, .form-submit[disabled] {
-    background-color: var(--ligh-primary-color);
+    background-color: var(--light-primary-color);
     cursor: not-allowed;
 }
 
@@ -249,6 +281,12 @@ body h3 {
             box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.1);
     margin: 5px 0px;
     width: 100%;
+}
+
+.dark .form-input {
+    background-color: #444;
+    border-color: rgba(255, 255, 255, 0.2);
+    color: inherit;
 }
 
 .form {
@@ -347,6 +385,12 @@ textarea {
     margin-bottom: 20px;
 }
 
+.dark .queue-entry {
+    box-shadow: none;
+    border: 1px solid white;
+    background-color: inherit;
+}
+
 .queue-entry-left {
     float: left;
     -ms-flex-item-align: center;
@@ -372,6 +416,10 @@ textarea {
     color: #777;
 }
 
+.dark .queue-entry-position {
+    color: #999;
+}
+
 .queue-entry-name {
     display: inline-block;
     font-weight: bold;
@@ -395,8 +443,16 @@ textarea {
     border-radius: 5px;
 }
 
+.dark .table-container {
+    border-color: #fff;
+}
+
 .table-head-row {
     border-bottom: 1px solid #222;
+}
+
+.dark .table-head-row {
+    border-bottom-color: #fff;
 }
 
 .table-head-row th {
@@ -429,13 +485,22 @@ textarea {
     margin: 0px 2px;
 }
 
+.dark .stats-nav li {
+    background-color: inherit;
+    border: 1px solid white;
+}
+
 .stats-nav li a {
     text-decoration: none;
-    color: black;
+    color: inherit;
 }
 
 .stats-nav li:hover {
     background-color: #ccc;
+}
+
+.dark .stats-nav li:hover {
+    background-color: #444;
 }
 
 .num-stats {
@@ -475,6 +540,18 @@ textarea {
     display: flex;
     -ms-flex-pack: distribute;
         justify-content: space-around;
+}
+
+.dark .graph  text{
+    fill: #fff !important;
+}
+
+.dark .graph rect {
+    fill: #444 !important;
+}
+
+.dark .graph path, .dark .graph line {
+    stroke: #fff !important;
 }
 
 /* Tables */
