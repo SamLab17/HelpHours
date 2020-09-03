@@ -35,6 +35,14 @@ body {
     font-weight: 400;
     margin: 0;
     padding: 0;
+    -webkit-transition: color, background-color 0.5s ease-in;
+    -o-transition: color, background-color 0.5s ease-in;
+    transition: color, background-color 0.5s ease-in;
+}
+
+body * {
+    -webkit-transition: color, background-color 0.5s ease-in;
+    -o-transition: color, background-color 0.5s ease-in;
     transition: color, background-color 0.5s ease-in;
 }
 
@@ -61,7 +69,8 @@ body h3 {
 }
 
 .dark .navbar {
-    box-shadow: -2px 0 16px 2px var(--navbar-background);
+    -webkit-box-shadow: -2px 0 16px 2px var(--navbar-background);
+            box-shadow: -2px 0 16px 2px var(--navbar-background);
 }
 
 .navbar ul {
@@ -99,9 +108,11 @@ body h3 {
 .navbar a {
     text-decoration: none;
     font-size: 110%;
-    /* color: #000; */
+    color: inherit;
     -webkit-transition: all 0.2s ease;
     -o-transition: all 0.2s ease;
+    -webkit-transition: font-size 0.2s ease;
+    -o-transition: font-size 0.2s ease;
     transition: font-size 0.2s ease;
 }
 
@@ -241,7 +252,8 @@ body h3 {
 
 .dark .form-container{
     background-color: inherit;
-    box-shadow: none;
+    -webkit-box-shadow: none;
+            box-shadow: none;
     border: 1px solid white
 }
 
@@ -387,7 +399,8 @@ textarea {
 }
 
 .dark .queue-entry {
-    box-shadow: none;
+    -webkit-box-shadow: none;
+            box-shadow: none;
     border: 1px solid white;
     background-color: inherit;
 }
@@ -597,6 +610,8 @@ textarea {
             justify-content: space-between;
 }
 
-.no-transition {
+.no-transition, .no-transition * {
+    -webkit-transition: none !important;
+    -o-transition: none !important;
     transition: none !important;
 }
