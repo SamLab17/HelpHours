@@ -12,6 +12,8 @@
     </head>
 
     <body id="body">
+
+        
         <nav class="navbar">
             <ul aria-label="Navigation menu" class="left-links">
                 <li>
@@ -36,9 +38,6 @@
                 </li>
             </ul>
             <ul class="right-links">
-                <li>
-                    <a id="dark-mode-toggle" style="cursor:pointer" class="link" onclick="toggleDarkMode()">Dark Mode</a>
-                </li>
                 <li {% if request.path == url_for('about_page') %} class="active" {% endif %}>
                     <a class="link" href="{{ url_for('about_page') }}">About</a>
                 </li>
@@ -67,7 +66,12 @@
             {% block body %}
             {% endblock %}
         </div>
-
+        <div class="dark-mode-button" onclick="toggleDarkMode()" >
+            <a id="dark-mode-toggle" style="cursor:pointer" class="link" >
+                <img id="dark-mode-moon" src="{{ url_for('static', filename='images/moon.png') }}" style="height: 45px">
+                <img id="dark-mode-sun" src="{{ url_for('static', filename='images/sun.png') }}" style="height: 45px">
+            </a>
+        </div>
     </body>
 
     <script src="{{ url_for('static', filename='scripts/darkmode.js') }}"></script>
