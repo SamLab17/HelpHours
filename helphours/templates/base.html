@@ -6,13 +6,14 @@
         <link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('static', filename='icons/favicon-32x32.png') }}">
         <link rel="icon" type="image/png" sizes="16x16" href="{{ url_for('static', filename='icons/favicon-16x16.png') }}">
        
-         <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300;400;600;700&display=swap" rel="stylesheet"> 
+
         {% block head %}
         {% endblock %}
     </head>
 
-    <body>
+    <body id="body">
 
+        
         <nav class="navbar">
             <ul aria-label="Navigation menu" class="left-links">
                 <li>
@@ -61,11 +62,17 @@
                 {% endif %}
             </ul>
         </nav>
-        <div class="content">
+        <div id="content-div" class="content">
             {% block body %}
             {% endblock %}
         </div>
-
+        <div class="dark-mode-button" onclick="toggleDarkMode()" >
+            <a id="dark-mode-toggle" style="cursor:pointer" class="link" >
+                <img id="dark-mode-moon" src="{{ url_for('static', filename='images/moon.png') }}" style="height: 45px">
+                <img id="dark-mode-sun" src="{{ url_for('static', filename='images/sun.png') }}" style="height: 45px">
+            </a>
+        </div>
     </body>
 
+    <script src="{{ url_for('static', filename='scripts/darkmode.js') }}"></script>
 </html>

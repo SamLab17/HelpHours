@@ -2,13 +2,32 @@
 
 :root {
     --primary-color: #0080ff; 
-    --ligh-primary-color: #a1d0ff;
+    --light-primary-color: #a1d0ff;
 
     /* Light blue -> Light Green */
     --navbar-gradient: linear-gradient(80deg, #7ee8fd 0%, #80ff72 110%);
+    --navbar-background: #80ff72;
 
     /* Dark blue -> light blue */
-    /* --navbar-gradient: linear-gradient(80deg, #63a4ff 0%, #83eaf1 74%); */
+    /* --navbar-gradient: linear-gradient(80deg, #63a4ff 0%, #83eaf1 74%);
+    --navbar-background: #63a4ff; */
+}
+
+.dark {
+    --primary-color: #0054a8;
+    --light-primary-color: #4d749b;
+    --navbar-gradient: linear-gradient(80deg, #222 0%, #222 80%);
+    color: #fff;
+    background-color: #333;
+}
+
+.dark a {
+    color: inherit;
+}
+
+
+.dark .reset-link {
+    color: cyan;
 }
 
 body {
@@ -16,6 +35,15 @@ body {
     font-weight: 400;
     margin: 0;
     padding: 0;
+    -webkit-transition: color, background-color 0.5s ease-in;
+    -o-transition: color, background-color 0.5s ease-in;
+    transition: color, background-color 0.5s ease-in;
+}
+
+body * {
+    -webkit-transition: color, background-color 0.5s ease-in;
+    -o-transition: color, background-color 0.5s ease-in;
+    transition: color, background-color 0.5s ease-in;
 }
 
 body h1,
@@ -37,6 +65,12 @@ body h3 {
     display: -ms-flexbox;
     display: flex;
     padding: 0 10px;
+    margin-bottom: 10px;
+}
+
+.dark .navbar {
+    -webkit-box-shadow: -2px 0 16px 2px var(--navbar-background);
+            box-shadow: -2px 0 16px 2px var(--navbar-background);
 }
 
 .navbar ul {
@@ -74,18 +108,24 @@ body h3 {
 .navbar a {
     text-decoration: none;
     font-size: 110%;
-    color: #000;
+    color: inherit;
     -webkit-transition: all 0.2s ease;
     -o-transition: all 0.2s ease;
-    transition: all 0.2s ease;
+    -webkit-transition: font-size 0.2s ease;
+    -o-transition: font-size 0.2s ease;
+    transition: font-size 0.2s ease;
 }
 
 .navbar a:hover:not(.no-grow), .navbar a:focus:not(.no-grow) {
     font-size: 120%;
 }
 
-.link:active {
+.link:visited, .link:active, .link:hover {
     color: #000;
+}
+
+.dark .link:visited, .dark .link:active, .dark .link:hover {
+    color: #fff;
 }
 
 .welcome {
@@ -210,6 +250,13 @@ body h3 {
             flex-direction: column; 
 }
 
+.dark .form-container{
+    background-color: inherit;
+    -webkit-box-shadow: none;
+            box-shadow: none;
+    border: 1px solid white
+}
+
 .form-title {
     display: block;
     width: 100%;
@@ -219,6 +266,10 @@ body h3 {
     display: block;
     color: #222;
     width: 100%;
+}
+
+.dark .form-label {
+    color: #eee;
 }
 
 .form-submit {
@@ -231,7 +282,7 @@ body h3 {
 }
 
 .form-submit:disabled, .form-submit[disabled] {
-    background-color: var(--ligh-primary-color);
+    background-color: var(--light-primary-color);
     cursor: not-allowed;
 }
 
@@ -243,6 +294,12 @@ body h3 {
             box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.1);
     margin: 5px 0px;
     width: 100%;
+}
+
+.dark .form-input {
+    background-color: #444;
+    border-color: rgba(255, 255, 255, 0.2);
+    color: inherit;
 }
 
 .form {
@@ -341,6 +398,13 @@ textarea {
     margin-bottom: 20px;
 }
 
+.dark .queue-entry {
+    -webkit-box-shadow: none;
+            box-shadow: none;
+    border: 1px solid white;
+    background-color: inherit;
+}
+
 .queue-entry-left {
     float: left;
     -ms-flex-item-align: center;
@@ -366,6 +430,10 @@ textarea {
     color: #777;
 }
 
+.dark .queue-entry-position {
+    color: #999;
+}
+
 .queue-entry-name {
     display: inline-block;
     font-weight: bold;
@@ -389,8 +457,16 @@ textarea {
     border-radius: 5px;
 }
 
+.dark .table-container {
+    border-color: #fff;
+}
+
 .table-head-row {
     border-bottom: 1px solid #222;
+}
+
+.dark .table-head-row {
+    border-bottom-color: #fff;
 }
 
 .table-head-row th {
@@ -423,13 +499,22 @@ textarea {
     margin: 0px 2px;
 }
 
+.dark .stats-nav li {
+    background-color: inherit;
+    border: 1px solid white;
+}
+
 .stats-nav li a {
     text-decoration: none;
-    color: black;
+    color: inherit;
 }
 
 .stats-nav li:hover {
     background-color: #ccc;
+}
+
+.dark .stats-nav li:hover {
+    background-color: #444;
 }
 
 .num-stats {
@@ -469,6 +554,18 @@ textarea {
     display: flex;
     -ms-flex-pack: distribute;
         justify-content: space-around;
+}
+
+.dark .graph  text{
+    fill: #fff !important;
+}
+
+.dark .graph rect {
+    fill: #444 !important;
+}
+
+.dark .graph path, .dark .graph line {
+    stroke: #fff !important;
 }
 
 /* Tables */
@@ -511,4 +608,46 @@ textarea {
     -webkit-box-pack: justify;
         -ms-flex-pack: justify;
             justify-content: space-between;
+}
+
+.dark-mode-button {
+    position: fixed;
+    float: right;
+    right: 10px;
+    bottom: 10px;
+    width: 60px;
+    height: 60px;
+    border-radius: 20%;
+    /* background-color: #222; */
+    /* color: #fff; */
+    box-shadow: 2px 2px 4px 5px rgba(0, 0, 0, 0.1);
+    /* border: 1px solid black; */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.dark-mode-button a {
+    text-align: center;
+}
+
+.dark-mode-button a:hover {
+    color: inherit;
+}
+
+.dark .dark-mode-button {
+    /* background-color: #eee; */
+    /* color: #000; */
+    box-shadow: none;
+    border: 1px solid white;
+}
+
+.dark .dark-mode-button:hover {
+    color: #000;
+}
+
+.no-transition, .no-transition * {
+    -webkit-transition: none !important;
+    -o-transition: none !important;
+    transition: none !important;
 }
