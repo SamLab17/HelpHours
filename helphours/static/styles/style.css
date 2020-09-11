@@ -5,12 +5,9 @@
     --light-primary-color: #a1d0ff;
 
     /* Light blue -> Light Green */
+    /* Backup navbar variables, these will be overriden in base.html */
     --navbar-gradient: linear-gradient(80deg, #7ee8fd 0%, #80ff72 110%);
     --navbar-background: #80ff72;
-
-    /* Dark blue -> light blue */
-    /* --navbar-gradient: linear-gradient(80deg, #63a4ff 0%, #83eaf1 74%);
-    --navbar-background: #63a4ff; */
 }
 
 .dark {
