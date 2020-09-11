@@ -29,7 +29,9 @@ def inject_variables():
 def course_info():
     return dict(COURSE_NAME=app.config['COURSE_NAME'],
                 COURSE_DESCRIPTION=app.config['COURSE_DESCRIPTION'],
-                CURRENT_DUCK=CURRENT_DUCK)
+                CURRENT_DUCK=CURRENT_DUCK,
+                NAV_COLOR=app.config['NAV_COLOR'],
+                NAV_GRADIENT=app.config['NAV_GRADIENT'])
 
 
 @app.route("/", methods=['GET'])
