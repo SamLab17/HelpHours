@@ -7,7 +7,7 @@
 
 <div class="center-content">
     <div class="form-container">
-        <form class="form">
+        <form class="form" method="POST">
             {{ form.csrf_token }}
             <input name="id" type="hidden" id="id" value="{{ id }}"></input>
             <h2 class="form-title">{{ title }}</h2>
@@ -46,7 +46,7 @@
                 </div>
 
                 <div>
-                    {{ form.submit(class='')}}
+                    {{ form.submit(class='form-submit')}}
                     <a href="{{ url_for('admin_panel') }}">Cancel</a>
                 </div>
         </form>
