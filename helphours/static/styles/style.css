@@ -551,6 +551,7 @@ textarea {
     display: flex;
     -ms-flex-pack: distribute;
         justify-content: space-around;
+    flex-wrap: wrap;
 }
 
 .dark .graph  text{
