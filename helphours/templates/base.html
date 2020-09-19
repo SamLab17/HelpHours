@@ -13,6 +13,12 @@
             }
         </style>
 
+        <script>
+            function toggleDropdown() {
+                document.getElementById("dd-content").classList.toggle("show");
+            }
+        </script>
+
         {% block head %}
         {% endblock %}
     </head>
@@ -51,8 +57,8 @@
                 {% if g.user.is_authenticated %}
                     <li>
                         <div class="dropdown">
-                        <a class="link">Instructors</a>
-                        <div class="dropdown-content">
+                        <a onclick="toggleDropdown()" class="link">Instructors</a>
+                        <div id = "dd-content" class="dropdown-content">
                             <a class="link" href="{{ url_for('change_zoom') }}">Change Zoom Link</a>
                             <a class="link" href="{{ url_for('stats_page') }}">Stats</a>
                             {% if g.user.is_admin %}

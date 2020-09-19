@@ -221,6 +221,11 @@ body h3 {
     right: 0;
 }
 
+.show {
+    display: block;
+    right: 0;
+}
+
 .form-container {
     background-color: #eee;
     min-width: 30%;
