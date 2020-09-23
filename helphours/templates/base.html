@@ -51,15 +51,20 @@
                 {% if g.user.is_authenticated %}
                     <li>
                         <div class="dropdown">
-                        <a class="link">Instructors</a>
-                        <div class="dropdown-content">
-                            <a class="link" href="{{ url_for('change_zoom') }}">Change Zoom Link</a>
-                            <a class="link" href="{{ url_for('stats_page') }}">Stats</a>
-                            {% if g.user.is_admin %}
-                                <a class="link" href="{{ url_for('admin_panel') }}">Admin</a>
-                            {% endif %}
-                            <a class="link" href="{{ url_for('logout') }}">Logout</a>
-                        </div>
+                            <script>
+                                function toggleDropdown() {
+                                    document.getElementById("dd-content").classList.toggle("toggle-dropdown-content");
+                                }
+                            </script>
+                            <a onclick="toggleDropdown()" class="link">Instructors</a>
+                            <div id = "dd-content" class="dropdown-content">
+                                <a class="link" href="{{ url_for('change_zoom') }}">Change Zoom Link</a>
+                                <a class="link" href="{{ url_for('stats_page') }}">Stats</a>
+                                {% if g.user.is_admin %}
+                                    <a class="link" href="{{ url_for('admin_panel') }}">Admin</a>
+                                {% endif %}
+                                <a class="link" href="{{ url_for('logout') }}">Logout</a>
+                            </div>
                         </div>
                     </li>
                 {% else %}
