@@ -160,6 +160,7 @@ body h3 {
     margin: 0 20px;
 }
 
+
 .content {
     height: 100%;
     max-height: 90vh;
@@ -203,7 +204,7 @@ body h3 {
 .dropdown-content {
     display: none;
     position: absolute;
-    min-width: 210%;
+    min-width: 220%;
     /* margin-top: 10px; */
     margin-right: -5px;
 }
@@ -243,7 +244,7 @@ body h3 {
     display: flex;
     -ms-flex-line-pack: center;
         align-content: center;
-    -webkit-box-pack: center;
+    -webkit-box-pack: Zoom;
         -ms-flex-pack: center;
             justify-content: center;
     -webkit-box-orient: vertical;
@@ -280,7 +281,7 @@ body h3 {
 }
 
 .form-submit {
-    padding: 15px;
+    padding: 10px;
     background-color: var(--primary-color);
     color: #fff;
     border-radius: 5px;
@@ -291,6 +292,19 @@ body h3 {
 .form-submit:disabled, .form-submit[disabled] {
     background-color: var(--light-primary-color);
     cursor: not-allowed;
+}
+
+.form-cancel {
+    padding: 10px;
+    background-color: inherit;
+    color: inherit;
+    border-radius: 5px;
+    border: none;
+    /* border: 1px solid inherit; */
+    /* background-color: var(--light-primary-color); */
+    cursor: pointer;
+    margin-left: 20px;
+    text-decoration: none;
 }
 
 .form-input {
@@ -680,7 +694,7 @@ textarea {
     height: 100%;
     margin-left: auto;
     margin-right: auto;
-    margin-top: 100px;
+    margin-top: 80px;
 }
 
 .meeting-link {
@@ -709,4 +723,12 @@ textarea {
 
 .dark .meeting-link:hover, .dark .meeting-link:focus {
     transform: translateY(-3px);
+}
+
+.change-zoom-button {
+    margin-bottom: 20px;
+}
+
+.change-zoom-button a {
+    text-decoration: none;
 }

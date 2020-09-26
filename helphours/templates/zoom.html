@@ -12,6 +12,12 @@
 
 
 <div class="link-container">
+    {% if g.user.is_authenticated %}
+        <div class="center-horizontal change-zoom-button">
+            <a class="form-submit" href="{{ url_for('change_zoom') }}">Change Zoom Links</a>
+        </div>
+    {% endif %}
+    
     {% for link in links %}
         <a class="meeting-link" href="{{ link.url }}">
             <div class="link-entry">
@@ -19,6 +25,8 @@
             </div>
         </a>
     {% endfor %}
+
+    
 </div> 
 
 </div>
