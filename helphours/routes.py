@@ -1,6 +1,5 @@
 import json
 import secrets
-import validators
 from helphours import app, log, db, notifier, queue_handler, routes_helper, password_reset, stats, zoom_helper
 from flask import render_template, url_for, redirect, request, g, send_from_directory
 from helphours.forms import JoinQueueForm, RemoveSelfForm, InstructorForm
@@ -148,7 +147,8 @@ def zoom_links():
 #             if validators.url(temp):
 #                 current_zoom_link = temp
 #                 message = "The link has been changed"
-#                 log.info(f'{current_user.first_name} {current_user.last_name} changed the zoom link to a custom link.')
+#                 log.info(f'{current_user.first_name} {current_user.last_name}'
+#                          + 'changed the zoom link to a custom link.')
 #             else:
 #                 message = "Invalid URL"
 #     return render_template('change_zoom.html', message=message, preset_links=preset_links)
