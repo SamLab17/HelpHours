@@ -114,7 +114,7 @@ def remove():
 
 
 @app.route("/zoom", methods=['GET'])
-def zoom_redirect():
+def zoom_links():
     # if current_zoom_link != '':
     #     return redirect(current_zoom_link)
     # return redirect(app.config['DEFAULT_ZOOM_LINK'])
@@ -162,7 +162,7 @@ def change_zoom():
 
     if request.method == 'POST':
         if 'cancel' in request.form:
-            return redirect(url_for('view'))
+            return redirect(url_for('zoom_links'))
 
         new_presets = request.form['preset-links']
         try:
@@ -172,7 +172,7 @@ def change_zoom():
                 db.session.add(new_link)
             db.session.commit()
             log.info(f'{current_user.first_name} {current_user.last_name} updated the Zoom links.')
-            return redirect(url_for('change_zoom'))
+            return redirect(url_for('zoom_links'))
         except Exception as e:
             message = str(e)
     return render_template('edit_preset_links.html', message=message, preset_links=preset_links)
