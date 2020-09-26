@@ -12,11 +12,13 @@
 
 
 <div class="link-container">
-    {% if g.user.is_authenticated %}
         <div class="center-horizontal change-zoom-button">
-            <a class="form-submit" href="{{ url_for('change_zoom') }}">Change Zoom Links</a>
+            {% if g.user.is_authenticated %}
+                <a class="form-submit" href="{{ url_for('change_zoom') }}">Change Zoom Links</a>
+            {% else %}
+                <span>You must be signed in to your UT Zoom account to join these meetings.</span>
+            {% endif %}
         </div>
-    {% endif %}
     
     {% for link in links %}
         <a class="meeting-link" href="{{ link.url }}">
