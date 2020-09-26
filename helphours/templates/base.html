@@ -38,7 +38,7 @@
                     <a class="link" href="{{ url_for('remove') }}">Remove Self</a>
                 </li>
                 <li {% if request.path == url_for('zoom_redirect') %} class="active" {% endif %}>
-                    <a class="link" href="{{ url_for('zoom_redirect') }}" target="_blank">Zoom Meeting</a>
+                    <a class="link" href="{{ url_for('zoom_redirect') }}">Zoom Meeting</a>
                 </li>
                 <li {% if request.path == url_for('schedule_redirect') %} class="active" {% endif %}>
                     <a class="link" href="{{ url_for('schedule_redirect') }}" target="_blank">Schedule</a>
@@ -58,7 +58,7 @@
                             </script>
                             <a onclick="toggleDropdown()" class="link">Instructors</a>
                             <div id = "dd-content" class="dropdown-content">
-                                <a class="link" href="{{ url_for('change_zoom') }}">Change Zoom Link</a>
+                                <a class="link" href="{{ url_for('change_zoom') }}">Change Zoom Links</a>
                                 <a class="link" href="{{ url_for('stats_page') }}">Stats</a>
                                 {% if g.user.is_admin %}
                                     <a class="link" href="{{ url_for('admin_panel') }}">Admin</a>

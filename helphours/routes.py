@@ -115,53 +115,54 @@ def remove():
 
 @app.route("/zoom", methods=['GET'])
 def zoom_redirect():
-    if current_zoom_link != '':
-        return redirect(current_zoom_link)
-    return redirect(app.config['DEFAULT_ZOOM_LINK'])
+    # if current_zoom_link != '':
+    #     return redirect(current_zoom_link)
+    # return redirect(app.config['DEFAULT_ZOOM_LINK'])
+    return render_template('zoom.html', links=ZoomLink.query.all())
 
 
-@app.route("/change_zoom", methods=['GET', 'POST'])
+# @app.route("/change_zoom", methods=['GET', 'POST'])
+# @login_required
+# def change_zoom():
+#     global current_zoom_link
+#     preset_links = ZoomLink.query.all()
+#     message = ""
+
+#     if request.method == 'POST':
+#         if 'preset' in request.form:
+#             index = int(request.form['preset-links'])
+#             if index == 0:
+#                 message = "Invalid choice"
+#             else:
+#                 # 0th index is placeholder, 1st option is index 0 in preset_links
+#                 link_obj = preset_links[index - 1]
+#                 current_zoom_link = link_obj.url
+
+#                 # Log the change
+#                 desc = link_obj.description
+#                 log.info(f'{current_user.first_name} {current_user.last_name} changed the zoom link to {desc}.')
+
+#                 message = "The link has been changed"
+#         elif 'new' in request.form:
+#             temp = request.form['other-link']
+#             if validators.url(temp):
+#                 current_zoom_link = temp
+#                 message = "The link has been changed"
+#                 log.info(f'{current_user.first_name} {current_user.last_name} changed the zoom link to a custom link.')
+#             else:
+#                 message = "Invalid URL"
+#     return render_template('change_zoom.html', message=message, preset_links=preset_links)
+
+
+@app.route('/change_zoom', methods=['GET', 'POST'])
 @login_required
 def change_zoom():
-    global current_zoom_link
-    preset_links = ZoomLink.query.all()
-    message = ""
-
-    if request.method == 'POST':
-        if 'preset' in request.form:
-            index = int(request.form['preset-links'])
-            if index == 0:
-                message = "Invalid choice"
-            else:
-                # 0th index is placeholder, 1st option is index 0 in preset_links
-                link_obj = preset_links[index - 1]
-                current_zoom_link = link_obj.url
-
-                # Log the change
-                desc = link_obj.description
-                log.info(f'{current_user.first_name} {current_user.last_name} changed the zoom link to {desc}.')
-
-                message = "The link has been changed"
-        elif 'new' in request.form:
-            temp = request.form['other-link']
-            if validators.url(temp):
-                current_zoom_link = temp
-                message = "The link has been changed"
-                log.info(f'{current_user.first_name} {current_user.last_name} changed the zoom link to a custom link.')
-            else:
-                message = "Invalid URL"
-    return render_template('change_zoom.html', message=message, preset_links=preset_links)
-
-
-@app.route('/edit_preset_links', methods=['GET', 'POST'])
-@login_required
-def edit_preset_links():
     message = ""
     preset_links = ZoomLink.query.all()
 
     if request.method == 'POST':
         if 'cancel' in request.form:
-            return redirect(url_for('change_zoom'))
+            return redirect(url_for('view'))
 
         new_presets = request.form['preset-links']
         try:

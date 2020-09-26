@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block head %}
+
+<title>Zoom Links</title>
+
+{% endblock %}
+
+{% block body %}
+
+<h1>Zoom Meeting Links</h1>
+
+
+<div class="link-container">
+    {% for link in links %}
+        <a class="meeting-link" href="{{ link.url }}">
+            <div class="link-entry">
+                <div class="link-desc">{{ link.description }}</div>
+            </div>
+        </a>
+    {% endfor %}
+</div> 
+
+</div>
+
+{% endblock %}

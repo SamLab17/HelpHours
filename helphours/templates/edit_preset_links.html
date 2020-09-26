@@ -7,15 +7,17 @@
 {% block body %}
 <div class="center-content">
     <div class="form-container">
-        <h2 class="form-title">Change Preset Links</h2>
+        <h2 class="form-title">Change Zoom Links</h2>
 
         <form class="form" method="POST">
             {% if message|length > 0 %}
                 <p class="error-message">{{ message }}</p>
             {% endif %}
-            <textarea rows='12' name="preset-links" 
-                placeholder="{{'Description 1\nURL 1\n\nDescription 2\nURL 2'}}"
-            >{% for preset in preset_links %}{{ preset.description + '\n' + preset.url + '\n\n'}}{% endfor %}</textarea>
+            <div class="full-width">
+                <textarea rows='12' name="preset-links" 
+                    placeholder="{{'Description 1\nURL 1\n\nDescription 2\nURL 2'}}"
+                >{% for preset in preset_links %}{{ preset.description + '\n' + preset.url + '\n\n'}}{% endfor %}</textarea>
+            </div>
             <button type="submit" class="form-submit">Update Preset Links</button>
             <button name="cancel">Cancel</button>
         </form>

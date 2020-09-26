@@ -252,11 +252,16 @@ body h3 {
             flex-direction: column; 
 }
 
+
 .dark .form-container{
     background-color: inherit;
     -webkit-box-shadow: none;
             box-shadow: none;
     border: 1px solid white
+}
+
+.full-width {
+    width: 100%;
 }
 
 .form-title {
@@ -652,4 +657,56 @@ textarea {
     -webkit-transition: none !important;
     -o-transition: none !important;
     transition: none !important;
+}
+
+.meeting-link, .meeting-link:link, .meeting-link:active, .meeting-link:visited, .meeting-link:hover {
+    text-decoration: none;
+    color: inherit;
+    font-weight: bold;
+    font-size: 120%;
+}
+
+.meeting-link:hover, .meeting-link:focus {
+    color: var(--primary-color);
+}
+
+.dark .meeting-link:hover, .dark .meeting-link:focus {
+    color: inherit;
+    border-color: var(--navbar-background);
+}
+
+.link-container {
+    width: 60%;
+    height: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 100px;
+}
+
+.meeting-link {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    padding: 20px 30px;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.15), 0 6px 6px rgba(0,0,0,0.20);
+    border-radius: 5px;
+    background-color: #eee;
+    margin-bottom: 20px;
+    transition: all 0.2s cubic-bezier(.25, .8, .25, 1);
+    margin-bottom: 30px;
+}
+
+.meeting-link:hover, .meeting-link:focus {
+    box-shadow: 0 14px 28px rgba(0,0,0,0.20), 0 10px 10px rgba(0,0,0,0.17);
+}
+
+.dark .meeting-link {
+    -webkit-box-shadow: none;
+            box-shadow: none;
+    border: 1px solid white;
+    background-color: inherit;
+}
+
+.dark .meeting-link:hover, .dark .meeting-link:focus {
+    transform: translateY(-3px);
 }
