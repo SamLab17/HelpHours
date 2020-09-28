@@ -5,7 +5,6 @@
 {% endblock %}
 
 {% block body %}
-
 <script>
     function playSqueak(){
         console.log('squeak')
@@ -17,9 +16,9 @@
 <div class="welcome">
     <div class="vertical-center">
         <audio id="audio" src="{{ url_for('static', filename='sound/squeak.mp3') }}"></audio>
-        <img src="{{ CURRENT_DUCK }}" alt-text="Rubber Duck" style="width: 120px;" class="duck-left" onclick="playSqueak()">
+        <a href="https://texas.turbovote.org" target="_blank"><img src="/static/images/register-left.png" alt-text="Rubber Duck" style="width: 140px;" class="duck-left" onclick="playSqueak()"></a>
         <h1> Welcome to Help Hours for {{ COURSE_NAME }}! </h1>
-        <img src="{{ CURRENT_DUCK }}" alt-text="Rubber Duck" style="width: 120px;" class="duck-right" onclick="playSqueak()">
+        <a href="https://texas.turbovote.org" target="_blank"><img src="/static/images/register-right.png" alt-text="Rubber Duck" style="width: 140px;" class="duck-right" onclick="playSqueak()"></a>
     </div>
 
 </div>
