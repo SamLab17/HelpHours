@@ -160,6 +160,7 @@ body h3 {
     margin: 0 20px;
 }
 
+
 .content {
     height: 100%;
     max-height: 90vh;
@@ -203,7 +204,7 @@ body h3 {
 .dropdown-content {
     display: none;
     position: absolute;
-    min-width: 210%;
+    min-width: 220%;
     /* margin-top: 10px; */
     margin-right: -5px;
 }
@@ -243,7 +244,7 @@ body h3 {
     display: flex;
     -ms-flex-line-pack: center;
         align-content: center;
-    -webkit-box-pack: center;
+    -webkit-box-pack: Zoom;
         -ms-flex-pack: center;
             justify-content: center;
     -webkit-box-orient: vertical;
@@ -252,11 +253,16 @@ body h3 {
             flex-direction: column; 
 }
 
+
 .dark .form-container{
     background-color: inherit;
     -webkit-box-shadow: none;
             box-shadow: none;
     border: 1px solid white
+}
+
+.full-width {
+    width: 100%;
 }
 
 .form-title {
@@ -275,7 +281,7 @@ body h3 {
 }
 
 .form-submit {
-    padding: 15px;
+    padding: 10px;
     background-color: var(--primary-color);
     color: #fff;
     border-radius: 5px;
@@ -286,6 +292,19 @@ body h3 {
 .form-submit:disabled, .form-submit[disabled] {
     background-color: var(--light-primary-color);
     cursor: not-allowed;
+}
+
+.form-cancel {
+    padding: 10px;
+    background-color: inherit;
+    color: inherit;
+    border-radius: 5px;
+    border: none;
+    /* border: 1px solid inherit; */
+    /* background-color: var(--light-primary-color); */
+    cursor: pointer;
+    margin-left: 20px;
+    text-decoration: none;
 }
 
 .form-input {
@@ -652,4 +671,64 @@ textarea {
     -webkit-transition: none !important;
     -o-transition: none !important;
     transition: none !important;
+}
+
+.meeting-link, .meeting-link:link, .meeting-link:active, .meeting-link:visited, .meeting-link:hover {
+    text-decoration: none;
+    color: inherit;
+    font-weight: bold;
+    font-size: 120%;
+}
+
+.meeting-link:hover, .meeting-link:focus {
+    color: var(--primary-color);
+}
+
+.dark .meeting-link:hover, .dark .meeting-link:focus {
+    color: inherit;
+    border-color: var(--navbar-background);
+}
+
+.link-container {
+    width: 60%;
+    height: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 50px;
+}
+
+.meeting-link {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    padding: 20px 30px;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.15), 0 6px 6px rgba(0,0,0,0.20);
+    border-radius: 5px;
+    background-color: #eee;
+    margin-bottom: 20px;
+    transition: all 0.2s cubic-bezier(.25, .8, .25, 1);
+    margin-bottom: 30px;
+}
+
+.meeting-link:hover, .meeting-link:focus {
+    box-shadow: 0 14px 28px rgba(0,0,0,0.20), 0 10px 10px rgba(0,0,0,0.17);
+}
+
+.dark .meeting-link {
+    -webkit-box-shadow: none;
+            box-shadow: none;
+    border: 1px solid white;
+    background-color: inherit;
+}
+
+.dark .meeting-link:hover, .dark .meeting-link:focus {
+    transform: translateY(-3px);
+}
+
+.change-zoom-button {
+    margin-bottom: 20px;
+}
+
+.change-zoom-button a {
+    text-decoration: none;
 }

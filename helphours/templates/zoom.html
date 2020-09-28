@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block head %}
+
+<title>Zoom Links</title>
+
+{% endblock %}
+
+{% block body %}
+
+<h1>Zoom Meeting Links</h1>
+
+
+<div class="link-container">
+        <div class="center-horizontal change-zoom-button">
+            {% if g.user.is_authenticated %}
+                <a class="form-submit" href="{{ url_for('change_zoom') }}">Change Zoom Links</a>
+            {% else %}
+                <span>You must be signed in to your UT Zoom account to join these meetings.</span>
+            {% endif %}
+        </div>
+    
+    {% for link in links %}
+        <a class="meeting-link" href="{{ link.url }}">
+            <div class="link-entry">
+                <div class="link-desc">{{ link.description }}</div>
+            </div>
+        </a>
+    {% endfor %}
+
+    
+</div> 
+
+</div>
+
+{% endblock %}
