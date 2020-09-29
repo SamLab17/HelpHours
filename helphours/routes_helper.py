@@ -1,18 +1,16 @@
-from helphours import notifier, db, queue_handler, app
+from helphours import notifier, db, queue_handler, app, log
 from flask import render_template, g, url_for
 from helphours.models.visit import Visit
 from datetime import datetime
 
-"""
-    Handle post requests in the view line page.
-    Will return a boolean indicating whether the line should be
-    open (True) or closed (False).
-"""
-
 
 def handle_line_form(request, curr_open_state):
-    # Handle removing student, the line's "open state" should
-    # be unchanged.
+    """
+        Handle post requests in the view line page.
+        Will return a boolean indicating whether the line should be
+        open (True) or closed (False).
+    """
+    # Handle removing student, the line's "open state" should be unchanged.
     if 'finished' in request.form or 'removed' in request.form:
         handle_remove(request)
         return curr_open_state
@@ -24,34 +22,21 @@ def handle_line_form(request, curr_open_state):
         return True
 
 
-"""
-    Handles removing a student from the view queue
-    page. This can be done either using the "Finish"
-    button once a student is helped or the "Remove" button
-    if a student is removed from the queue without being
-    helped. Will notify new runner-up in the queue.
-"""
-
-
 def handle_remove(request):
+    """
+        Handles removing a student from the view queue
+        page. This can be done either using the "Finish"
+        button once a student is helped or the "Remove" button
+        if a student is removed from the queue without being
+        helped. Will notify new runner-up in the queue.
+    """
     if 'finished' in request.form:
         uid = request.form['finished']
     elif 'removed' in request.form:
         uid = request.form['removed']
-    queue_handler.remove(uid)
-    # Update this visit entry in the database
-    v = Visit.query.filter_by(id=uid).first()
-    if v is not None:
-        v.time_left = datetime.utcnow()
-        if 'finished' in request.form:
-            v.was_helped = 1
-            v.instructor_id = g.user.id
-        elif 'removed' in request.form:
-            v.was_helped = 0
-        # Write changes to database
-        db.session.commit()
-    else:
-        print(f"Did not find entry for {uid} in the visits table.")
+    # Remove the student from the queue and update the database
+    remove_helper(uid, was_helped=('finised' in request.form), instructor_id=g.user.id)
+
     # Notify runner-up in the queue
     s = queue_handler.peek_runner_up()
     if s is not None and not s.notified:
@@ -64,14 +49,12 @@ def handle_remove(request):
             print(f"Failed to send email to {s.email}. {e}")
 
 
-"""
-    Formats a place in the queue with the appropriate suffix.
-    i.e. 1 => "1st", 2 -> "2nd", etc
-    Used in the email when someone joins the queue
-"""
-
-
 def get_place_str(place):
+    """
+        Formats a place in the queue with the appropriate suffix.
+        i.e. 1 => "1st", 2 -> "2nd", etc
+        Used in the email when someone joins the queue
+    """
     place_str = str(place)
     if len(place_str) == 2 and place_str[0] == '1':
         return f"{place}th"
@@ -83,3 +66,22 @@ def get_place_str(place):
         return f"{place}rd"
     else:
         return f"{place}th"
+
+
+def remove_helper(uid, was_helped=False, instructor_id=None):
+    """
+        Removes the student from the queue and updates the
+        visit entry with the time they were removed.
+    """
+    queue_handler.remove(uid)
+    v = Visit.query.filter_by(id=uid).first()
+    if v is not None:
+        v.time_left = datetime.now()
+        if was_helped:
+            v.wasHelped = 1
+            v.instructor_id = instructor_id
+        else:
+            v.wasHelped = 0
+        db.session.commit()
+    else:
+        log.error(f"DId not find entry for {uid} in the visits table.")
