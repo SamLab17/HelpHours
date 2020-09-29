@@ -10,9 +10,10 @@ setInterval(updateQueue, UPDATE_INTERVAL_SECONDS * 1000);
 function updateQueue() {
     fetch('/queue').then(response => response.json())
         .then(renderQueue)
-        .catch(() => {
+        .catch((e) => {
             clearQueue();
-            displayMessage('Couldn\'t connect to the server to retrieve the queue.')
+            displayMessage('Couldn\'t connect to the server to retrieve the queue.');
+            console.log(e);
         });
 }
 

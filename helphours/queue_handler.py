@@ -1,4 +1,4 @@
-from flask import jsonify
+import json
 
 """
     Representation of the Queue in memory. This
@@ -118,7 +118,7 @@ def generate_serialized_queues():
     students = get_students()
 
     instructor_serialized_list = [students[i].serialize_instructor_view(i) for i in range(len(students))]
-    serialized_instructor_view = jsonify({'queue': instructor_serialized_list})
+    serialized_instructor_view = json.dumps({'queue': instructor_serialized_list})
 
     student_serialized_list = [students[i].serialize_student_view(i) for i in range(len(students))]
-    serialized_student_view = jsonify({'queue': student_serialized_list})
+    serialized_student_view = json.dumps({'queue': student_serialized_list})
