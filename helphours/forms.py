@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField, PasswordField, BooleanField
-from wtforms.validators import DataRequired, Length, Email, EqualTo
+from wtforms.validators import DataRequired, Length, Email, EqualTo, Regexp
 
 
 class JoinQueueForm(FlaskForm):
@@ -13,7 +13,8 @@ class JoinQueueForm(FlaskForm):
         Email()
     ])
     eid = StringField('EID', validators=[
-        DataRequired()
+        DataRequired(),
+        Regexp('^[a-zA-Z0-9]+$', message="Not a valid EID token")
     ])
     submit = SubmitField('Join the Queue!')
 
