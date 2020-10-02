@@ -84,4 +84,4 @@ def remove_helper(uid, was_helped=False, instructor_id=None):
             v.wasHelped = 0
         db.session.commit()
     else:
-        log.error(f"DId not find entry for {uid} in the visits table.")
+        log.error(f"Did not find entry for {uid} in the visits table.")
