@@ -76,7 +76,7 @@ def remove_helper(uid, was_helped=False, instructor_id=None):
     queue_handler.remove(uid)
     v = Visit.query.filter_by(id=uid).first()
     if v is not None:
-        v.time_left = datetime.now()
+        v.time_left = datetime.utcnow()
         if was_helped:
             v.wasHelped = 1
             v.instructor_id = instructor_id
