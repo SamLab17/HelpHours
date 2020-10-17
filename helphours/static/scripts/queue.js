@@ -1,10 +1,23 @@
-const UPDATE_INTERVAL_SECONDS = 5;
+// How many seconds we should wait before polling the server again
+const UPDATE_INTERVAL_SECONDS = 10;
+
+// After 120 minutes of not refreshing the page or clicking any buttons
+// stop making requests to the API
+const TIMEOUT_MINUTES = 120;
 
 // Hold previous fetch result, if it's the same, don't bother re-rendering
 var lastPullResponse;
 
+// Fetch the queue when the page loads
 updateQueue();
-setInterval(updateQueue, UPDATE_INTERVAL_SECONDS * 1000);
+
+var updateInterval = setInterval(updateQueue, UPDATE_INTERVAL_SECONDS * 1000);
+
+setTimeout(() => {
+    clearInterval(updateInterval);
+    clearQueue();
+    displayMessage('Connection timed out, refresh the page.')
+}, TIMEOUT_MINUTES * 60 * 1000);
 
 
 function updateQueue() {
@@ -20,15 +33,15 @@ function updateQueue() {
 function renderQueue(data) {
     let dataJSON = JSON.stringify(data);
     if(lastPullResponse === dataJSON){
+        // Nothing changed, don't bother re-rendering
         return;
-    } else {
-        clearQueue();
-        lastPullResponse = dataJSON;
     }
 
+    // Queue changed, let's re-render and save this result
+    clearQueue();
+    lastPullResponse = dataJSON;
 
     let queue = data.queue;
-
 
     if (!queue || queue.length === 0) {
         displayMessage('The queue is empty.');
@@ -36,7 +49,7 @@ function renderQueue(data) {
     else {
         let queueContainer = document.getElementById("queue");
         let template = document.getElementById("queue-entry-template");
-        for (var i = 0; i < queue.length; i++) {
+        for (let i = 0; i < queue.length; i++) {
             let newEntry = template.content.cloneNode(true);
             newEntry.querySelector('.queue-entry-position').textContent = queue[i].position;
             newEntry.querySelector('.queue-entry-name').textContent = queue[i].name;
