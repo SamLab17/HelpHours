@@ -35,7 +35,7 @@ def handle_remove(request):
     elif 'removed' in request.form:
         uid = request.form['removed']
     # Remove the student from the queue and update the database
-    remove_helper(uid, was_helped=('finished' in request.form), instructor_id=g.user.id)
+    remove_helper(uid, was_helped=('finished' in request.form.keys()), instructor_id=g.user.id)
 
     # Notify runner-up in the queue
     s = queue_handler.peek_runner_up()
