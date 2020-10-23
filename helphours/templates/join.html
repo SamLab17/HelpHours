@@ -26,6 +26,11 @@
                 {{ form.eid(class="form-input") }}
             </div>
 
+            <div>
+                {{ form.desc.label(class="form-label") }}
+                {{ form.desc(class="form-input") }}
+            </div>
+
             {% if message|length > 0 %}
                 <p class="error-message">{{ message }}</p>
             {% endif %}

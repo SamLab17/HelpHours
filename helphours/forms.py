@@ -16,6 +16,9 @@ class JoinQueueForm(FlaskForm):
         DataRequired(),
         Regexp('^[a-zA-Z0-9]+$', message="Please only enter alphanumeric characters for EID field")
     ])
+    desc = StringField('Short Problem Description', validators=[
+        DataRequired()
+    ])
     submit = SubmitField('Join the Queue!')
 
 

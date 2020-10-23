@@ -4,10 +4,11 @@ class Student:
         Class to represent a Student entry in the
         Lab Hours Queue.
     """
-    def __init__(self, name, email, eid, uid):
+    def __init__(self, name, email, eid, desc, uid):
         self.name = name
         self.email = email
         self.eid = eid
+        self.desc = desc
         # Whether or not we've sent an email to this
         # student indicating they're next in line
         self.notified = False
@@ -27,5 +28,6 @@ class Student:
         return {
             'name': self.name,
             'position': position,
+            'desc': self.desc,
             'id': self.id
         }
