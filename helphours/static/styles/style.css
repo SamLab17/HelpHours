@@ -400,7 +400,7 @@ textarea {
 
 
 .queue-container {
-    width: 60%;
+    width: 75%;
     height: 100%;
     margin-left: auto;
     margin-right: auto;
@@ -410,19 +410,79 @@ textarea {
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
-    padding: 12px 20px;
+    align-items: center; 
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+.queue-entry-box {
+    padding: 12px;
     -webkit-box-shadow: 5px 5px 10px #ccc;
             box-shadow: 5px 5px 10px #ccc;
     border-radius: 5px;
     background-color: #eee;
-    margin-bottom: 20px;
+    /* width: 80%; */
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    /* overflow: hidden; */
+    white-space: nowrap;
+    transition: 0.4s;
+    z-index: 2;
 }
 
-.dark .queue-entry {
+.queue-entry-box.active {
+    border-radius: 5px 5px 0px 0px;
+}
+
+.dark .queue-entry-box {
     -webkit-box-shadow: none;
             box-shadow: none;
     border: 1px solid white;
     background-color: inherit;
+}
+
+.queue-entry-wrapper {
+    flex-grow: 1;
+    max-width: 90%;
+}
+
+.queue-entry-expand-toggle {
+    /* max-width: 50%; */
+    overflow: hidden;
+}
+
+.queue-entry-expanded {
+   /* width: 100%;  */
+   background-color: #ddd;
+   border-radius: 0px 0px 5px 5px;
+   padding: 15px;
+    -webkit-box-shadow: 5px 5px 10px #ccc;
+            box-shadow: 5px 5px 10px #ccc;
+   margin-top: -2px;
+   display: none;
+}
+
+.dark .queue-entry-expanded {
+    background-color: #444;
+    box-shadow: none;
+    border: 1px solid white;
+}
+
+.queue-entry-expanded.active {
+    display: block;
+}
+
+.queue-chevron {
+    width: 10px;
+    flex-shrink: 0;
+    margin-right: 5px;
+    transform: rotate(270deg);
+    transition: transform 0.1s ease-in;
+}
+
+.queue-entry-box.active .queue-chevron{
+    transform: rotate(360deg);
 }
 
 .queue-entry-left {
@@ -432,11 +492,20 @@ textarea {
         align-self: center;
 }
 
+.queue-entry-desc {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    margin: 0px 20px;
+    font-size: 80%;
+    flex-shrink: 1;
+}
+
 .queue-entry-right {
     margin-left: auto;
     -ms-flex-item-align: center;
         -ms-grid-row-align: center;
         align-self: center;
+    white-space: nowrap;
 }
 
 .queue-entry-buttons {
@@ -448,6 +517,7 @@ textarea {
     font-weight: bold;
     font-size: 130%;
     color: #777;
+    margin: 10px;
 }
 
 .dark .queue-entry-position {
@@ -458,7 +528,7 @@ textarea {
     display: inline-block;
     font-weight: bold;
     font-size: 120%;
-    margin-left: 20px;
+    /* margin-left: 20px; */
 }
 
 .queue-controls {
