@@ -6,7 +6,7 @@ from wtforms.validators import DataRequired, Length, Email, EqualTo, Regexp
 class JoinQueueForm(FlaskForm):
     name = StringField('Name', validators=[
         DataRequired(),
-        Length(min=2, max=30)
+        Length(min=2, max=32, message="Please limit name entry to 32 characters.")
     ])
     email = StringField('Email', validators=[
         DataRequired(),
@@ -15,6 +15,9 @@ class JoinQueueForm(FlaskForm):
     eid = StringField('EID', validators=[
         DataRequired(),
         Regexp('^[a-zA-Z0-9]+$', message="Please only enter alphanumeric characters for EID field")
+    ])
+    desc = StringField('Short Problem Description', validators=[
+        DataRequired()
     ])
     submit = SubmitField('Join the Queue!')
 

@@ -13,6 +13,8 @@ updateQueue();
 
 var updateInterval = setInterval(updateQueue, UPDATE_INTERVAL_SECONDS * 1000);
 
+// After TIMEOUT_MINUTES, stop retrieving the queue; the client is probably
+// idle or left the page open accidentally
 setTimeout(() => {
     clearInterval(updateInterval);
     clearQueue();
@@ -20,6 +22,7 @@ setTimeout(() => {
 }, TIMEOUT_MINUTES * 60 * 1000);
 
 
+// Fetches the new queue and updates the page
 function updateQueue() {
     fetch('/queue').then(response => response.json())
         .then(renderQueue)
@@ -30,6 +33,8 @@ function updateQueue() {
         });
 }
 
+// Given the queue in JSON form, will parse the queue object and 
+// update the page if necessary.
 function renderQueue(data) {
     let dataJSON = JSON.stringify(data);
     if(lastPullResponse === dataJSON){
@@ -49,26 +54,49 @@ function renderQueue(data) {
     else {
         let queueContainer = document.getElementById("queue");
         let template = document.getElementById("queue-entry-template");
+
         for (let i = 0; i < queue.length; i++) {
             let newEntry = template.content.cloneNode(true);
-            newEntry.querySelector('.queue-entry-position').textContent = queue[i].position;
+
+            // Add this person's place in line and name
+            newEntry.querySelector('.queue-entry-position').textContent = queue[i].position + ":";
             newEntry.querySelector('.queue-entry-name').textContent = queue[i].name;
 
             if("id" in queue[i]){
+                // If the id of the student is present, then we are authenticated as an
+                // instructor, so prepare all other instructor-only fields
+                newEntry.querySelector('.queue-entry-expanded-desc').textContent = queue[i].desc;
+                newEntry.querySelector('.queue-entry-expanded-time').textContent = queue[i].time;
+                // Assing this entry's id so we know who was helped/removed
                 newEntry.querySelectorAll('button').forEach(button => 
                     button.value=queue[i].id
                 );
+                // Retrieve the DOM nodes from the fragment
+                let entry = Array.prototype.slice.call(newEntry.childNodes)[1];
+                // Function which will toggle whether the entry accordion is open
+                const toggleExpanded = (queueEntry) => {
+                    queueEntry.querySelector('.queue-entry-box').classList.toggle('active');
+                    queueEntry.querySelector('.queue-entry-expanded').classList.toggle('active');
+                };
+                let expandToggle = entry.querySelector('.queue-entry-expand-toggle');
+                expandToggle.addEventListener('click', () => { toggleExpanded(entry) });
+                expandToggle.style.cursor = 'pointer';
             } else {
-                // Hide "Help" and "Remove" buttons
+                // We aren't authenticated, so hide all the unnecessary DOM elements
+                // (Besides, the buttons won't even be hooked up to anything)
                 newEntry.querySelectorAll('button').forEach(button =>
                     button.style.display = 'none'
                 );
+                newEntry.querySelector('.queue-chevron').style.display = 'none';
             }
+            // We're done filling all the necessary fields, add this entry into
+            // the queue div on the page
             queueContainer.appendChild(newEntry);
         }
     }
 }
 
+// Gets rid of all entries in the queue div
 function clearQueue() {
    let queue = document.getElementById("queue");
    if(queue)
@@ -76,6 +104,8 @@ function clearQueue() {
             queue.removeChild(queue.firstChild)
 }
 
+// Instead of displaying queue entries in the queue, displays a message
+// (either error message or "queue is empty" message)
 function displayMessage(content) {
     let message = document.getElementById('queue-message').content.cloneNode(true);
     message.querySelector('.queue-message').textContent = content;
