@@ -1,3 +1,5 @@
+from datetime import datetime
+
 
 class Student:
     """
@@ -16,6 +18,7 @@ class Student:
         # which was created when this student joined
         # the queue.
         self.id = str(uid)
+        self.time_entered = datetime.now().strftime('%H:%M:%S')
 
     def serialize_student_view(self, position):
         return {
@@ -29,5 +32,6 @@ class Student:
             'name': self.name,
             'position': position,
             'desc': self.desc,
-            'id': self.id
+            'id': self.id,
+            'time': self.time_entered,
         }
