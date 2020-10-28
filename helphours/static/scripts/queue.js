@@ -8,6 +8,9 @@ const TIMEOUT_MINUTES = 120;
 // Hold previous fetch result, if it's the same, don't bother re-rendering
 var lastPullResponse;
 
+// Hold the states of dropdown menus for when we refresh
+var dropDownStates = {};
+
 // Fetch the queue when the page loads
 updateQueue();
 
@@ -54,6 +57,7 @@ function renderQueue(data) {
     else {
         let queueContainer = document.getElementById("queue");
         let template = document.getElementById("queue-entry-template");
+        let newDropDownStates = {};
 
         for (let i = 0; i < queue.length; i++) {
             let newEntry = template.content.cloneNode(true);
@@ -73,14 +77,21 @@ function renderQueue(data) {
                 );
                 // Retrieve the DOM nodes from the fragment
                 let entry = Array.prototype.slice.call(newEntry.childNodes)[1];
-                // Function which will toggle whether the entry accordion is open
-                const toggleExpanded = (queueEntry) => {
-                    queueEntry.querySelector('.queue-entry-box').classList.toggle('active');
-                    queueEntry.querySelector('.queue-entry-expanded').classList.toggle('active');
-                };
+
+                // Add event listener and pointer cursor to dropdown toggle
                 let expandToggle = entry.querySelector('.queue-entry-expand-toggle');
-                expandToggle.addEventListener('click', () => { toggleExpanded(entry) });
+                expandToggle.addEventListener('click', () => { toggleExpanded(entry, queue[i].id) });
                 expandToggle.style.cursor = 'pointer';
+
+                // Restore previous dropdown states
+                if(queue[i].id in dropDownStates && dropDownStates[queue[i].id]){
+                    entry.querySelector('.queue-entry-box').classList.toggle('active');
+                    entry.querySelector('.queue-entry-expanded').classList.toggle('active');
+                    newDropDownStates[queue[i].id] = true;
+                } else {
+                    newDropDownStates[queue[i].id] = false;
+                }
+                dropDownStates = newDropDownStates;
             } else {
                 // We aren't authenticated, so hide all the unnecessary DOM elements
                 // (Besides, the buttons won't even be hooked up to anything)
@@ -110,4 +121,11 @@ function displayMessage(content) {
     let message = document.getElementById('queue-message').content.cloneNode(true);
     message.querySelector('.queue-message').textContent = content;
     document.getElementById('queue').appendChild(message);
+}
+
+ // Function which will toggle whether the entry accordion is open
+ function toggleExpanded(queueEntry, entryId) {
+    queueEntry.querySelector('.queue-entry-box').classList.toggle('active');
+    queueEntry.querySelector('.queue-entry-expanded').classList.toggle('active');
+    dropDownStates[entryId] = !dropDownStates[entryId];
 }
