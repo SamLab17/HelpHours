@@ -78,10 +78,10 @@ def remove_helper(uid, was_helped=False, instructor_id=None):
     if v is not None:
         v.time_left = datetime.utcnow()
         if was_helped:
-            v.wasHelped = 1
+            v.was_helped = 1
             v.instructor_id = instructor_id
         else:
-            v.wasHelped = 0
+            v.was_helped = 0
         db.session.commit()
     else:
         log.error(f"Did not find entry for {uid} in the visits table.")
