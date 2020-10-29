@@ -413,6 +413,7 @@ textarea {
     align-items: center; 
     margin-bottom: 20px;
     flex-wrap: wrap;
+    justify-content: space-evenly;
 }
 
 .queue-entry-box {
