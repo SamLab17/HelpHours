@@ -17,9 +17,9 @@
 <div class="welcome">
     <div class="vertical-center">
         <audio id="audio" src="{{ url_for('static', filename='sound/squeak.mp3') }}"></audio>
-        <img src="{{ CURRENT_DUCK }}" alt-text="Rubber Duck" style="width: 120px;" class="duck-left" onclick="playSqueak()">
+        <img src="{{ url_for('static', filename='images/voteduckl.png')}}" alt-text="Rubber Duck" style="width: 120px;" class="duck-right" onclick="playSqueak()">
         <h1> Welcome to Help Hours for {{ COURSE_NAME }}! </h1>
-        <img src="{{ CURRENT_DUCK }}" alt-text="Rubber Duck" style="width: 120px;" class="duck-right" onclick="playSqueak()">
+        <img src="{{ url_for('static', filename='images/voteduckr.png') }}" alt-text="Rubber Duck" style="width: 120px;" class="duck-right" onclick="playSqueak()">
     </div>
 
 </div>
