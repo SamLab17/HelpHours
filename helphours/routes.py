@@ -2,7 +2,7 @@ import json
 import secrets
 from helphours import app, log, db, notifier, queue_handler, routes_helper, password_reset, stats, zoom_helper
 from flask import render_template, url_for, redirect, request, g, send_from_directory
-from helphours.forms import JoinQueueForm, RemoveSelfForm, InstructorForm
+from helphours.forms import JoinQueueForm, RemoveSelfForm, InstructorForm, AddZoomLinkForm
 from helphours.student import Student
 from flask_login import current_user, login_required
 from helphours.models.instructor import Instructor
@@ -123,22 +123,39 @@ def change_zoom():
     message = ""
     preset_links = ZoomLink.query.all()
 
-    if request.method == 'POST':
-        if 'cancel' in request.form:
-            return redirect(url_for('zoom_links'))
+    # if request.method == 'POST':
+    #     if 'cancel' in request.form:
+    #         return redirect(url_for('zoom_links'))
 
-        new_presets = request.form['preset-links']
-        try:
-            new_zoom_links = zoom_helper.parse_links(new_presets)
-            ZoomLink.query.delete()
-            for new_link in new_zoom_links:
-                db.session.add(new_link)
-            db.session.commit()
-            log.info(f'{current_user.first_name} {current_user.last_name} updated the Zoom links.')
-            return redirect(url_for('zoom_links'))
-        except Exception as e:
-            message = str(e)
-    return render_template('edit_preset_links.html', message=message, preset_links=preset_links)
+        # new_url = request.form['url']
+        # try:
+        #     new_zoom_links = zoom_helper.parse_links(new_presets)
+        #     ZoomLink.query.delete()
+        #     for new_link in new_zoom_links:
+        #         db.session.add(new_link)
+        #     db.session.commit()
+        #     log.info(f'{current_user.first_name} {current_user.last_name} updated the Zoom links.')
+        #     return redirect(url_for('zoom_links'))
+        # except Exception as e:
+        #     message = str(e)
+
+    form = AddZoomLinkForm()
+    if form.validate_on_submit():
+        new_link = ZoomLink()
+        new_link.url = form.url.data
+        new_link.description = form.description.data
+        new_link.data = form.day.data
+
+        db.session.add(new_link)
+        db.session.commit()
+        log.info(f'{current_user.first_name} {current_user.last_name} updated the Zoom links.')
+        
+        form = AddZoomLinkForm()
+        form.url.data = ""
+        form.description.data = ""
+        message = "The zoom link has been added!"
+
+    return render_template('new_edit_preset_links.html', message=message, form=form)
 
 
 @app.route("/schedule", methods=['GET'])

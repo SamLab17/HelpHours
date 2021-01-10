@@ -1,6 +1,7 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField, PasswordField, BooleanField
+from wtforms import StringField, SubmitField, PasswordField, BooleanField, SelectField
 from wtforms.validators import DataRequired, Length, Email, EqualTo, Regexp
+import validators
 
 
 class JoinQueueForm(FlaskForm):
@@ -71,3 +72,26 @@ class InstructorForm(FlaskForm):
     is_active = BooleanField('Active')
     is_admin = BooleanField('Admin')
     submit = SubmitField('Update')
+
+
+class AddZoomLinkForm(FlaskForm):
+    def check_valid_url(form, field):
+        if not validators.url(form.url.data):
+            raise ValidationError(f'Invalid url: {form.url.data}')
+
+    description = StringField('Description', validators=[
+        DataRequired()
+    ])
+    url = StringField('Zoom Link', validators=[
+        DataRequired(),
+        check_valid_url
+    ])
+    day = SelectField('Day', choices=[
+        (1, 'Monday'),
+        (2, 'Tuesday'),
+        (3, 'Wednesday'),
+        (4, 'Thursday'),
+        (5, 'Friday'),
+        (0, 'Other')
+    ])
+    submit = SubmitField('Add Link')

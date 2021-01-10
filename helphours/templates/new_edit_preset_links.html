@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block head%}
+<title>Edit Zoom Links</title>
+{% endblock %}
+
+{% block body %}
+
+<div class="center-content">
+    <div class="form-container">
+        <form class="form" method="POST">
+            {{ form.csrf_token }}
+            <input name="id" type="hidden" id="id" value="{{ id }}"></input>
+            <h2 class="form-title">Add Zoom Link</h2>
+            {% if message|length > 0 %}
+                <p class="error-message">{{ message }}</p>
+            {% endif %}
+
+                <div>
+                    {{ form.description.label(class='form-label')}}
+                    {{ form.description(class='form-input')}}
+                </div>
+                <div>
+                    {{ form.url.label(class='form-label')}}
+                    {{ form.url(class='form-input')}}
+                </div>
+                <div>
+                    {{ form.day.label(class='form-label') }}
+                    {{ form.day() }}
+                </div>
+
+                <div>
+                    {{ form.submit(class='form-submit')}}
+                    <a class="form-cancel" href="{{ url_for('zoom_links') }}">Cancel</a>
+                </div>
+        </form>
+    </div>
+</div>
+
+{% endblock %}
