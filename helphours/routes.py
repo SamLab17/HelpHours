@@ -114,7 +114,14 @@ def remove():
 
 @app.route("/zoom", methods=['GET'])
 def zoom_links():
-    return render_template('zoom.html', links=ZoomLink.query.all())
+    m_links = ZoomLink.query.filter(ZoomLink.day == 1).all()
+    t_links = ZoomLink.query.filter(ZoomLink.day == 2).all()
+    w_links = ZoomLink.query.filter(ZoomLink.day == 3).all()
+    th_links = ZoomLink.query.filter(ZoomLink.day == 4).all()
+    f_links = ZoomLink.query.filter(ZoomLink.day == 5).all()
+    other_links = ZoomLink.query.filter(ZoomLink.day == 0).all()
+    return render_template('zoom.html', m_links=m_links, t_links=t_links, w_links=w_links, th_links=th_links,
+            f_links=f_links, other_links=other_links)
 
 
 @app.route('/change_zoom', methods=['GET', 'POST'])
@@ -144,7 +151,7 @@ def change_zoom():
         new_link = ZoomLink()
         new_link.url = form.url.data
         new_link.description = form.description.data
-        new_link.data = form.day.data
+        new_link.day = int(form.day.data)
 
         db.session.add(new_link)
         db.session.commit()
