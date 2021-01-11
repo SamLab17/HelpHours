@@ -76,7 +76,7 @@
     <br>
 
 <div class="link-container" style="margin-top: 0px;">
-    {% if show_cal %}
+    {% if show_cal and links[0]|length > 0 %}
     <h2 style="text-align: center;">Other Hours</h2>
     {% endif %}
     {% for link in links[0] %}
