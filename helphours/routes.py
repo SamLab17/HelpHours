@@ -114,14 +114,14 @@ def remove():
 
 @app.route("/zoom", methods=['GET'])
 def zoom_links():
-    m_links = ZoomLink.query.filter(ZoomLink.day == 1).all()
-    t_links = ZoomLink.query.filter(ZoomLink.day == 2).all()
-    w_links = ZoomLink.query.filter(ZoomLink.day == 3).all()
-    th_links = ZoomLink.query.filter(ZoomLink.day == 4).all()
-    f_links = ZoomLink.query.filter(ZoomLink.day == 5).all()
-    other_links = ZoomLink.query.filter(ZoomLink.day == 0).all()
-    return render_template('zoom.html', m_links=m_links, t_links=t_links, w_links=w_links, th_links=th_links,
-            f_links=f_links, other_links=other_links)
+    links = [ZoomLink.query.filter(ZoomLink.day == 0).all()]
+    links += [ZoomLink.query.filter(ZoomLink.day == 1).all()]
+    links += [ZoomLink.query.filter(ZoomLink.day == 2).all()]
+    links += [ZoomLink.query.filter(ZoomLink.day == 3).all()]
+    links += [ZoomLink.query.filter(ZoomLink.day == 4).all()]
+    links += [ZoomLink.query.filter(ZoomLink.day == 5).all()]
+    show_cal = len(links[0]) != len(ZoomLink.query.all())
+    return render_template('zoom.html', links=links, show_cal=show_cal)
 
 
 @app.route('/change_zoom', methods=['GET', 'POST'])
@@ -167,6 +167,8 @@ def change_zoom():
     if remove_form.validate_on_submit() and int(remove_form.links.data) != -1:
         db.session.delete(ZoomLink.query.filter(ZoomLink.id == int(remove_form.links.data)).first())
         db.session.commit()
+
+        log.info(f'{current_user.first_name} {current_user.last_name} updated the Zoom links.')
         remove_message = "The zoom link has been removed!"
 
     remove_form.links.choices = [(-1, "---")] + [(link.id, str(link.description + ", " + str(link.day))) for link in ZoomLink.query.all()]

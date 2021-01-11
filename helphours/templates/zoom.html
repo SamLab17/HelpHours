@@ -18,10 +18,11 @@
         {% endif %}
     </div>
 
+    {% if show_cal %}
     <div class="row" style="display: flex; flex-direction: row;">
         <div class="column" style="float:left; width:18%; margin: 1%;">
             <h2 style="text-align: center;">Monday</h2>
-            {% for link in m_links %}
+            {% for link in links[1] %}
             <a class="meeting-link" href="{{ link.url }}" target="_blank">
                 <div class="link-entry">
                     <div class="link-desc">{{ link.description }}</div>
@@ -31,7 +32,7 @@
         </div>
         <div class="column" style="float:left; width:18%; margin: 1%;">
             <h2 style="text-align: center;">Tuesday</h2>
-            {% for link in t_links %}
+            {% for link in links[2] %}
             <a class="meeting-link" href="{{ link.url }}" target="_blank">
                 <div class="link-entry">
                     <div class="link-desc">{{ link.description }}</div>
@@ -41,7 +42,7 @@
         </div>
         <div class="column" style="float:left; width:18%; margin: 1%;">
             <h2 style="text-align: center;">Wednesday</h2>
-            {% for link in w_links %}
+            {% for link in links[3] %}
             <a class="meeting-link" href="{{ link.url }}" target="_blank">
                 <div class="link-entry">
                     <div class="link-desc">{{ link.description }}</div>
@@ -51,7 +52,7 @@
         </div>
         <div class="column" style="float:left; width:18%; margin: 1%;">
             <h2 style="text-align: center;">Thursday</h2>
-            {% for link in th_links %}
+            {% for link in links[4] %}
             <a class="meeting-link" href="{{ link.url }}" target="_blank">
                 <div class="link-entry">
                     <div class="link-desc">{{ link.description }}</div>
@@ -61,7 +62,7 @@
         </div>
         <div class="column" style="float:left; width:18%; margin: 1%;">
             <h2 style="text-align: center;">Friday</h2>
-            {% for link in f_links %}
+            {% for link in links[5] %}
             <a class="meeting-link" href="{{ link.url }}" target="_blank">
                 <div class="link-entry">
                     <div class="link-desc">{{ link.description }}</div>
@@ -70,12 +71,15 @@
             {% endfor %}
         </div>
     </div>
+    {% endif %}
 
     <br>
 
 <div class="link-container" style="margin-top: 0px;">
+    {% if show_cal %}
     <h2 style="text-align: center;">Other Hours</h2>
-    {% for link in other_links %}
+    {% endif %}
+    {% for link in links[0] %}
         <a class="meeting-link" href="{{ link.url }}" target="_blank">
             <div class="link-entry">
                 <div class="link-desc">{{ link.description }}</div>
