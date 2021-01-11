@@ -2,7 +2,7 @@ import json
 import secrets
 from helphours import app, log, db, notifier, queue_handler, routes_helper, password_reset, stats, zoom_helper
 from flask import render_template, url_for, redirect, request, g, send_from_directory
-from helphours.forms import JoinQueueForm, RemoveSelfForm, InstructorForm, AddZoomLinkForm
+from helphours.forms import JoinQueueForm, RemoveSelfForm, InstructorForm, AddZoomLinkForm, RemoveZoomLinkForm
 from helphours.student import Student
 from flask_login import current_user, login_required
 from helphours.models.instructor import Instructor
@@ -127,7 +127,8 @@ def zoom_links():
 @app.route('/change_zoom', methods=['GET', 'POST'])
 @login_required
 def change_zoom():
-    message = ""
+    add_message = ""
+    remove_message = ""
     preset_links = ZoomLink.query.all()
 
     # if request.method == 'POST':
@@ -160,9 +161,17 @@ def change_zoom():
         form = AddZoomLinkForm()
         form.url.data = ""
         form.description.data = ""
-        message = "The zoom link has been added!"
+        add_message = "The zoom link has been added!"
 
-    return render_template('new_edit_preset_links.html', message=message, form=form)
+    remove_form = RemoveZoomLinkForm()
+    if remove_form.validate_on_submit() and int(remove_form.links.data) != -1:
+        db.session.delete(ZoomLink.query.filter(ZoomLink.id == int(remove_form.links.data)).first())
+        db.session.commit()
+        remove_message = "The zoom link has been removed!"
+
+    remove_form.links.choices = [(-1, "---")] + [(link.id, str(link.description + ", " + str(link.day))) for link in ZoomLink.query.all()]
+    return render_template('new_edit_preset_links.html', add_message=add_message, remove_message = remove_message, 
+        form=form, remove_form=remove_form)
 
 
 @app.route("/schedule", methods=['GET'])

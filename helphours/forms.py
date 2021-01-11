@@ -1,6 +1,7 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField, PasswordField, BooleanField, SelectField
 from wtforms.validators import DataRequired, Length, Email, EqualTo, Regexp
+from helphours.models.zoom_link import ZoomLink
 import validators
 
 
@@ -95,3 +96,8 @@ class AddZoomLinkForm(FlaskForm):
         (0, 'Other')
     ])
     submit = SubmitField('Add Link')
+
+
+class RemoveZoomLinkForm(FlaskForm):
+    links = SelectField('Entry', choices=[(-1, "---")]+[(link.id, str(link.description + ", " + str(link.day))) for link in ZoomLink.query.all()])
+    submit = SubmitField('Remove Link')
