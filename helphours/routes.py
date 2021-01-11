@@ -1,6 +1,6 @@
 import json
 import secrets
-from helphours import app, log, db, notifier, queue_handler, routes_helper, password_reset, stats, zoom_helper
+from helphours import app, log, db, notifier, queue_handler, routes_helper, password_reset, stats
 from flask import render_template, url_for, redirect, request, g, send_from_directory
 from helphours.forms import JoinQueueForm, RemoveSelfForm, InstructorForm, AddZoomLinkForm, RemoveZoomLinkForm
 from helphours.student import Student
@@ -129,7 +129,6 @@ def zoom_links():
 def change_zoom():
     add_message = ""
     remove_message = ""
-    preset_links = ZoomLink.query.all()
 
     form = AddZoomLinkForm()
     remove_form = RemoveZoomLinkForm()
@@ -142,23 +141,22 @@ def change_zoom():
         db.session.add(new_link)
         db.session.commit()
         log.info(f'{current_user.first_name} {current_user.last_name} updated the Zoom links.')
-        
+
         form = AddZoomLinkForm()
         form.url.data = ""
         form.description.data = ""
         add_message = "The zoom link has been added!"
 
-    if remove_form.validate_on_submit() and remove_form.links.data != None and int(remove_form.links.data) != -1:
+    if remove_form.validate_on_submit() and remove_form.links.data is not None and int(remove_form.links.data) != -1:
         db.session.delete(ZoomLink.query.filter(ZoomLink.id == int(remove_form.links.data)).first())
         db.session.commit()
 
         log.info(f'{current_user.first_name} {current_user.last_name} updated the Zoom links.')
         remove_message = "The zoom link has been removed!"
 
-
     remove_form.set_choices()
-    return render_template('new_edit_preset_links.html', add_message=add_message, remove_message = remove_message, 
-        form=form, remove_form=remove_form)
+    return render_template('new_edit_preset_links.html', add_message=add_message, remove_message=remove_message,
+                            form=form, remove_form=remove_form)
 
 
 @app.route("/schedule", methods=['GET'])

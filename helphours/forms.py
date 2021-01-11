@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField, PasswordField, BooleanField, SelectField
-from wtforms.validators import DataRequired, Length, Email, EqualTo, Regexp
+from wtforms.validators import DataRequired, Length, Email, EqualTo, Regexp, ValidationError
 from helphours.models.zoom_link import ZoomLink
 import validators
 
@@ -104,5 +104,5 @@ class RemoveZoomLinkForm(FlaskForm):
 
     def set_choices(self):
         days = ["Other", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday"]
-        self.links.choices = [(-1, "---")] + [(link.id, str(link.description + ", " + days[int(link.day)])) 
-                                    for link in ZoomLink.query.order_by(ZoomLink.day).all()]
+        self.links.choices = [(-1, "---")] + [(link.id, str(link.description + ", " + days[int(link.day)]))
+                                                for link in ZoomLink.query.order_by(ZoomLink.day).all()]
