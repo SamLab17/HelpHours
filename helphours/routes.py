@@ -156,7 +156,7 @@ def change_zoom():
 
     remove_form.set_choices()
     return render_template('new_edit_preset_links.html', add_message=add_message, remove_message=remove_message,
-                            form=form, remove_form=remove_form)
+                           form=form, remove_form=remove_form)
 
 
 @app.route("/schedule", methods=['GET'])
