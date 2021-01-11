@@ -147,12 +147,21 @@ def change_zoom():
         form.description.data = ""
         add_message = "The zoom link has been added!"
 
-    if remove_form.validate_on_submit() and remove_form.links.data is not None and int(remove_form.links.data) != -1:
-        db.session.delete(ZoomLink.query.filter(ZoomLink.id == int(remove_form.links.data)).first())
-        db.session.commit()
+    elif remove_form.validate_on_submit() and remove_form.links.data is not None:
+        if int(remove_form.links.data) != -1:
+            db.session.delete(ZoomLink.query.filter(ZoomLink.id == int(remove_form.links.data)).first())
+            db.session.commit()
 
-        log.info(f'{current_user.first_name} {current_user.last_name} updated the Zoom links.')
-        remove_message = "The zoom link has been removed!"
+            log.info(f'{current_user.first_name} {current_user.last_name} updated the Zoom links.')
+            remove_message = "The zoom link has been removed!"
+        else:
+            remove_message = "Please select a link to remove"
+
+    elif request.method == 'POST':
+        # At this point, it was not a valid add nor remove, but we already handled invalid
+        # removes above, so this must be an invalid add, so display error message
+        if len(form.errors) > 0:
+            add_message = next(iter(form.errors.values()))[0]
 
     remove_form.set_choices()
     return render_template('new_edit_preset_links.html', add_message=add_message, remove_message=remove_message,
