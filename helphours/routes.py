@@ -131,23 +131,8 @@ def change_zoom():
     remove_message = ""
     preset_links = ZoomLink.query.all()
 
-    # if request.method == 'POST':
-    #     if 'cancel' in request.form:
-    #         return redirect(url_for('zoom_links'))
-
-        # new_url = request.form['url']
-        # try:
-        #     new_zoom_links = zoom_helper.parse_links(new_presets)
-        #     ZoomLink.query.delete()
-        #     for new_link in new_zoom_links:
-        #         db.session.add(new_link)
-        #     db.session.commit()
-        #     log.info(f'{current_user.first_name} {current_user.last_name} updated the Zoom links.')
-        #     return redirect(url_for('zoom_links'))
-        # except Exception as e:
-        #     message = str(e)
-
     form = AddZoomLinkForm()
+    remove_form = RemoveZoomLinkForm()
     if form.validate_on_submit():
         new_link = ZoomLink()
         new_link.url = form.url.data
@@ -163,15 +148,15 @@ def change_zoom():
         form.description.data = ""
         add_message = "The zoom link has been added!"
 
-    remove_form = RemoveZoomLinkForm()
-    if remove_form.validate_on_submit() and int(remove_form.links.data) != -1:
+    if remove_form.validate_on_submit() and remove_form.links.data != None and int(remove_form.links.data) != -1:
         db.session.delete(ZoomLink.query.filter(ZoomLink.id == int(remove_form.links.data)).first())
         db.session.commit()
 
         log.info(f'{current_user.first_name} {current_user.last_name} updated the Zoom links.')
         remove_message = "The zoom link has been removed!"
 
-    remove_form.links.choices = [(-1, "---")] + [(link.id, str(link.description + ", " + str(link.day))) for link in ZoomLink.query.all()]
+
+    remove_form.set_choices()
     return render_template('new_edit_preset_links.html', add_message=add_message, remove_message = remove_message, 
         form=form, remove_form=remove_form)
 

@@ -99,5 +99,10 @@ class AddZoomLinkForm(FlaskForm):
 
 
 class RemoveZoomLinkForm(FlaskForm):
-    links = SelectField('Entry', choices=[(-1, "---")]+[(link.id, str(link.description + ", " + str(link.day))) for link in ZoomLink.query.all()])
+    links = SelectField('Entry', validate_choice=False)
     submit = SubmitField('Remove Link')
+
+    def set_choices(self):
+        days = ["Other", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday"]
+        self.links.choices = [(-1, "---")] + [(link.id, str(link.description + ", " + days[int(link.day)])) 
+                                    for link in ZoomLink.query.order_by(ZoomLink.day).all()]
