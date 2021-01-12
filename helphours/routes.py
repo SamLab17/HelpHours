@@ -133,19 +133,22 @@ def change_zoom():
     form = AddZoomLinkForm()
     remove_form = RemoveZoomLinkForm()
     if form.validate_on_submit():
-        new_link = ZoomLink()
-        new_link.url = form.url.data
-        new_link.description = form.description.data
-        new_link.day = int(form.day.data)
+        if int(form.day.data) != -1:
+            new_link = ZoomLink()
+            new_link.url = form.url.data
+            new_link.description = form.description.data
+            new_link.day = int(form.day.data)
 
-        db.session.add(new_link)
-        db.session.commit()
-        log.info(f'{current_user.first_name} {current_user.last_name} updated the Zoom links.')
+            db.session.add(new_link)
+            db.session.commit()
+            log.info(f'{current_user.first_name} {current_user.last_name} updated the Zoom links.')
 
-        form = AddZoomLinkForm()
-        form.url.data = ""
-        form.description.data = ""
-        add_message = "The zoom link has been added!"
+            form = AddZoomLinkForm()
+            form.url.data = ""
+            form.description.data = ""
+            add_message = "The zoom link has been added!"
+        else:
+            add_message = "Please select a day to add the link to"
 
     elif remove_form.validate_on_submit() and remove_form.links.data is not None:
         if int(remove_form.links.data) != -1:

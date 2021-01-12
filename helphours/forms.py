@@ -88,12 +88,13 @@ class AddZoomLinkForm(FlaskForm):
         check_valid_url
     ])
     day = SelectField('Day', choices=[
+        (-1, '---'),
+        (0, 'Other'),
         (1, 'Monday'),
         (2, 'Tuesday'),
         (3, 'Wednesday'),
         (4, 'Thursday'),
         (5, 'Friday'),
-        (0, 'Other')
     ])
     submit = SubmitField('Add Link')
 
