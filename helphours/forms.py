@@ -1,6 +1,8 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField, PasswordField, BooleanField
-from wtforms.validators import DataRequired, Length, Email, EqualTo, Regexp
+from wtforms import StringField, SubmitField, PasswordField, BooleanField, SelectField
+from wtforms.validators import DataRequired, Length, Email, EqualTo, Regexp, ValidationError
+from helphours.models.zoom_link import ZoomLink
+import validators
 
 
 class JoinQueueForm(FlaskForm):
@@ -71,3 +73,37 @@ class InstructorForm(FlaskForm):
     is_active = BooleanField('Active')
     is_admin = BooleanField('Admin')
     submit = SubmitField('Update')
+
+
+class AddZoomLinkForm(FlaskForm):
+    def check_valid_url(form, field):
+        if not validators.url(form.url.data):
+            raise ValidationError(f'Invalid url: {form.url.data}')
+
+    description = StringField('Description', validators=[
+        DataRequired()
+    ])
+    url = StringField('Zoom Link', validators=[
+        DataRequired(),
+        check_valid_url
+    ])
+    day = SelectField('Day', choices=[
+        (-1, '---'),
+        (0, 'Other'),
+        (1, 'Monday'),
+        (2, 'Tuesday'),
+        (3, 'Wednesday'),
+        (4, 'Thursday'),
+        (5, 'Friday'),
+    ])
+    submit = SubmitField('Add Link')
+
+
+class RemoveZoomLinkForm(FlaskForm):
+    links = SelectField('Entry', validate_choice=False)
+    submit = SubmitField('Remove Link')
+
+    def set_choices(self):
+        days = ["Other", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday"]
+        self.links.choices = [(-1, "---")] + [(link.id, str(link.description + ", " + days[int(link.day)]))
+                                              for link in ZoomLink.query.order_by(ZoomLink.day).all()]

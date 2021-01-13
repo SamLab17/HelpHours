@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% block head%}
+<title>Edit Zoom Links</title>
+{% endblock %}
+
+{% block body %}
+
+<div class="center-content">
+    <div class="form-container" style="margin-right: 15%;">
+        <form class="form" method="POST">
+            {{ form.csrf_token }}
+            <input name="id" type="hidden" id="id" value="{{ id }}"></input>
+            <h2 class="form-title">Add Zoom Link</h2>
+            {% if add_message|length > 0 %}
+                <p class="error-message">{{ add_message }}</p>
+            {% endif %}
+
+                <div>
+                    {{ form.description.label(class='form-label')}}
+                    {{ form.description(class='form-input')}}
+                </div>
+                <div>
+                    {{ form.url.label(class='form-label')}}
+                    {{ form.url(class='form-input')}}
+                </div>
+                <div>
+                    {{ form.day.label(class='form-label') }}
+                    {{ form.day(class='form-input') }}
+                </div>
+
+                <div>
+                    {{ form.submit(class='form-submit')}}
+                    <a class="form-cancel" href="{{ url_for('zoom_links') }}">Cancel</a>
+                </div>
+        </form>
+    </div>
+    <div class="form-container">
+        <form class="form" method="POST">
+            {{ remove_form.csrf_token }}
+            <input name="id" type="hidden" id="id" value="{{ id }}"></input>
+            <h2 class="form-title">Remove Zoom Link</h2>
+            {% if remove_message|length > 0 %}
+                <p class="error-message">{{ remove_message }}</p>
+            {% endif %}
+
+                <div>
+                    {{ remove_form.links(class='form-input') }}
+                </div>
+                <div>
+                    {{ remove_form.submit(class='form-submit')}}
+                    <a class="form-cancel" href="{{ url_for('zoom_links') }}">Cancel</a>
+                </div>
+        </form>
+    </div>
+</div>
+
+{% endblock %}

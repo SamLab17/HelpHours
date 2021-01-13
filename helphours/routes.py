@@ -1,8 +1,8 @@
 import json
 import secrets
-from helphours import app, log, db, notifier, queue_handler, routes_helper, password_reset, stats, zoom_helper
+from helphours import app, log, db, notifier, queue_handler, routes_helper, password_reset, stats
 from flask import render_template, url_for, redirect, request, g, send_from_directory
-from helphours.forms import JoinQueueForm, RemoveSelfForm, InstructorForm
+from helphours.forms import JoinQueueForm, RemoveSelfForm, InstructorForm, AddZoomLinkForm, RemoveZoomLinkForm
 from helphours.student import Student
 from flask_login import current_user, login_required
 from helphours.models.instructor import Instructor
@@ -114,31 +114,61 @@ def remove():
 
 @app.route("/zoom", methods=['GET'])
 def zoom_links():
-    return render_template('zoom.html', links=ZoomLink.query.all())
+    links = [ZoomLink.query.filter(ZoomLink.day == 0).all()]
+    links += [ZoomLink.query.filter(ZoomLink.day == 1).all()]
+    links += [ZoomLink.query.filter(ZoomLink.day == 2).all()]
+    links += [ZoomLink.query.filter(ZoomLink.day == 3).all()]
+    links += [ZoomLink.query.filter(ZoomLink.day == 4).all()]
+    links += [ZoomLink.query.filter(ZoomLink.day == 5).all()]
+    show_cal = len(links[0]) != len(ZoomLink.query.all())
+    return render_template('zoom.html', links=links, show_cal=show_cal)
 
 
 @app.route('/change_zoom', methods=['GET', 'POST'])
 @login_required
 def change_zoom():
-    message = ""
-    preset_links = ZoomLink.query.all()
+    add_message = ""
+    remove_message = ""
 
-    if request.method == 'POST':
-        if 'cancel' in request.form:
-            return redirect(url_for('zoom_links'))
+    form = AddZoomLinkForm()
+    remove_form = RemoveZoomLinkForm()
+    if form.validate_on_submit():
+        if int(form.day.data) != -1:
+            new_link = ZoomLink()
+            new_link.url = form.url.data
+            new_link.description = form.description.data
+            new_link.day = int(form.day.data)
 
-        new_presets = request.form['preset-links']
-        try:
-            new_zoom_links = zoom_helper.parse_links(new_presets)
-            ZoomLink.query.delete()
-            for new_link in new_zoom_links:
-                db.session.add(new_link)
+            db.session.add(new_link)
             db.session.commit()
             log.info(f'{current_user.first_name} {current_user.last_name} updated the Zoom links.')
-            return redirect(url_for('zoom_links'))
-        except Exception as e:
-            message = str(e)
-    return render_template('edit_preset_links.html', message=message, preset_links=preset_links)
+
+            form = AddZoomLinkForm()
+            form.url.data = ""
+            form.description.data = ""
+            add_message = "The zoom link has been added!"
+        else:
+            add_message = "Please select a day to add the link to"
+
+    elif remove_form.validate_on_submit() and remove_form.links.data is not None:
+        if int(remove_form.links.data) != -1:
+            db.session.delete(ZoomLink.query.filter(ZoomLink.id == int(remove_form.links.data)).first())
+            db.session.commit()
+
+            log.info(f'{current_user.first_name} {current_user.last_name} updated the Zoom links.')
+            remove_message = "The zoom link has been removed!"
+        else:
+            remove_message = "Please select a link to remove"
+
+    elif request.method == 'POST':
+        # At this point, it was not a valid add nor remove, but we already handled invalid
+        # removes above, so this must be an invalid add, so display error message
+        if len(form.errors) > 0:
+            add_message = next(iter(form.errors.values()))[0]
+
+    remove_form.set_choices()
+    return render_template('new_edit_preset_links.html', add_message=add_message, remove_message=remove_message,
+                           form=form, remove_form=remove_form)
 
 
 @app.route("/schedule", methods=['GET'])
