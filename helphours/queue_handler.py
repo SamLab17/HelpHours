@@ -46,9 +46,13 @@ def get_students():
 
 
 def peek_runner_up():
-    if len(student_queue) <= 1:
+    return peek_student_at(1)
+
+
+def peek_student_at(pos):
+    if len(student_queue) <= pos:
         return None
-    return student_queue[1]
+    return student_queue[pos]
 
 
 """

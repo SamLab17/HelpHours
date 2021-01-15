@@ -57,7 +57,7 @@ def join():
                         form.eid.data, form.desc.data, visit.id)
             place = queue_handler.enqueue(s)
             notifier.send_message(form.email.data,
-                                  f"Notification from {app.config['COURSE_NAME']} Lab Hours Queue",
+                                  f"Notification from {app.config['COURSE_NAME']} Help Hours Queue",
                                   render_template("email/added_to_queue_email.html",
                                                   view_link=app.config['WEBSITE_LINK'] + url_for('view'),
                                                   place_str=routes_helper.get_place_str(place),

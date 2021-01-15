@@ -41,12 +41,13 @@ def handle_remove(request):
     s = queue_handler.peek_runner_up()
     if s is not None and not s.notified:
         try:
-            notifier.send_message(s.email, "Notification from {{COURSE_NAME}} Help Hours Queue",
+            log.debug(f"Sending runner up email to {s.email}")
+            notifier.send_message(s.email, f'Notification from {app.config["COURSE_NAME"]} Help Hours Queue',
                                   render_template("up_next_email.html", student_name=s.name, remove_code=s.eid,
                                                   view_link=app.config['WEBSITE_LINK'] + url_for('view')), 'html')
             s.notified = True
         except Exception as e:
-            print(f"Failed to send email to {s.email}. {e}")
+            log.warning(f"Failed to send email to {s.email}. {e}")
 
 
 def get_place_str(place):

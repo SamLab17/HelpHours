@@ -8,7 +8,7 @@ import validators
 class JoinQueueForm(FlaskForm):
     name = StringField('Name', validators=[
         DataRequired(),
-        Length(min=2, max=32, message="Please limit name entry to 32 characters.")
+        Length(min=2, max=32, message="Please limit name entry to 2-32 characters.")
     ])
     email = StringField('Email', validators=[
         DataRequired(),
