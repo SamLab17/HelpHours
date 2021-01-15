@@ -43,7 +43,7 @@ def handle_remove(request):
         try:
             log.debug(f"Sending runner up email to {s.email}")
             notifier.send_message(s.email, f'Notification from {app.config["COURSE_NAME"]} Help Hours Queue',
-                                  render_template("up_next_email.html", student_name=s.name, remove_code=s.eid,
+                                  render_template("email/up_next_email.html", student_name=s.name, remove_code=s.eid,
                                                   view_link=app.config['WEBSITE_LINK'] + url_for('view')), 'html')
             s.notified = True
         except Exception as e:
