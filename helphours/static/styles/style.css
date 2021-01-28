@@ -406,6 +406,13 @@ textarea {
     margin-right: auto;
 }
 
+@media only screen and (max-width: 1000px) {
+    .queue-container {
+        width: 100%;
+    }
+}
+
+
 .queue-entry {
     display: -webkit-box;
     display: -ms-flexbox;
