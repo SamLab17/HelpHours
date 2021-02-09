@@ -70,6 +70,28 @@
             </a>
             {% endfor %}
         </div>
+        {% if show_weekends %}
+        <div class="column" style=" margin: 1%;">
+            <h2 style="text-align: center;">Saturday</h2>
+            {% for link in links[6] %}
+            <a class="meeting-link" href="{{ link.url }}" target="_blank">
+                <div class="link-entry">
+                    <div class="link-desc">{{ link.description }}</div>
+                </div>
+            </a>
+            {% endfor %}
+        </div>
+        <div class="column" style="margin: 1%;">
+            <h2 style="text-align: center;">Sunday</h2>
+            {% for link in links[7] %}
+            <a class="meeting-link" href="{{ link.url }}" target="_blank">
+                <div class="link-entry">
+                    <div class="link-desc">{{ link.description }}</div>
+                </div>
+            </a>
+            {% endfor %}
+        </div>
+        {% endif %}
     </div>
     {% endif %}
 
