@@ -114,14 +114,13 @@ def remove():
 
 @app.route("/zoom", methods=['GET'])
 def zoom_links():
-    links = [ZoomLink.query.filter(ZoomLink.day == 0).all()]
-    links += [ZoomLink.query.filter(ZoomLink.day == 1).all()]
-    links += [ZoomLink.query.filter(ZoomLink.day == 2).all()]
-    links += [ZoomLink.query.filter(ZoomLink.day == 3).all()]
-    links += [ZoomLink.query.filter(ZoomLink.day == 4).all()]
-    links += [ZoomLink.query.filter(ZoomLink.day == 5).all()]
+    links = []
+    for day in range(0, 8):
+        links += [ZoomLink.query.filter(ZoomLink.day == day).all()]
     show_cal = len(links[0]) != len(ZoomLink.query.all())
-    return render_template('zoom.html', links=links, show_cal=show_cal)
+    show_weekends = len(links[6]) + len(links[7]) > 0
+    return render_template('zoom.html', links=links,
+                           show_cal=show_cal, show_weekends=show_weekends)
 
 
 @app.route('/change_zoom', methods=['GET', 'POST'])
