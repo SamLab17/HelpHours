@@ -278,8 +278,9 @@ def clear():
     expected_token = app.config['CLEAR_TOKEN']
     if request.form['token'] != expected_token:
         return json.dumps({'success': False}), 401, {'ContentType': 'application/json'}
-    for student in queue_handler.get_students():
-        routes_helper.remove_helper(student.id)
+    uids_to_remove = [s.id for s in queue_handler.get_students()]
+    for uid in uids_to_remove:
+        routes_helper.remove_helper(uid)
     log.info('Queue was cleared through /clear route')
     return json.dumps({'success': True}), 200, {'ContentType': 'application/json'}
 
