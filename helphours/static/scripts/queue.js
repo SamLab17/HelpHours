@@ -91,7 +91,6 @@ function renderQueue(data) {
                 } else {
                     newDropDownStates[queue[i].id] = false;
                 }
-                dropDownStates = newDropDownStates;
             } else {
                 // We aren't authenticated, so hide all the unnecessary DOM elements
                 // (Besides, the buttons won't even be hooked up to anything)
@@ -104,6 +103,7 @@ function renderQueue(data) {
             // the queue div on the page
             queueContainer.appendChild(newEntry);
         }
+        dropDownStates = newDropDownStates;
     }
 }
 
