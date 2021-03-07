@@ -1,6 +1,7 @@
 import json
 import secrets
-from helphours import app, log, db, notifier, queue_handler, routes_helper, password_reset, stats
+from helphours import app, log, db, notifier, queue_handler, routes_helper, password_reset
+# from helphours import stats
 from flask import render_template, url_for, redirect, request, g, send_from_directory
 from helphours.forms import JoinQueueForm, RemoveSelfForm, InstructorForm, AddZoomLinkForm, RemoveZoomLinkForm
 from helphours.student import Student
@@ -259,11 +260,12 @@ def add_instructor():
 @app.route('/stats', methods=['GET', 'POST'])
 @login_required
 def stats_page():
-    if 'range' not in request.args:
-        range = "all"
-    else:
-        range = request.args['range']
-    return stats.get_graphs(range)
+    return render_template('unavailable.html', title="Stats")
+    # if 'range' not in request.args:
+    #     range = "all"
+    # else:
+    #     range = request.args['range']
+    # return stats.get_graphs(range)
 
 
 @app.route('/about', methods=['GET'])
