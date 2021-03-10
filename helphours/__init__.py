@@ -53,7 +53,6 @@ def save_queue():
     try:
         with open("queue.txt", "wb") as file:
             student_queue = queue_handler.get_students()
-            print(len(student_queue))
             pickle.dump(student_queue, file)
     except:
         pass
