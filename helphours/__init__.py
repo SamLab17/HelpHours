@@ -39,22 +39,25 @@ from helphours import queue_handler
 import pickle
 
 try:
-    with (open("queue.txt", "rb")) as openfile:
+    with open(app.config['QUEUE_FILE'], "rb") as openfile:
         student_queue = pickle.load(openfile)
         for student in student_queue:
             queue_handler.enqueue(student)
-except:
+except:  # noqa: E722
+    log.info('Error while loading last queue state')
     pass
 
 
 from helphours import routes    # noqa: F401
 
+
 def save_queue():
     try:
-        with open("queue.txt", "wb") as file:
+        with open(app.config['QUEUE_FILE'], "wb") as file:
             student_queue = queue_handler.get_students()
             pickle.dump(student_queue, file)
-    except:
+    except:  # noqa: E722
+        log.info('Error while writing last queue state')
         pass
 
 

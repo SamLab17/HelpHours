@@ -19,3 +19,5 @@ helphours/helphours.db
 
 .flaskenv
 helphours/config.cfg
+
+queue.pkl
