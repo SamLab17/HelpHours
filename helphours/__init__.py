@@ -35,4 +35,29 @@ log.info('Help Hours application starting...')
 
 notifier.set_log(log)
 
+from helphours import queue_handler
+import pickle
+
+try:
+    with (open("queue.txt", "rb")) as openfile:
+        student_queue = pickle.load(openfile)
+        for student in student_queue:
+            queue_handler.enqueue(student)
+except:
+    pass
+
+
 from helphours import routes    # noqa: F401
+
+def save_queue():
+    try:
+        with open("queue.txt", "wb") as file:
+            student_queue = queue_handler.get_students()
+            print(len(student_queue))
+            pickle.dump(student_queue, file)
+    except:
+        pass
+
+
+import atexit
+atexit.register(save_queue)
