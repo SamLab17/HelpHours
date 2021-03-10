@@ -15,7 +15,7 @@ from werkzeug.security import generate_password_hash
 # Would likely need to be stored in a databse if we want multiple instances of this
 # running
 queue_is_open = False
-current_zoom_link = ''
+current_zoom_link = ''  # don't think we need this
 CURRENT_DUCK = '/static/images/duck.png'
 
 

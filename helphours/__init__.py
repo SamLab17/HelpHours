@@ -35,4 +35,31 @@ log.info('Help Hours application starting...')
 
 notifier.set_log(log)
 
+from helphours import queue_handler
 from helphours import routes    # noqa: F401
+import pickle
+
+try:
+    with open(app.config['QUEUE_FILE'], "rb") as openfile:
+        load_data = pickle.load(openfile)
+        routes.queue_is_open = load_data[0]
+        student_queue = load_data[1]
+        for student in student_queue:
+            queue_handler.enqueue(student)
+except:  # noqa: E722
+    log.info('Error while loading last queue state')
+    pass
+
+
+def save_queue():
+    try:
+        with open(app.config['QUEUE_FILE'], "wb") as file:
+            dump_data = (routes.queue_is_open, queue_handler.get_students())
+            pickle.dump(dump_data, file)
+    except:  # noqa: E722
+        log.info('Error while writing last queue state')
+        pass
+
+
+import atexit
+atexit.register(save_queue)
