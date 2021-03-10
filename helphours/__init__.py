@@ -54,7 +54,7 @@ except:  # noqa: E722
 def save_queue():
     try:
         with open(app.config['QUEUE_FILE'], "wb") as file:
-            dump_data = (routes.queue_is_open, queue_handler.get_students)
+            dump_data = (routes.queue_is_open, queue_handler.get_students())
             pickle.dump(dump_data, file)
     except:  # noqa: E722
         log.info('Error while writing last queue state')
