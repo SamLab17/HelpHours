@@ -51,7 +51,7 @@ except:  # noqa: E722
     pass
 
 
-def save_queue():
+def save_queue(sender, **args):
     try:
         with open(app.config['QUEUE_FILE'], "wb") as file:
             dump_data = (routes.queue_is_open, queue_handler.get_students())
@@ -61,5 +61,5 @@ def save_queue():
         pass
 
 
-import atexit
-atexit.register(save_queue)
+from flask import appcontext_tearing_down
+appcontext_tearing_down.connect(save_queue, app)
