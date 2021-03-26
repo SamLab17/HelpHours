@@ -18,14 +18,13 @@
     </head>
 
     
-
     <body id="body">
         
         <nav class="navbar">
             <ul aria-label="Navigation menu" class="left-links">
                 <li>
                     <a role="button" aria-label="Home" href="{{ url_for('index') }}" class="no-grow">
-                        <img src="{{ CURRENT_DUCK }}" style="height: 50px; margin: 5px auto;" alt-text="Rubber Duck">
+                        <img id="nav-duck" src="{{ CURRENT_DUCK }}" style="height: 50px; margin: 5px auto;" alt-text="Rubber Duck">
                     </a>
                 </li>
                 <li {% if request.path == url_for('join') %} class="active" {% endif %}>
@@ -82,6 +81,11 @@
             <a id="dark-mode-toggle" style="cursor:pointer" class="link" >
                 <img id="dark-mode-moon" src="{{ url_for('static', filename='images/moon.png') }}" style="height: 45px">
                 <img id="dark-mode-sun" src="{{ url_for('static', filename='images/sun.png') }}" style="height: 45px">
+            </a>
+        </div>
+        <div class="dark-mode-button rave-button" onclick="toggleRaveMode()" >
+            <a id="rave-mode-toggle" style="cursor:pointer" class="link" >
+                ?
             </a>
         </div>
     </body>
