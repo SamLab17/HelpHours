@@ -108,11 +108,11 @@ class FairyDustCursor {
         this.height = window.innerHeight
 
         if (this.hasWrapperEl) {
-            this.canvas.width = element.clientWidth
-            this.canvas.height = element.clientHeight
+            this.canvas.width = this.element.clientWidth
+            this.canvas.height = this.element.clientHeight
         } else {
-            this.canvas.width = width
-            this.canvas.height = height
+            this.canvas.width = this.width
+            this.canvas.height = this.height
         }
     }
 
