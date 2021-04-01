@@ -6,6 +6,7 @@
  * 
  */
 
+
 class FairyDustCursor {
 
     constructor(options) {
@@ -187,4 +188,34 @@ class FairyDustCursor {
         this.particles = []
     }
 
+}
+
+function Particle(x, y, canvasItem) {
+    const lifeSpan = Math.floor(Math.random() * 30 + 60)
+    this.initialLifeSpan = lifeSpan //
+    this.lifeSpan = lifeSpan //ms
+    this.velocity = {
+        x: (Math.random() < 0.5 ? -1 : 1) * (Math.random() / 2),
+        y: Math.random() * 0.7 + 0.9,
+    }
+    this.position = { x: x, y: y }
+    this.canv = canvasItem
+
+    this.update = function (context) {
+        this.position.x += this.velocity.x
+        this.position.y += this.velocity.y
+        this.lifeSpan--
+
+        this.velocity.y += 0.02
+
+        const scale = Math.max(this.lifeSpan / this.initialLifeSpan, 0)
+
+        context.drawImage(
+            this.canv,
+            this.position.x - (this.canv.width / 2) * scale,
+            this.position.y - this.canv.height / 2,
+            this.canv.width * scale,
+            this.canv.height * scale
+        )
+    }
 }
