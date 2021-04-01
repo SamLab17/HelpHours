@@ -13,6 +13,8 @@ const shift = 255 - amplitude;
 let step = 1.7 * (msPerFrame / 1000);
 let interval = NaN;
 
+let fairyCursor = new FairyDustCursor();
+
 if(store.getItem('raveMode') === 'true') {
     enableRave();
 } else {
@@ -76,6 +78,7 @@ function enableRave() {
         window.clearInterval(interval);
         store.setItem('raveMode', true);
     interval = window.setInterval(() => {
+            // Idea here comes from lolcat: https://github.com/busyloop/lolcat
             let red = Math.sin(step * i + 0) * amplitude + shift;
             let green = Math.sin(step * i + 2.0 * Math.PI / 3) * amplitude + shift;
             let blue = Math.sin(step * i + 4.0 * Math.PI / 3) * amplitude + shift;
@@ -93,6 +96,7 @@ function enableRave() {
         }
     }
     setLightMode();
+    fairyCursor.resumeEffect();
 }
 
 function disableRave() {
@@ -112,5 +116,6 @@ function disableRave() {
         }
     }
     interval = NaN;
+    fairyCursor.pauseEffect();
 }
 
