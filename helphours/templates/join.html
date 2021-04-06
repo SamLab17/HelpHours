@@ -28,7 +28,7 @@
 
             <div>
                 {{ form.desc.label(class="form-label") }}
-                {{ form.desc(class="form-input") }}
+                {{ form.desc(class="form-input", autocomplete="off") }}
             </div>
 
             {% if message|length > 0 %}
