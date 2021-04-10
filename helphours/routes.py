@@ -101,12 +101,11 @@ def remove():
                 if runner_up is not None and not runner_up.notified:
                     try:
                         log.debug(f"Sending runner up email to {runner_up.email}")
-                        notifier.send_message(s.email,
+                        notifier.send_message(  s.email,
                                                 f'Notification from {app.config["COURSE_NAME"]} Help Hours Queue',
-                                                    render_template("email/up_next_email.html",
-                                                        student_name=runner_up.name, remove_code=runner_up.eid,
-                                                            view_link=app.config['WEBSITE_LINK'] + url_for('view')),
-                                                                'html')
+                                                render_template("email/up_next_email.html",
+                                                student_name=runner_up.name, remove_code=runner_up.eid,
+                                                view_link=app.config['WEBSITE_LINK'] + url_for('view')), 'html')
                         s.notified = True
                     except Exception as e:
                         log.warning(f"Failed to send email to {runner_up.email}. {e}")
