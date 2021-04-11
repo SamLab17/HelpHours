@@ -102,7 +102,7 @@ def remove():
                     try:
                         log.debug(f"Sending runner up email to {runner_up.email}")
                         notifier.send_message(
-                            s.email, f'Notification from {app.config["COURSE_NAME"]} Help Hours Queue',
+                            runner_up.email, f'Notification from {app.config["COURSE_NAME"]} Help Hours Queue',
                             render_template(
                                 "email/up_next_email.html", student_name=runner_up.name,
                                 remove_code=runner_up.eid, view_link=app.config['WEBSITE_LINK'] + url_for('view')),
