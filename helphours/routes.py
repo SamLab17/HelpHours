@@ -108,7 +108,7 @@ def remove():
                                 remove_code=runner_up.eid, view_link=app.config['WEBSITE_LINK'] + url_for('view')),
                             'html')
 
-                        s.notified = True
+                        runner_up.notified = True
                     except Exception as e:
                         log.warning(f"Failed to send email to {runner_up.email}. {e}")
 
