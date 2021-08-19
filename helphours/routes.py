@@ -15,8 +15,16 @@ from werkzeug.security import generate_password_hash
 # Would likely need to be stored in a databse if we want multiple instances of this
 # running
 queue_is_open = False
-current_zoom_link = ''  # don't think we need this
-CURRENT_DUCK = '/static/images/duck.png'
+
+# Duck image to use during the day when the queue is open
+QUEUE_OPEN_DUCK = 'https://utcshelphours.com/duck.png'
+
+# Duck image to use overnight when the queue is closed
+QUEUE_CLOSED_DUCK = 'https://utcshelphours.com/night-duck.png'
+
+# This variable will be injected in the template renderer to choose which duck to display
+# Will be updated by the /open and /close routes which are called in the morning and night
+CURRENT_DUCK = QUEUE_OPEN_DUCK
 
 
 @app.before_request
@@ -314,7 +322,7 @@ def open():
     if request.form['token'] != expected_token:
         return json.dumps({'success': False}), 401, {'ContentType': 'application/json'}
     queue_is_open = True
-    CURRENT_DUCK = url_for('static', filename='images/duck.png')
+    CURRENT_DUCK = QUEUE_OPEN_DUCK
     log.info('Queue was opened through /open route')
     return json.dumps({'success': True}), 200, {'ContentType': 'application/json'}
 
@@ -329,7 +337,7 @@ def close():
     if request.form['token'] != expected_token:
         return json.dumps({'success': False}), 401, {'ContentType': 'application/json'}
     queue_is_open = False
-    CURRENT_DUCK = url_for('static', filename='images/night-duck.png')
+    CURRENT_DUCK = QUEUE_CLOSED_DUCK
     log.info('Queue was closed through /close route')
     return json.dumps({'success': True}), 200, {'ContentType': 'application/json'}
 
