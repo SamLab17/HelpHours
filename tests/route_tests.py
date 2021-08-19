@@ -50,10 +50,6 @@ class TestRoute(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
 
     # unauthorized routes by default
-    def test_stats_page(self):
-        response = self.app.get('/stats', follow_redirects=True)
-        self.assertEqual(response.status_code, 401)
-
     def test_change_zoom_page(self):
         response = self.app.get('/change_zoom', follow_redirects=True)
         self.assertEqual(response.status_code, 401)
