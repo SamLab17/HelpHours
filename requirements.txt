@@ -18,11 +18,7 @@ Jinja2==2.11.3
 kiwisolver==1.2.0
 lazy-object-proxy==1.4.3
 MarkupSafe==1.1.1
-matplotlib==3.3.0
 mccabe==0.6.1
-mpld3==0.5.1
-numpy==1.19.1
-pandas==1.1.0
 Pillow==8.2.0
 pycodestyle==2.6.0
 pyflakes==2.2.0
@@ -33,7 +29,6 @@ pylint-plugin-utils==0.6
 pyparsing==2.4.7
 python-dateutil==2.8.1
 python-dotenv==0.14.0
-pytz==2020.1
 six==1.15.0
 SQLAlchemy==1.3.18
 toml==0.10.1
