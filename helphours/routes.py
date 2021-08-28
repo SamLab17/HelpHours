@@ -62,7 +62,7 @@ def join():
             db.session.add(visit)
             db.session.commit()
             s = Student(form.name.data, form.email.data,
-                        form.eid.data, form.desc.data, visit.id)
+                        form.eid.data, form.desc.data, visit.id, Student.REMOTE)
             place = queue_handler.enqueue(s)
             notifier.send_message(form.email.data,
                                   f"Notification from {app.config['COURSE_NAME']} Help Hours Queue",

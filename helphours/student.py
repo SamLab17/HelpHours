@@ -2,11 +2,15 @@ from datetime import datetime
 
 
 class Student:
+
+    REMOTE = 'remote'
+    IN_PERSON = 'in_person'
+
     """
         Class to represent a Student entry in the
         Lab Hours Queue.
     """
-    def __init__(self, name, email, eid, desc, uid):
+    def __init__(self, name, email, eid, desc, uid, modality):
         self.name = name
         self.email = email
         self.eid = eid
@@ -20,17 +24,21 @@ class Student:
         self.id = str(uid)
         self.time_entered = datetime.now().strftime('%H:%M:%S')
 
+        # Whether or not the student is in-person or virtual
+        self.modality = modality
+
     def serialize_student_view(self, position):
         return {
             'name': self.name,
             'position': position,
-            # 'id': self.id
+            'modality': self.modality
         }
 
     def serialize_instructor_view(self, position):
         return {
             'name': self.name,
             'position': position,
+            'modality': self.modality,
             'desc': self.desc,
             'id': self.id,
             'time': self.time_entered,
