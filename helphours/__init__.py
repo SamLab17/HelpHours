@@ -61,5 +61,9 @@ def save_queue(sender, **args):
         pass
 
 
+# Default DUAL_MODAILTY option to false.
+if 'DUAL_MODALITY' not in app.config:
+    app.config['DUAL_MODALITY'] = False
+
 from flask import appcontext_tearing_down
 appcontext_tearing_down.connect(save_queue, app)
