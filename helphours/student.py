@@ -10,7 +10,7 @@ class Student:
         Class to represent a Student entry in the
         Lab Hours Queue.
     """
-    def __init__(self, name, email, eid, desc, uid, modality):
+    def __init__(self, name, email, eid, desc, uid, modality=REMOTE):
         self.name = name
         self.email = email
         self.eid = eid
