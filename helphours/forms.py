@@ -1,7 +1,9 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField, PasswordField, BooleanField, SelectField
-from wtforms.validators import DataRequired, Length, Email, EqualTo, Regexp, ValidationError
+from wtforms.validators import DataRequired, Length, Email, EqualTo, Regexp, ValidationError, NoneOf
 from helphours.models.zoom_link import ZoomLink
+from helphours.student import Student
+from helphours import app
 import validators
 
 
@@ -20,6 +22,18 @@ class JoinQueueForm(FlaskForm):
     ])
     desc = StringField('Short Problem Description', validators=[
         DataRequired()
+    ])
+
+    default_opt = ('', 'Choose Format')
+    remote_opt = (Student.REMOTE, 'Remote')
+    in_person_opt = (Student.IN_PERSON, 'In Person')
+
+    # If dual modality is not enabled, use 'remote'
+    modality_default = None if app.config['DUAL_MODALITY'] else Student.REMOTE
+    modality = SelectField('Format', choices=[default_opt, remote_opt, in_person_opt], 
+                           default=modality_default, validators=[
+        DataRequired(),
+        NoneOf(default_opt)
     ])
     submit = SubmitField('Join the Queue!')
 
