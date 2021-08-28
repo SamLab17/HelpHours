@@ -31,6 +31,13 @@
                 {{ form.desc(class="form-input", autocomplete="off") }}
             </div>
 
+            {% if dual_modality %}
+            <div>
+                {{ form.modality.label(class="form-label") }}
+                {{ form.modality(class="form-input") }}
+            </div>
+            {% endif %}
+
             {% if message|length > 0 %}
                 <p class="error-message">{{ message }}</p>
             {% endif %}
