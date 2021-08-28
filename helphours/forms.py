@@ -30,7 +30,7 @@ class JoinQueueForm(FlaskForm):
 
     # If dual modality is not enabled, use 'remote'
     modality_default = None if app.config['DUAL_MODALITY'] else Student.REMOTE
-    modality = SelectField('Format', choices=[default_opt, remote_opt, in_person_opt], 
+    modality = SelectField('Format', choices=[default_opt, remote_opt, in_person_opt],
                            default=modality_default, validators=[
         DataRequired(),
         NoneOf(default_opt)

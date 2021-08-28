@@ -65,6 +65,5 @@ def save_queue(sender, **args):
         pass
 
 
-
 from flask import appcontext_tearing_down
 appcontext_tearing_down.connect(save_queue, app)
