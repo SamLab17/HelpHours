@@ -9,6 +9,10 @@ app.config.from_pyfile('config.cfg')
 
 app.jinja_env.auto_reload = True
 
+# Default DUAL_MODAILTY option to false.
+if 'DUAL_MODALITY' not in app.config:
+    app.config['DUAL_MODALITY'] = False
+
 db = SQLAlchemy(app)
 
 login = LoginManager(app)
@@ -60,10 +64,6 @@ def save_queue(sender, **args):
         log.info('Error while writing last queue state')
         pass
 
-
-# Default DUAL_MODAILTY option to false.
-if 'DUAL_MODALITY' not in app.config:
-    app.config['DUAL_MODALITY'] = False
 
 from flask import appcontext_tearing_down
 appcontext_tearing_down.connect(save_queue, app)
