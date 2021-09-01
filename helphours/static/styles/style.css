@@ -349,6 +349,7 @@ textarea {
     border-radius: 5px;
     border: none;
     cursor: pointer;
+    margin: 5 5 0 0;
 }
 
 .remove-button, .queue-close-button {
@@ -358,6 +359,7 @@ textarea {
     border-radius: 5px;
     border: none;
     cursor: pointer;
+    margin: 5 5 0 0;
 }
 
 .remove-button:disabled, .remove-button[disabled],

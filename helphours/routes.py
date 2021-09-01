@@ -14,6 +14,9 @@ from werkzeug.security import generate_password_hash
 # Would likely need to be stored in a databse if we want multiple instances of this
 # running
 queue_is_open = False
+in_person_queue_is_open = None
+if app.config['DUAL_MODALITY']:
+    in_person_queue_is_open = True
 
 # Duck image to use during the day when the queue is open
 QUEUE_OPEN_DUCK = 'https://utcshelphours.com/duck.png'
@@ -30,6 +33,7 @@ CURRENT_DUCK = QUEUE_OPEN_DUCK
 def inject_variables():
     g.user = current_user
     g.queue_is_open = queue_is_open
+    g.in_person_queue_is_open = in_person_queue_is_open
 
 
 @app.context_processor
@@ -85,10 +89,14 @@ def join():
 @app.route("/view", methods=['GET', 'POST'])
 def view():
     global queue_is_open
+    global in_person_queue_is_open
     if request.method == "POST" and current_user.is_authenticated:
-        queue_is_open = routes_helper.handle_line_form(request, queue_is_open)
+        queue_is_open, in_person_queue_is_open = routes_helper.handle_line_form(request,
+                                                                                queue_is_open,
+                                                                                in_person_queue_is_open)
     queue = queue_handler.get_students()
-    return render_template('view.html', queue=queue, queue_is_open=queue_is_open)
+    return render_template('view.html', queue=queue, queue_is_open=queue_is_open,
+                           in_person_queue_is_open=in_person_queue_is_open)
 
 
 @app.route("/line", methods=['GET', 'POST'])
