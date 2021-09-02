@@ -19,8 +19,8 @@ var updateInterval = setInterval(updateQueue, UPDATE_INTERVAL_SECONDS * 1000);
 const store1 = window.localStorage;
 var viewStateMap = new Map();
 
-viewStateMap['remote'] = store1.getItem('remote') == null ? true : store1.getItem('remote') == 'true';
-viewStateMap['in_person'] = store1.getItem('in_person') == null ? true : store1.getItem('in_person') == 'true';
+viewStateMap['remote'] = store1.getItem('remote') == null ? true : store1.getItem('remote');
+viewStateMap['in_person'] = store1.getItem('in_person') == null ? true : store1.getItem('in_person'); 
 
 document.getElementById("virtual-queue").checked = viewStateMap['remote'];
 document.getElementById("in-person-queue").checked = viewStateMap['in_person'];
