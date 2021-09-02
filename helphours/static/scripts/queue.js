@@ -66,7 +66,14 @@ function renderQueue(data) {
     let queue = data.queue.filter(entry => viewStateMap[entry.modality]);
 
     if (!queue || queue.length === 0) {
-        displayMessage('The queue is empty.');
+        // We have no entries to display.
+        if(data.queue.length > 0) {
+            // Is it because the client filtered them away?
+            displayMessage('No entries for specified queue(s).')
+        } else {
+            // Or is there actually no one in line
+            displayMessage('The queue is empty.');
+        }
     } else {
         let queueContainer = document.getElementById("queue");
         let template = document.getElementById("queue-entry-template");
