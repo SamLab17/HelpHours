@@ -78,6 +78,17 @@ function renderQueue(data) {
             // Add this person's place in line and name
             newEntry.querySelector('.queue-entry-position').textContent = queue[i].position + ":";
             newEntry.querySelector('.queue-entry-name').textContent = queue[i].name;
+           
+            // Display modality for entry
+            const modalities = {
+                'remote': "Remote",
+                'in_person': "In Person"
+            };
+            const modalityDisplay = modalities[queue[i].modality];
+            if(modalityDisplay)
+                newEntry.querySelector('.queue-entry-modality').textContent = `(${modalityDisplay})`;
+            else
+                newEntry.querySelector('.queue-entry-modality').style.display = 'none';
 
             if ("id" in queue[i]) {
                 // If the id of the student is present, then we are authenticated as an

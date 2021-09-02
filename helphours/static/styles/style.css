@@ -541,6 +541,11 @@ textarea {
     /* margin-left: 20px; */
 }
 
+.queue-entry-modality {
+    display: inline-block;
+    color: #222;
+}
+
 .queue-controls {
     width: 100%;
     display: -webkit-box;
