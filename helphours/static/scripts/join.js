@@ -1,8 +1,14 @@
 // How often we check if the queue is open
-const UPDATE_INTERVAL_SECONDS = 10;
+const UPDATE_INTERVAL_SECONDS = 5;
 
 checkQueueIsOpen();
 setInterval(checkQueueIsOpen, UPDATE_INTERVAL_SECONDS * 1000);
+
+// Selectors for the <option>s in the modality dropdown
+const VIRTUAL_OPTION_SELECT = "#modality option[value='virtual']"
+const IN_PERSON_OPTION_SELECT = "#modality option[value='in_person']"
+
+const prettyStatus = (isOpen) => isOpen ? "(Open)" : "(Closed)"
 
 function checkQueueIsOpen() {
     fetch('/queue_status').then(response => response.json())
@@ -12,24 +18,34 @@ function checkQueueIsOpen() {
             // This means a join request may fail if the "wrong" queue
             // was open, but the backend handles this and an error
             // will be displayed.
-            if(data && (data.virtual_open || data.in_person_open))
-                queueIsOpen();
-            else
-                queueIsClosed(); 
+            if(data) {
+                console.log(data)
+                if(data.virtual_open || data.in_person_open) {
+                    someQueuesOpen();
+                }
+                // Displays status of each queue in the dropdown.
+                document.querySelector(VIRTUAL_OPTION_SELECT)
+                        .textContent = "Virtual " + prettyStatus(data.virtual_open);
+                document.querySelector(IN_PERSON_OPTION_SELECT)
+                        .textContent = "In-Person " + prettyStatus(data.in_person_open);
+            }
+            else {
+                bothQueuesClosed(); 
+            }
         })
-        .catch(queueIsClosed)
+        .catch(bothQueuesClosed)
 }
 
 // If the queue is closed we visually disable the submit button,
 // queue status is still checked on the back-end since this the
 // 'disabled' attribute can be removed
-function queueIsClosed() {
+function bothQueuesClosed() {
     const joinButton = document.getElementById('submit-button');
     joinButton.disabled = true;
     joinButton.title = 'The queue is closed.';
 }
 
-function queueIsOpen() {
+function someQueuesOpen() {
     const joinButton = document.getElementById('submit-button');
     joinButton.disabled = false;
     joinButton.removeAttribute('title');
