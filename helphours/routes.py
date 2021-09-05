@@ -16,7 +16,7 @@ from werkzeug.security import generate_password_hash
 queue_is_open = False
 in_person_queue_is_open = None
 if app.config['DUAL_MODALITY']:
-    in_person_queue_is_open = True
+    in_person_queue_is_open = False
 
 # Duck image to use during the day when the queue is open
 QUEUE_OPEN_DUCK = 'https://utcshelphours.com/duck.png'
@@ -55,29 +55,33 @@ def index():
 def join():
     form = JoinQueueForm()
     message = ""
-    if not queue_is_open and request.method == 'POST':
-        message = "Sorry, the queue was closed."
-    else:
+    if request.method == 'POST':
         # go to the page that shows the people in the queue if you've submitted
         # a valid form
         if form.validate_on_submit():
-            visit = Visit(eid=form.eid.data, time_entered=datetime.utcnow(), time_left=None,
-                          was_helped=0, instructor_id=None)
-            db.session.add(visit)
-            db.session.commit()
-            s = Student(form.name.data, form.email.data,
-                        form.eid.data, form.desc.data, visit.id, form.modality.data)
-            place = queue_handler.enqueue(s)
-            notifier.send_message(form.email.data,
-                                  f"Notification from {app.config['COURSE_NAME']} Help Hours Queue",
-                                  render_template("email/added_to_queue_email.html",
-                                                  view_link=app.config['WEBSITE_LINK'] + url_for(
-                                                      'view'),
-                                                  place_str=routes_helper.get_place_str(
-                                                      place),
-                                                  student_name=form.name.data, remove_code=form.eid.data),
-                                  'html')
-            return redirect(url_for('view'))
+            modality = form.modality.data
+            if not queue_is_open and modality == Student.VIRTUAL:
+                message = "Sorry, the queue for virtual help hours was closed."
+            elif not in_person_queue_is_open and modality == Student.IN_PERSON:
+                message = "Sorry, the queue for in-person help hours was closed."
+            else:
+                visit = Visit(eid=form.eid.data, time_entered=datetime.utcnow(), time_left=None,
+                              was_helped=0, instructor_id=None)
+                db.session.add(visit)
+                db.session.commit()
+                s = Student(form.name.data, form.email.data,
+                            form.eid.data, form.desc.data, visit.id, form.modality.data)
+                place = queue_handler.enqueue(s)
+                notifier.send_message(form.email.data,
+                                      f"Notification from {app.config['COURSE_NAME']} Help Hours Queue",
+                                      render_template("email/added_to_queue_email.html",
+                                                      view_link=app.config['WEBSITE_LINK'] + url_for(
+                                                          'view'),
+                                                      place_str=routes_helper.get_place_str(
+                                                          place),
+                                                      student_name=form.name.data, remove_code=form.eid.data),
+                                      'html')
+                return redirect(url_for('view'))
         else:
             if len(form.errors) > 0:
                 message = next(iter(form.errors.values()))[0]
@@ -321,7 +325,7 @@ def clear():
 
 @app.route('/open', methods=['POST'])
 def open():
-    global queue_is_open
+    global queue_is_open, in_person_queue_is_open
     global CURRENT_DUCK
     if 'token' not in request.form:
         return json.dumps({'success': False}), 401, {'ContentType': 'application/json'}
@@ -329,6 +333,7 @@ def open():
     if request.form['token'] != expected_token:
         return json.dumps({'success': False}), 401, {'ContentType': 'application/json'}
     queue_is_open = True
+    in_person_queue_is_open = True
     CURRENT_DUCK = QUEUE_OPEN_DUCK
     log.info('Queue was opened through /open route')
     return json.dumps({'success': True}), 200, {'ContentType': 'application/json'}
@@ -336,7 +341,7 @@ def open():
 
 @app.route('/close', methods=['POST'])
 def close():
-    global queue_is_open
+    global queue_is_open, in_person_queue_is_open
     global CURRENT_DUCK
     if 'token' not in request.form:
         return json.dumps({'success': False}), 401, {'ContentType': 'application/json'}
@@ -344,6 +349,7 @@ def close():
     if request.form['token'] != expected_token:
         return json.dumps({'success': False}), 401, {'ContentType': 'application/json'}
     queue_is_open = False
+    in_person_queue_is_open = False
     CURRENT_DUCK = QUEUE_CLOSED_DUCK
     log.info('Queue was closed through /close route')
     return json.dumps({'success': True}), 200, {'ContentType': 'application/json'}

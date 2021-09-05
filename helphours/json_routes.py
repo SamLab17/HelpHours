@@ -15,5 +15,4 @@ def queue():
 
 @app.route("/queue_status", methods=['GET'])
 def queue_status():
-    status = 'OPEN' if g.queue_is_open else 'CLOSED'
-    return jsonify({'status': status})
+    return jsonify({'virtual_open': g.queue_is_open, 'in_person_open': g.in_person_queue_is_open})
