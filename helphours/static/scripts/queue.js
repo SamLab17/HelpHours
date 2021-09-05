@@ -92,10 +92,10 @@ function renderQueue(data) {
                 'in_person': "In-Person"
             };
             const modalityDisplay = modalities[queue[i].modality];
-            if (modalityDisplay)
-                newEntry.querySelector('.queue-entry-modality').textContent = `(${modalityDisplay})`;
-            else
-                newEntry.querySelector('.queue-entry-modality').style.display = 'none';
+            const modalityLabel = newEntry.querySelector('.queue-entry-modality');
+            // only show label if modality value is well-formed and modality label div is in the HTML
+            if (modalityDisplay && modalityLabel)
+                modalityLabel.textContent = `(${modalityDisplay})`;
 
             if ("id" in queue[i]) {
                 // If the id of the student is present, then we are authenticated as an

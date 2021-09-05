@@ -24,16 +24,21 @@ function checkQueueIsOpen() {
                     someQueuesOpen();
                 }
                 // Displays status of each queue in the dropdown.
-                document.querySelector(VIRTUAL_OPTION_SELECT)
-                        .textContent = "Virtual " + prettyStatus(data.virtual_open);
-                document.querySelector(IN_PERSON_OPTION_SELECT)
-                        .textContent = "In-Person " + prettyStatus(data.in_person_open);
+                const virtualOption = document.querySelector(VIRTUAL_OPTION_SELECT);
+                const inPersonOption = document.querySelector(IN_PERSON_OPTION_SELECT);
+                if(virtualOption)
+                    virtualOption.textContent = "Virtual " + prettyStatus(data.virtual_open);
+                if(inPersonOption)
+                    inPersonOption.textContent = "In-Person " + prettyStatus(data.in_person_open);
             }
             else {
                 bothQueuesClosed(); 
             }
         })
-        .catch(bothQueuesClosed)
+        .catch((e) => {
+            console.log(e);
+            bothQueuesClosed();
+        })
 }
 
 // If the queue is closed we visually disable the submit button,
