@@ -19,13 +19,13 @@ var updateInterval = setInterval(updateQueue, UPDATE_INTERVAL_SECONDS * 1000);
 const store1 = window.localStorage;
 var viewStateMap = new Map();
 
-viewStateMap['remote'] = store1.getItem('remote') == null ? true : store1.getItem('remote') == 'true';
+viewStateMap['virtual'] = store1.getItem('virtual') == null ? true : store1.getItem('virtual') == 'true';
 viewStateMap['in_person'] = store1.getItem('in_person') == null ? true : store1.getItem('in_person') == 'true';
 
-document.getElementById("virtual-queue").checked = viewStateMap['remote'];
+document.getElementById("virtual-queue").checked = viewStateMap['virtual'];
 document.getElementById("in-person-queue").checked = viewStateMap['in_person'];
 
-store1.setItem('remote', viewStateMap['remote']);
+store1.setItem('virtual', viewStateMap['virtual']);
 store1.setItem('in_person', viewStateMap['in_person']);
 
 var checkboxesChanged = false;
@@ -88,8 +88,8 @@ function renderQueue(data) {
 
             // Display modality for entry
             const modalities = {
-                'remote': "Remote",
-                'in_person': "In Person"
+                'virtual': "Virtual",
+                'in_person': "In-Person"
             };
             const modalityDisplay = modalities[queue[i].modality];
             if (modalityDisplay)

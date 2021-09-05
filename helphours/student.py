@@ -3,14 +3,14 @@ from datetime import datetime
 
 class Student:
 
-    REMOTE = 'remote'
+    VIRTUAL = 'virtual'
     IN_PERSON = 'in_person'
 
     """
         Class to represent a Student entry in the
         Lab Hours Queue.
     """
-    def __init__(self, name, email, eid, desc, uid, modality=REMOTE):
+    def __init__(self, name, email, eid, desc, uid, modality=VIRTUAL):
         self.name = name
         self.email = email
         self.eid = eid
