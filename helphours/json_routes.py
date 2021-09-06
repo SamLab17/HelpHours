@@ -15,5 +15,5 @@ def queue():
 
 @app.route("/queue_status", methods=['GET'])
 def queue_status():
-    status = 'OPEN' if g.queue_is_open else 'CLOSED'
-    return jsonify({'status': status})
+    def sanitize(x): return False if x is None else x
+    return jsonify({'virtual_open': sanitize(g.queue_is_open), 'in_person_open': sanitize(g.in_person_queue_is_open)})

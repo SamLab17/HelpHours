@@ -4,7 +4,7 @@ from helphours.models.visit import Visit
 from datetime import datetime
 
 
-def handle_line_form(request, curr_open_state):
+def handle_line_form(request, curr_virtual_state, curr_in_person_state):
     """
         Handle post requests in the view line page.
         Will return a boolean indicating whether the line should be
@@ -13,13 +13,18 @@ def handle_line_form(request, curr_open_state):
     # Handle removing student, the line's "open state" should be unchanged.
     if 'finished' in request.form or 'removed' in request.form:
         handle_remove(request)
-        return curr_open_state
+        return curr_virtual_state, curr_in_person_state
     # Close the queue to new entries
-    elif 'close' in request.form:
-        return False
+    elif 'close-virtual' in request.form:
+        return False, curr_in_person_state
     # Open the queue to new entries
-    elif 'open' in request.form:
-        return True
+    elif 'open-virtual' in request.form:
+        return True, curr_in_person_state
+    elif 'close-in-person' in request.form:
+        return curr_virtual_state, False
+    elif 'open-in-person' in request.form:
+        return curr_virtual_state, True
+    return curr_virtual_state, curr_in_person_state
 
 
 def handle_remove(request):

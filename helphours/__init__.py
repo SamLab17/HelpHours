@@ -9,6 +9,10 @@ app.config.from_pyfile('config.cfg')
 
 app.jinja_env.auto_reload = True
 
+# Default DUAL_MODAILTY option to false.
+if 'DUAL_MODALITY' not in app.config:
+    app.config['DUAL_MODALITY'] = False
+
 db = SQLAlchemy(app)
 
 login = LoginManager(app)

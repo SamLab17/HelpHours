@@ -14,6 +14,9 @@ from werkzeug.security import generate_password_hash
 # Would likely need to be stored in a databse if we want multiple instances of this
 # running
 queue_is_open = False
+in_person_queue_is_open = None
+if app.config['DUAL_MODALITY']:
+    in_person_queue_is_open = False
 
 # Duck image to use during the day when the queue is open
 QUEUE_OPEN_DUCK = 'https://utcshelphours.com/duck.png'
@@ -30,6 +33,7 @@ CURRENT_DUCK = QUEUE_OPEN_DUCK
 def inject_variables():
     g.user = current_user
     g.queue_is_open = queue_is_open
+    g.in_person_queue_is_open = in_person_queue_is_open
 
 
 @app.context_processor
@@ -51,41 +55,52 @@ def index():
 def join():
     form = JoinQueueForm()
     message = ""
-    if not queue_is_open and request.method == 'POST':
-        message = "Sorry, the queue was closed."
-    else:
+    if request.method == 'POST':
         # go to the page that shows the people in the queue if you've submitted
         # a valid form
         if form.validate_on_submit():
-            visit = Visit(eid=form.eid.data, time_entered=datetime.utcnow(), time_left=None,
-                          was_helped=0, instructor_id=None)
-            db.session.add(visit)
-            db.session.commit()
-            s = Student(form.name.data, form.email.data,
-                        form.eid.data, form.desc.data, visit.id)
-            place = queue_handler.enqueue(s)
-            notifier.send_message(form.email.data,
-                                  f"Notification from {app.config['COURSE_NAME']} Help Hours Queue",
-                                  render_template("email/added_to_queue_email.html",
-                                                  view_link=app.config['WEBSITE_LINK'] + url_for('view'),
-                                                  place_str=routes_helper.get_place_str(place),
-                                                  student_name=form.name.data, remove_code=form.eid.data),
-                                  'html')
-            return redirect(url_for('view'))
+            modality = form.modality.data
+            if not queue_is_open and modality == Student.VIRTUAL:
+                message = "Sorry, the queue for virtual help hours was closed."
+            elif not in_person_queue_is_open and modality == Student.IN_PERSON:
+                message = "Sorry, the queue for in-person help hours was closed."
+            else:
+                visit = Visit(eid=form.eid.data, time_entered=datetime.utcnow(), time_left=None,
+                              was_helped=0, instructor_id=None)
+                db.session.add(visit)
+                db.session.commit()
+                s = Student(form.name.data, form.email.data,
+                            form.eid.data, form.desc.data, visit.id, form.modality.data)
+                place = queue_handler.enqueue(s)
+                notifier.send_message(form.email.data,
+                                      f"Notification from {app.config['COURSE_NAME']} Help Hours Queue",
+                                      render_template("email/added_to_queue_email.html",
+                                                      view_link=app.config['WEBSITE_LINK'] + url_for(
+                                                          'view'),
+                                                      place_str=routes_helper.get_place_str(
+                                                          place),
+                                                      student_name=form.name.data, remove_code=form.eid.data),
+                                      'html')
+                return redirect(url_for('view'))
         else:
             if len(form.errors) > 0:
                 message = next(iter(form.errors.values()))[0]
     # render the template for submitting otherwise
-    return render_template('join.html', form=form, queue_is_open=queue_is_open, message=message)
+    return render_template('join.html', form=form, dual_modality=app.config['DUAL_MODALITY'],
+                           queue_is_open=queue_is_open, message=message)
 
 
 @app.route("/view", methods=['GET', 'POST'])
 def view():
     global queue_is_open
+    global in_person_queue_is_open
     if request.method == "POST" and current_user.is_authenticated:
-        queue_is_open = routes_helper.handle_line_form(request, queue_is_open)
+        queue_is_open, in_person_queue_is_open = routes_helper.handle_line_form(request,
+                                                                                queue_is_open,
+                                                                                in_person_queue_is_open)
     queue = queue_handler.get_students()
-    return render_template('view.html', queue=queue, queue_is_open=queue_is_open)
+    return render_template('view.html', queue=queue, queue_is_open=queue_is_open,
+                           in_person_queue_is_open=in_person_queue_is_open)
 
 
 @app.route("/line", methods=['GET', 'POST'])
@@ -107,7 +122,8 @@ def remove():
                 runner_up = queue_handler.peek_runner_up()
                 if runner_up is not None and not runner_up.notified:
                     try:
-                        log.debug(f"Sending runner up email to {runner_up.email}")
+                        log.debug(
+                            f"Sending runner up email to {runner_up.email}")
                         notifier.send_message(
                             runner_up.email, f'Notification from {app.config["COURSE_NAME"]} Help Hours Queue',
                             render_template(
@@ -117,7 +133,8 @@ def remove():
 
                         runner_up.notified = True
                     except Exception as e:
-                        log.warning(f"Failed to send email to {runner_up.email}. {e}")
+                        log.warning(
+                            f"Failed to send email to {runner_up.email}. {e}")
 
                 v = Visit.query.filter_by(id=s.id).first()
                 if v is not None:
@@ -127,7 +144,8 @@ def remove():
                     return redirect(url_for('view'))
                 else:
                     # Serious issue, there are inconsistencies in the database.
-                    log.error('Student in queue does not have a corresponding entry in visits table.', notify=True)
+                    log.error(
+                        'Student in queue does not have a corresponding entry in visits table.', notify=True)
                     return render_template('message_error.html', title="Error Removing from queue",
                                            body="Sorry, something went wrong when trying to remove you from the queue.")
             else:
@@ -165,7 +183,8 @@ def change_zoom():
 
             db.session.add(new_link)
             db.session.commit()
-            log.info(f'{current_user.first_name} {current_user.last_name} updated the Zoom links.')
+            log.info(
+                f'{current_user.first_name} {current_user.last_name} updated the Zoom links.')
 
             form = AddZoomLinkForm()
             form.url.data = ""
@@ -176,10 +195,12 @@ def change_zoom():
 
     elif remove_form.validate_on_submit() and remove_form.links.data is not None:
         if int(remove_form.links.data) != -1:
-            db.session.delete(ZoomLink.query.filter(ZoomLink.id == int(remove_form.links.data)).first())
+            db.session.delete(ZoomLink.query.filter(
+                ZoomLink.id == int(remove_form.links.data)).first())
             db.session.commit()
 
-            log.info(f'{current_user.first_name} {current_user.last_name} updated the Zoom links.')
+            log.info(
+                f'{current_user.first_name} {current_user.last_name} updated the Zoom links.')
             remove_message = "The zoom link has been removed!"
         else:
             remove_message = "Please select a link to remove"
@@ -236,7 +257,8 @@ def edit_instructor():
                 instr.is_active = 1 if form.is_active.data else 0
                 instr.is_admin = 1 if form.is_admin.data else 0
                 db.session.commit()
-                log.info(f'The account for {instr.first_name} {instr.last_name} was updated.')
+                log.info(
+                    f'The account for {instr.first_name} {instr.last_name} was updated.')
                 return redirect('admin_panel')
             else:
                 message = 'Enter a valid email address'
@@ -272,7 +294,8 @@ def add_instructor():
                 db.session.add(instr)
                 db.session.commit()
                 password_reset.new_user(instr)
-                log.info(f'New account created for {instr.first_name} {instr.last_name}.')
+                log.info(
+                    f'New account created for {instr.first_name} {instr.last_name}.')
                 return redirect('admin_panel')
             else:
                 message = 'Enter a valid email address'
@@ -302,7 +325,7 @@ def clear():
 
 @app.route('/open', methods=['POST'])
 def open():
-    global queue_is_open
+    global queue_is_open, in_person_queue_is_open
     global CURRENT_DUCK
     if 'token' not in request.form:
         return json.dumps({'success': False}), 401, {'ContentType': 'application/json'}
@@ -310,6 +333,7 @@ def open():
     if request.form['token'] != expected_token:
         return json.dumps({'success': False}), 401, {'ContentType': 'application/json'}
     queue_is_open = True
+    in_person_queue_is_open = True
     CURRENT_DUCK = QUEUE_OPEN_DUCK
     log.info('Queue was opened through /open route')
     return json.dumps({'success': True}), 200, {'ContentType': 'application/json'}
@@ -317,7 +341,7 @@ def open():
 
 @app.route('/close', methods=['POST'])
 def close():
-    global queue_is_open
+    global queue_is_open, in_person_queue_is_open
     global CURRENT_DUCK
     if 'token' not in request.form:
         return json.dumps({'success': False}), 401, {'ContentType': 'application/json'}
@@ -325,6 +349,7 @@ def close():
     if request.form['token'] != expected_token:
         return json.dumps({'success': False}), 401, {'ContentType': 'application/json'}
     queue_is_open = False
+    in_person_queue_is_open = False
     CURRENT_DUCK = QUEUE_CLOSED_DUCK
     log.info('Queue was closed through /close route')
     return json.dumps({'success': True}), 200, {'ContentType': 'application/json'}

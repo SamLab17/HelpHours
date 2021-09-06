@@ -16,6 +16,20 @@ updateQueue();
 
 var updateInterval = setInterval(updateQueue, UPDATE_INTERVAL_SECONDS * 1000);
 
+const store1 = window.localStorage;
+var viewStateMap = new Map();
+
+viewStateMap['virtual'] = store1.getItem('virtual') == null ? true : store1.getItem('virtual') == 'true';
+viewStateMap['in_person'] = store1.getItem('in_person') == null ? true : store1.getItem('in_person') == 'true';
+
+document.getElementById("virtual-queue").checked = viewStateMap['virtual'];
+document.getElementById("in-person-queue").checked = viewStateMap['in_person'];
+
+store1.setItem('virtual', viewStateMap['virtual']);
+store1.setItem('in_person', viewStateMap['in_person']);
+
+var checkboxesChanged = false;
+
 // After TIMEOUT_MINUTES, stop retrieving the queue; the client is probably
 // idle or left the page open accidentally
 setTimeout(() => {
@@ -40,7 +54,7 @@ function updateQueue() {
 // update the page if necessary.
 function renderQueue(data) {
     let dataJSON = JSON.stringify(data);
-    if(lastPullResponse === dataJSON){
+    if (lastPullResponse === dataJSON && !checkboxesChanged) {
         // Nothing changed, don't bother re-rendering
         return;
     }
@@ -49,12 +63,18 @@ function renderQueue(data) {
     clearQueue();
     lastPullResponse = dataJSON;
 
-    let queue = data.queue;
+    let queue = data.queue.filter(entry => viewStateMap[entry.modality]);
 
     if (!queue || queue.length === 0) {
-        displayMessage('The queue is empty.');
-    }
-    else {
+        // We have no entries to display.
+        if (data.queue.length > 0) {
+            // Is it because the client filtered them away?
+            displayMessage('No entries for specified queue(s).')
+        } else {
+            // Or is there actually no one in line
+            displayMessage('The queue is empty.');
+        }
+    } else {
         let queueContainer = document.getElementById("queue");
         let template = document.getElementById("queue-entry-template");
         let newDropDownStates = {};
@@ -66,14 +86,25 @@ function renderQueue(data) {
             newEntry.querySelector('.queue-entry-position').textContent = queue[i].position + ":";
             newEntry.querySelector('.queue-entry-name').textContent = queue[i].name;
 
-            if("id" in queue[i]){
+            // Display modality for entry
+            const modalities = {
+                'virtual': "Virtual",
+                'in_person': "In-Person"
+            };
+            const modalityDisplay = modalities[queue[i].modality];
+            const modalityLabel = newEntry.querySelector('.queue-entry-modality');
+            // only show label if modality value is well-formed and modality label div is in the HTML
+            if (modalityDisplay && modalityLabel)
+                modalityLabel.textContent = `(${modalityDisplay})`;
+
+            if ("id" in queue[i]) {
                 // If the id of the student is present, then we are authenticated as an
                 // instructor, so prepare all other instructor-only fields
                 newEntry.querySelector('.queue-entry-expanded-desc').textContent = queue[i].desc;
                 newEntry.querySelector('.queue-entry-expanded-time').textContent = queue[i].time;
                 // Assing this entry's id so we know who was helped/removed
-                newEntry.querySelectorAll('button').forEach(button => 
-                    button.value=queue[i].id
+                newEntry.querySelectorAll('button').forEach(button =>
+                    button.value = queue[i].id
                 );
                 // Retrieve the DOM nodes from the fragment
                 let entry = Array.prototype.slice.call(newEntry.childNodes)[1];
@@ -84,7 +115,7 @@ function renderQueue(data) {
                 expandToggle.style.cursor = 'pointer';
 
                 // Restore previous dropdown states
-                if(queue[i].id in dropDownStates && dropDownStates[queue[i].id]){
+                if (queue[i].id in dropDownStates && dropDownStates[queue[i].id]) {
                     entry.querySelector('.queue-entry-box').classList.toggle('active');
                     entry.querySelector('.queue-entry-expanded').classList.toggle('active');
                     newDropDownStates[queue[i].id] = true;
@@ -105,13 +136,15 @@ function renderQueue(data) {
         }
         dropDownStates = newDropDownStates;
     }
+
+    checkboxesChanged = false;
 }
 
 // Gets rid of all entries in the queue div
 function clearQueue() {
-   let queue = document.getElementById("queue");
-   if(queue)
-        while(queue.firstChild)
+    let queue = document.getElementById("queue");
+    if (queue)
+        while (queue.firstChild)
             queue.removeChild(queue.firstChild)
 }
 
@@ -123,9 +156,16 @@ function displayMessage(content) {
     document.getElementById('queue').appendChild(message);
 }
 
- // Function which will toggle whether the entry accordion is open
- function toggleExpanded(queueEntry, entryId) {
+// Function which will toggle whether the entry accordion is open
+function toggleExpanded(queueEntry, entryId) {
     queueEntry.querySelector('.queue-entry-box').classList.toggle('active');
     queueEntry.querySelector('.queue-entry-expanded').classList.toggle('active');
     dropDownStates[entryId] = !dropDownStates[entryId];
+}
+
+function setCheckbox(queue) {
+    viewStateMap[queue] = !viewStateMap[queue];
+    store1.setItem(queue, viewStateMap[queue]);
+    checkboxesChanged = true;
+    updateQueue();
 }

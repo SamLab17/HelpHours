@@ -12,20 +12,38 @@
 
 
 <div class="queue-container">
-        <div class="queue-controls">
+    <div class="queue-controls">
+        {% if g.user.is_authenticated %}
             <form method="POST">
-                {% if g.user.is_authenticated %}
+                <div style="display: flex;">
                     {% if queue_is_open %}
-                        <button name="close" class="queue-close-button">Close Queue</button>
+                        <button name="close-virtual" class="queue-close-button">Close Virtual Queue</button>
                     {% else %}
-                        <button name="open" class="queue-open-button">Open Queue</button>
+                        <button name="open-virtual" class="queue-open-button">Open Virtual Queue</button> 
                     {% endif %}
-                {% endif %}
-            </form>
-        </div>
 
-   <div id="queue">
-   </div> 
+                    {% if in_person_queue_is_open == True %}
+                        <button name="close-in-person" class="queue-close-button">Close In-Person Queue</button>
+                    {% elif in_person_queue_is_open == False %}
+                        <button name="open-in-person" class="queue-open-button">Open In-Person Queue</button>
+                    {% endif %}
+                </div>
+            </form>
+        {% endif %} 
+
+        {% if in_person_queue_is_open != None %}
+            <div>
+                <input type="checkbox" checked id="virtual-queue" name="virtual-queue" value="virtual" onclick="setCheckbox('virtual');">
+                <label for="virtual-queue"> Show Virtual Queue</label><br></div>
+            <div>
+                <input type="checkbox" checked id="in-person-queue" name="in-person-queue" value="in-person" onclick="setCheckbox('in_person');">
+                <label for="in-person-queue"> Show In-Person Queue</label><br>
+            </div>
+        {% endif %}
+    </div>
+
+    <div id="queue">
+    </div> 
 
     <script src="{{ url_for('static', filename='scripts/queue.js') }}"></script>
 </div>
@@ -39,6 +57,9 @@
                 <div class="queue-entry-expand-toggle">
                     <svg class="queue-chevron" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" focusable="false" preserveAspectRatio="xMidYMid meet" viewBox="0 0 1200 1200"><path d="M600.006 989.352l178.709-178.709L1200 389.357l-178.732-178.709L600.006 631.91L178.721 210.648L0 389.369l421.262 421.262l178.721 178.721h.023z" fill="#626262"/><rect x="0" y="0" width="1200" height="1200" fill="rgba(0, 0, 0, 0)" /></svg>
                     <div class="queue-entry-name"></div>
+                    {% if in_person_queue_is_open != None %}
+                        <div class="queue-entry-modality"></div>
+                    {% endif %}
                 </div>
                 <div class="queue-entry-right">
                     <form method="POST" class="queue-entry-buttons">
