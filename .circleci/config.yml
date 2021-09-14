@@ -23,8 +23,8 @@ jobs:
                   command: |
                       set -e
                       . venv/bin/activate
-                      mv tests/testing.cfg helphours/config.cfg
-                      mv tests/testing.db helphours/helphours.db
+                      mv helphours/tests/testing.cfg helphours/config.cfg
+                      mv helphours/tests/testing.db helphours/helphours.db
                       echo "FLASK_APP=helphours" > .flaskenv
                       cd tests/
                       echo "running student tests"
