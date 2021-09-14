@@ -26,11 +26,12 @@ jobs:
                       mv helphours/tests/testing.cfg helphours/config.cfg
                       mv helphours/tests/testing.db helphours/helphours.db
                       echo "FLASK_APP=helphours" > .flaskenv
-                      cd tests/
                       echo "running student tests"
                       python3 -m helphours.tests.student_tests
                       echo "running route tests"
                       python3 -m helphours.tests.route_tests
+                      echo "running /join tests"
+                      python3 -m helphours.tests.join_tests
 
     lint:
         docker:
@@ -54,7 +55,7 @@ jobs:
                   command: |
                       . venv/bin/activate
                       python3 -m flake8 helphours --max-line-length=120 --extend-ignore=E402
-                      python3 -m flake8 tests --max-line-length=120 --extend-ignore=E402
+                      python3 -m flake8 helphours/tests --max-line-length=120 --extend-ignore=E402
 
 workflows:
     lint:
