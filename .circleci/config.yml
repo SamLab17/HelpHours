@@ -28,9 +28,9 @@ jobs:
                       echo "FLASK_APP=helphours" > .flaskenv
                       cd tests/
                       echo "running student tests"
-                      python3 student_tests.py
+                      python3 -m helphours.tests.student_tests
                       echo "running route tests"
-                      python3 route_tests.py
+                      python3 -m helphours.tests.route_tests
 
     lint:
         docker:

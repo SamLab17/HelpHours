@@ -1,8 +1,5 @@
 import unittest
-import sys
-sys.path.append('../helphours')
-sys.path.append('..')
-from student import Student
+from ..student import Student
 
 
 class TestStudent(unittest.TestCase):

@@ -1,8 +1,5 @@
 import unittest
-import sys
-sys.path.append('../helphours')
-sys.path.append('..')
-from helphours import app
+from .. import app
 
 
 class TestRoute(unittest.TestCase):
