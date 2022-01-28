@@ -60,12 +60,29 @@ body h3 {
     display: flex;
     padding: 0 10px;
     margin-bottom: 10px;
+    animation: NavbarAnimation 4s ease infinite;
+    -moz-animation: NavbarAnimation 4s ease infinite;
+    -webkit-animation: NavbarAnimation 4s ease infinite;
+    background-size: 200% 100%;
 }
+
+
+
+@keyframes NavbarAnimation {
+    0%{background-position: 0% 0%}
+    50%{background-position: 100% 0%}
+    0%{background-position: 0% 0%}
+}
+
 
 .dark .navbar {
     -webkit-box-shadow: -2px 0 16px 2px var(--navbar-background);
     box-shadow: -2px 0 16px 2px var(--navbar-background);
+    animation: none;
+    -moz-animation: none; 
+    -webkit-animation: none;
 }
+
 
 .navbar ul {
     display: -webkit-box;
