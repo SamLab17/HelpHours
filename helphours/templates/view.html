@@ -16,10 +16,24 @@
         {% if g.user.is_authenticated %}
             <form method="POST">
                 <div style="display: flex;">
+                   
                     {% if queue_is_open %}
-                        <button name="close-virtual" class="queue-close-button">Close Virtual Queue</button>
+
+                        <button name="close-virtual" class="queue-close-button">
+                        {% if dual_modality %}
+                            Close Virtual Queue
+                        {% else %}
+                            Close Queue
+                        {% endif %}
+                        </button>
                     {% else %}
-                        <button name="open-virtual" class="queue-open-button">Open Virtual Queue</button> 
+                        <button name="open-virtual" class="queue-open-button">
+                        {% if dual_modality %}
+                            Open Virtual Queue
+                        {% else %}
+                            Open Queue
+                        {% endif %}
+                        </button> 
                     {% endif %}
 
                     {% if in_person_queue_is_open == True %}
