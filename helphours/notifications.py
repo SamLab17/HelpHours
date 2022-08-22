@@ -57,6 +57,6 @@ class Notifier:
             if self.log is not None:
                 # Log email error
                 self.log.warning(f"Could not send email to {to_addr}. Subject: {subject}.")
-                self.log.debug(f"Exception message: {str(e.message)}")
+                self.log.debug(f"Exception message: {str(e)}")
             else:
                 print(f'Could not send email to {to_addr}')
