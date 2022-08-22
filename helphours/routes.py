@@ -100,7 +100,7 @@ def view():
                                                                                 queue_is_open,
                                                                                 in_person_queue_is_open)
     queue = queue_handler.get_students()
-    return render_template('view.html', queue=queue, queue_is_open=queue_is_open,
+    return render_template('view.html', dual_modality=app.config['DUAL_MODALITY'], queue=queue, queue_is_open=queue_is_open,
                            in_person_queue_is_open=in_person_queue_is_open)
 
 
