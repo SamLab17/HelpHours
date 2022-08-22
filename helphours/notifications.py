@@ -15,6 +15,7 @@ class Notifier:
     """
     def __init__(self, send_notifications: bool, api_key, from_address):
         # Cuts off the newline character at end of string
+        self.send_notifications = send_notifications
         if send_notifications:
             self.from_addr = from_address
             self.log = None
