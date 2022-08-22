@@ -44,7 +44,7 @@ def handle_remove(request):
 
     # Notify runner-up in the queue
     s = queue_handler.peek_runner_up()
-    if s is not None and not s.notified:
+    if s is not None and not s.notified and app.config.get('SEND_STUDENT_EMAILS', False):
         try:
             log.debug(f"Sending runner up email to {s.email}")
             notifier.send_message(s.email, f'Notification from {app.config["COURSE_NAME"]} Help Hours Queue',
