@@ -120,7 +120,7 @@ def remove():
 
                 # Notify runner-up in the queue
                 runner_up = queue_handler.peek_runner_up()
-                if runner_up is not None and not runner_up.notified:
+                if runner_up is not None and not runner_up.notified and app.config.get('SEND_UP_NEXT_EMAILS', False):
                     try:
                         log.debug(
                             f"Sending runner up email to {runner_up.email}")

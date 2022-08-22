@@ -24,11 +24,7 @@ login = LoginManager(app)
 # db.create_all()
 # db.session.commit()
 
-notifier = Notifier(app.config['EMAIL_ACCOUNT'],
-                    app.config['EMAIL_PASSWORD'],
-                    app.config['EMAIL_SERVER'],
-                    app.config['EMAIL_SERVER_PORT'],
-                    app.config['SEND_EMAILS'])
+notifier = Notifier(app.config.get('SEND_EMAILS', False), app.config['EMAIL_API_KEY'], app.config['EMAIL_ACCOUNT'])
 
 log = Logger(email_notifier=notifier,
              admin_emails=app.config['ADMIN_EMAILS'],
