@@ -72,15 +72,16 @@ def join():
                 s = Student(form.name.data, form.email.data,
                             form.eid.data, form.desc.data, visit.id, form.modality.data)
                 place = queue_handler.enqueue(s)
-                notifier.send_message(form.email.data,
-                                      f"Notification from {app.config['COURSE_NAME']} Help Hours Queue",
-                                      render_template("email/added_to_queue_email.html",
-                                                      view_link=app.config['WEBSITE_LINK'] + url_for(
-                                                          'view'),
-                                                      place_str=routes_helper.get_place_str(
-                                                          place),
-                                                      student_name=form.name.data, remove_code=form.eid.data),
-                                      'html')
+                if app.config.get('SEND_STUDENT_EMAILS', False):
+                    notifier.send_message(form.email.data,
+                                          f"Notification from {app.config['COURSE_NAME']} Help Hours Queue",
+                                          render_template("email/added_to_queue_email.html",
+                                                          view_link=app.config['WEBSITE_LINK'] + url_for(
+                                                              'view'),
+                                                          place_str=routes_helper.get_place_str(
+                                                              place),
+                                                          student_name=form.name.data, remove_code=form.eid.data),
+                                          'html')
                 return redirect(url_for('view'))
         else:
             if len(form.errors) > 0:
@@ -120,7 +121,7 @@ def remove():
 
                 # Notify runner-up in the queue
                 runner_up = queue_handler.peek_runner_up()
-                if runner_up is not None and not runner_up.notified:
+                if runner_up is not None and not runner_up.notified and app.config.get('SEND_STUDENT_EMAILS', False):
                     try:
                         log.debug(
                             f"Sending runner up email to {runner_up.email}")
