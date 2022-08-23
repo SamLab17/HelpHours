@@ -22,8 +22,12 @@ var viewStateMap = new Map();
 viewStateMap['virtual'] = store1.getItem('virtual') == null ? true : store1.getItem('virtual') == 'true';
 viewStateMap['in_person'] = store1.getItem('in_person') == null ? true : store1.getItem('in_person') == 'true';
 
-document.getElementById("virtual-queue").checked = viewStateMap['virtual'];
-document.getElementById("in-person-queue").checked = viewStateMap['in_person'];
+if (document.getElementById("virtual-queue")) {
+    document.getElementById("virtual-queue").checked = viewStateMap['virtual'];
+}
+if(document.getElementById("in-person-queue")) {
+    document.getElementById("in-person-queue").checked = viewStateMap['in_person'];
+}
 
 store1.setItem('virtual', viewStateMap['virtual']);
 store1.setItem('in_person', viewStateMap['in_person']);

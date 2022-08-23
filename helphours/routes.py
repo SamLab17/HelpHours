@@ -82,7 +82,11 @@ def join():
                                                               place),
                                                           student_name=form.name.data, remove_code=form.eid.data),
                                           'html')
-                return redirect(url_for('view'))
+                resp = redirect(url_for('view'))
+                # Cookie for browsers to give notifications when turn is coming up.
+                # lasts for maximum 6 hours (max_age in seconds)
+                resp.set_cookie('join_token', s.join_token, max_age=(60*60*6), samesite=True)
+                return resp
         else:
             if len(form.errors) > 0:
                 message = next(iter(form.errors.values()))[0]

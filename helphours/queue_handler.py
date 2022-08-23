@@ -1,11 +1,13 @@
 import json
+from typing import Union
+from helphours.student import Student
 
 """
     Representation of the Queue in memory. This
     is a list of Student objects where index=0 is the
     "front" of the queue.
 """
-student_queue = []
+student_queue: list[Student] = []
 
 serialized_student_view = None
 serialized_instructor_view = None
@@ -18,7 +20,7 @@ serialized_instructor_view = None
 """
 
 
-def enqueue(student):
+def enqueue(student: Student):
     # check to see if they are in the queue already
     remove_eid(student.eid)
 
@@ -126,3 +128,10 @@ def generate_serialized_queues():
 
     student_serialized_list = [students[i].serialize_student_view(i) for i in range(len(students))]
     serialized_student_view = json.dumps({'queue': student_serialized_list})
+
+
+def get_position_for_join_token(join_token: str) -> Union[int, None]:
+    for i, s in enumerate(student_queue):
+        if s.join_token == join_token:
+            return i
+    return None

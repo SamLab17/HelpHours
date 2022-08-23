@@ -1,5 +1,5 @@
 from datetime import datetime
-
+import uuid
 
 class Student:
 
@@ -27,11 +27,14 @@ class Student:
         # Whether or not the student is in-person or virtual
         self.modality = modality
 
+        self.join_token = str(uuid.uuid1())
+
     def serialize_student_view(self, position):
         return {
             'name': self.name,
             'position': position,
-            'modality': self.modality
+            'modality': self.modality,
+            'join_token': f"{self.join_token}"
         }
 
     def serialize_instructor_view(self, position):
