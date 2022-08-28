@@ -60,6 +60,8 @@ def join():
         # a valid form
         if form.validate_on_submit():
             modality = form.modality.data
+            if not queue_is_open and not app.config['DUAL_MODALITY']:
+                message = "Sorry, the queue for help hours was closed."
             if not queue_is_open and modality == Student.VIRTUAL:
                 message = "Sorry, the queue for virtual help hours was closed."
             elif not in_person_queue_is_open and modality == Student.IN_PERSON:
