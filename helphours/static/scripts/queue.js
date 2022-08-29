@@ -16,17 +16,12 @@ updateQueue();
 
 var updateInterval = setInterval(updateQueue, UPDATE_INTERVAL_SECONDS * 1000);
 
-const store1 = window.localStorage;
 var viewStateMap = new Map();
-
-viewStateMap['virtual'] = store1.getItem('virtual') == null ? true : store1.getItem('virtual') == 'true';
-viewStateMap['in_person'] = store1.getItem('in_person') == null ? true : store1.getItem('in_person') == 'true';
+viewStateMap['virtual'] = true;
+viewStateMap['in_person'] = true;
 
 document.getElementById("virtual-queue").checked = viewStateMap['virtual'];
 document.getElementById("in-person-queue").checked = viewStateMap['in_person'];
-
-store1.setItem('virtual', viewStateMap['virtual']);
-store1.setItem('in_person', viewStateMap['in_person']);
 
 var checkboxesChanged = false;
 
@@ -165,7 +160,6 @@ function toggleExpanded(queueEntry, entryId) {
 
 function setCheckbox(queue) {
     viewStateMap[queue] = !viewStateMap[queue];
-    store1.setItem(queue, viewStateMap[queue]);
     checkboxesChanged = true;
     updateQueue();
 }
